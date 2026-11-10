@@ -1,0 +1,32 @@
+# KHÔNG BẮT BUỘC. Chỉ dùng nếu bạn đã biết Docker và không muốn cài MySQL lên máy.
+# Dùng file này thì sửa .env: DB_PORT=3307, DB_USER=app_user, DB_PASSWORD=app_password
+#   Bật:   docker compose up -d
+#   Tắt:   docker compose down        (dữ liệu vẫn giữ)
+#   Xoá sạch dữ liệu: docker compose down -v
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ks25-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+      TZ: Asia/Ho_Chi_Minh
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      # 3307 trên máy -> 3306 trong container (tránh đụng MySQL đã cài trên máy ở 3306)
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Lần đầu tạo container, MySQL tự chạy sql/init.sql
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql_data:

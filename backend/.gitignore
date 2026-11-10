@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Cấu hình bí mật
+.env
+
+# IDE
+.vscode/
+.idea/
