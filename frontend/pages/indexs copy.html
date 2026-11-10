@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swimwear - Header</title>
+  <link rel="stylesheet" href="/frontend/css/style1.css">
+</head>
+<body>
+  <header class="site-header">
+    <!-- Thanh khuyến mãi phía trên -->
+    <div class="announcement">
+      <div class="announcement__inner">
+        <p>
+          Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%!
+          <a href="#shop">ShopNow</a>
+        </p>
+
+        <button class="language" type="button" aria-label="Chọn ngôn ngữ">
+          English
+          <svg viewBox="0 0 12 8" aria-hidden="true">
+            <path d="m1 1.5 5 5 5-5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Header chính -->
+    <div class="main-header">
+      <div class="main-header__inner">
+        <a class="brand" href="#home" aria-label="Trang chủ">
+          <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="Logo thương hiệu">
+        </a>
+
+        <button class="menu-toggle" type="button" aria-label="Mở menu"
+                aria-expanded="false" aria-controls="primary-navigation">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
+          <a class="navigation__link navigation__link--active" href="#home">Home</a>
+          <a class="navigation__link" href="#contact">Contact</a>
+          <a class="navigation__link" href="#about">About</a>
+          <a class="navigation__link" href="#signup">Sign Up</a>
+        </nav>
+
+        <div class="header-actions">
+          <form class="search" role="search" action="#search">
+            <input type="search" name="q" placeholder="What are you looking for?"
+                   aria-label="Tìm kiếm sản phẩm">
+            <button type="submit" aria-label="Tìm kiếm">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                <path d="m16 16 5 5"></path>
+              </svg>
+            </button>
+          </form>
+
+          <a class="icon-link" href="#wishlist" aria-label="Wishlist">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z"></path>
+            </svg>
+          </a>
+
+          <a class="icon-link" href="#cart" aria-label="Giỏ hàng">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
+              <circle cx="9" cy="20" r="1.2"></circle>
+              <circle cx="18" cy="20" r="1.2"></circle>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <!-- Nội dung trang đặt ở đây -->
+  </main>
+
+  <script>
+    const menuButton = document.querySelector(".menu-toggle");
+    const navigation = document.querySelector(".navigation");
+
+    menuButton.addEventListener("click", function () {
+      const isOpen = navigation.classList.toggle("navigation--open");
+      menuButton.setAttribute("aria-expanded", isOpen);
+      menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+    });
+  </script>
+</body>
+</html>
