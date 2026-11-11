@@ -22,8 +22,15 @@ CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     slug VARCHAR(150) NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'Active',
+    parent_id INT DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY uk_categories_slug (slug)
+    UNIQUE KEY uk_categories_slug (slug),
+    CONSTRAINT fk_categories_parent
+        FOREIGN KEY (parent_id)
+        REFERENCES categories (id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
