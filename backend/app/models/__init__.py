@@ -2,3 +2,4 @@
 # Thêm model mới -> nhớ thêm 1 dòng import vào file này.
 from app.models.item import Item  # noqa: F401
 from app.models.category import Category  # noqa: F401
+from app.models.product import Product  # noqa: F401

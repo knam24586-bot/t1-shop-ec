@@ -2,11 +2,15 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.session import Base
+
+if TYPE_CHECKING:
+    from app.models.product import Product
 
 
 class Category(Base):
@@ -30,3 +34,4 @@ class Category(Base):
         back_populates="children", remote_side=[id]
     )
     children: Mapped[list[Category]] = relationship(back_populates="parent")
+    products: Mapped[list[Product]] = relationship(back_populates="category")
