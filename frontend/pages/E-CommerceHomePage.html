@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/frontend/css/style1.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CSS Footer (Hỗ trợ Sticky Footer và Responsive cả Desk lẫn Mobile) -->
+  <link rel="stylesheet" href="../css/footer.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <!-- Thanh khuyến mãi phía trên -->
+    <div class="announcement">
+      <div class="announcement__inner">
+        <p>
+          Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%!
+          <a href="#shop">ShopNow</a>
+        </p>
+
+        <button class="language" type="button" aria-label="Chọn ngôn ngữ">
+          English
+          <svg viewBox="0 0 12 8" aria-hidden="true">
+            <path d="m1 1.5 5 5 5-5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Header chính -->
+    <div class="main-header">
+      <div class="main-header__inner">
+        <a class="brand" href="#home" aria-label="Trang chủ">
+          <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="Logo thương hiệu">
+        </a>
+
+        <button class="menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false"
+          aria-controls="primary-navigation">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
+          <a class="navigation__link navigation__link--active" href="#home">Home</a>
+          <a class="navigation__link" href="#contact">Contact</a>
+          <a class="navigation__link" href="#about">About</a>
+          <a class="navigation__link" href="#signup">Sign Up</a>
+        </nav>
+
+        <div class="header-actions">
+          <form class="search" role="search" action="#search">
+            <input type="search" name="q" placeholder="What are you looking for?" aria-label="Tìm kiếm sản phẩm">
+            <button type="submit" aria-label="Tìm kiếm">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                <path d="m16 16 5 5"></path>
+              </svg>
+            </button>
+          </form>
+
+          <a class="icon-link" href="#wishlist" aria-label="Wishlist">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
+              </path>
+            </svg>
+          </a>
+
+          <a class="icon-link" href="#cart" aria-label="Giỏ hàng">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
+              <circle cx="9" cy="20" r="1.2"></circle>
+              <circle cx="18" cy="20" r="1.2"></circle>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+  </main>
+
+  <script>
+    const menuButton = document.querySelector(".menu-toggle");
+    const navigation = document.querySelector(".navigation");
+
+    menuButton.addEventListener("click", function () {
+      const isOpen = navigation.classList.toggle("navigation--open");
+      menuButton.setAttribute("aria-expanded", isOpen);
+      menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+    });
+  </script>
+</body>
+<footer class="site-footer">
+  <div class="footer-container">
+    
+    <!-- Cột 1: Exclusive & Subscribe -->
+    <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
+      <h2 id="newsletter-title">T1shop</h2>
+      <p class="column-subtitle">Subscribe</p>
+      <p class="newsletter-copy">Get 10% off your first order</p>
+      <form class="subscribe-form" action="#subscribe" method="post" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+        <label class="visually-hidden" for="subscriber-email">Enter your email</label>
+        <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit" aria-label="Gửi đăng ký">
+          <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m22 2-7 20-4-9-9-4Z"/>
+            <path d="M22 2 11 13"/>
+          </svg>
+        </button>
+      </form>
+    </section>
+
+    <!-- Cột 2: Support -->
+    <nav class="footer-column" aria-label="Support">
+      <h2>Support</h2>
+      <ul>
+        <li><a href="#">PTIT</a></li>
+        <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
+        <li><a href="tel:+84015888889999">+84015-88888-9999</a></li>
+      </ul>
+    </nav>
+
+    <!-- Cột 3: Account -->
+    <nav class="footer-column" aria-label="Account">
+      <h2>Account</h2>
+      <ul>
+        <li><a href="#">My Account</a></li>
+        <li><a href="#">Login / Register</a></li>
+        <li><a href="#">Cart</a></li>
+        <li><a href="/frontend/pages/WishList.html">Wishlist</a></li>
+        <li><a href="#">Shop</a></li>
+      </ul>
+    </nav>
+
+    <!-- Cột 4: Quick Link -->
+    <nav class="footer-column" aria-label="Quick links">
+      <h2>Quick Link</h2>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms Of Use</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Dòng bản quyền phía dưới -->
+  <div class="footer-bottom">
+    <p>© Copyright Rimel 2022. All right reserved</p>
+  </div>
+</footer>
+
+</html>
