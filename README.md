@@ -1,28 +1,124 @@
-# Base code dự án thực tập: HN-KS25-CNTT1
+# T1 Shop EC
 
-Khung dự án chung cho các nhóm (04/11 – 25/11/2026). Gồm 2 phần đã nối sẵn với nhau:
+Hệ thống cửa hàng thương mại điện tử gồm backend FastAPI và frontend HTML/CSS/JavaScript thuần. Backend sử dụng MySQL làm cơ sở dữ liệu và SQLAlchemy để ánh xạ dữ liệu thành các model Python.
 
-| Thư mục | Công nghệ | Hướng dẫn |
-|---|---|---|
-| [`backend/`](backend/README.md) | Python FastAPI + MySQL (SQLAlchemy) | `backend/README.md` |
-| [`frontend/`](frontend/README.md) | HTML · CSS · JavaScript thuần + axios | `frontend/README.md` |
+## Kiến trúc
 
+```text
+Frontend (Live Server)
+        │ HTTP/JSON
+        ▼
+FastAPI backend (:8000)
+        │ SQLAlchemy + PyMySQL
+        ▼
+MySQL (:3306)
 ```
-Trình duyệt (frontend) --axios JSON--> FastAPI (backend :8000/api) --SQLAlchemy--> MySQL (:3306)
+
+## Công nghệ
+
+- **Backend:** Python 3.10+, FastAPI, SQLAlchemy 2, PyMySQL
+- **Database:** MySQL 8, UTF-8 (`utf8mb4`)
+- **Frontend:** HTML, CSS, JavaScript thuần, Axios CDN
+- **Tài liệu API:** Swagger UI tại `/docs`
+
+## Cấu trúc dự án
+
+```text
+.
+├── backend/
+│   ├── app/
+│   │   ├── core/              # Cấu hình môi trường
+│   │   ├── crud/              # Truy vấn và thao tác dữ liệu
+│   │   ├── db/                # SQLAlchemy engine và session
+│   │   ├── models/            # Item, Category, Product, ProductVariant,
+│   │   │                       # Vendor và Store
+│   │   ├── routers/            # Các endpoint FastAPI
+│   │   └── schemas/            # Pydantic request/response schemas
+│   ├── sql/init.sql            # Khởi tạo database và các bảng
+│   ├── requirements.txt
+│   └── .env.example
+├── frontend/
+│   ├── index.html
+│   ├── pages/
+│   ├── css/
+│   └── assets/
+└── README.md
 ```
 
-## Chạy nhanh
+## Các model chính
 
-1. **MySQL Workbench:** File → Open SQL Script → chọn `backend/sql/init.sql` → bấm ⚡ Execute.
-2. **Backend** (terminal trong thư mục `backend/`):
-   ```bash
-   copy .env.example .env               # Mac/Linux: cp .env.example .env
-   # mở .env, điền DB_PASSWORD = mật khẩu root MySQL của bạn
-   python -m venv .venv
-   .venv\Scripts\activate               # Mac/Linux: source .venv/bin/activate
-   pip install -r requirements.txt
-   uvicorn app.main:app --reload        # http://127.0.0.1:8000/docs
+| Model | Mô tả |
+|---|---|
+| `Category` | Danh mục sản phẩm, hỗ trợ danh mục cha/con |
+| `Product` | Sản phẩm thuộc một danh mục |
+| `ProductVariant` | Biến thể sản phẩm với SKU duy nhất, màu, size và tồn kho |
+| `Vendor` | Nhà cung cấp |
+| `Store` | Cửa hàng thuộc một Vendor; không trùng tên trong cùng Vendor |
+| `Item` | Bảng mẫu dùng để kiểm tra CRUD |
+
+Chi tiết quan hệ và ràng buộc được định nghĩa trong `backend/app/models/` và đồng bộ trong `backend/sql/init.sql`.
+
+## Chạy backend
+
+### 1. Khởi tạo cơ sở dữ liệu
+
+Mở MySQL Workbench và chạy toàn bộ file [`backend/sql/init.sql`](backend/sql/init.sql).
+
+### 2. Cấu hình môi trường
+
+```powershell
+cd backend
+copy .env.example .env
+```
+
+Mở `.env` và điền thông tin MySQL:
+
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=mat_khau_mysql
+DB_NAME=t1shop_db
+```
+
+### 3. Cài dependency và chạy server
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Backend mặc định chạy tại `http://127.0.0.1:8000`.
+
+- Health check: `http://127.0.0.1:8000/api/health`
+- Swagger UI: `http://127.0.0.1:8000/docs`
+
+## Chạy frontend
+
+Mở thư mục dự án bằng VS Code, cài extension **Live Server**, sau đó mở `frontend/index.html` bằng **Open with Live Server**. Frontend mặc định gọi backend tại `http://127.0.0.1:8000/api`.
+
+## Quy tắc phát triển
+
+1. Khi thêm model, đăng ký model trong `backend/app/models/__init__.py`.
+2. Khi thay đổi schema database, cập nhật `backend/sql/init.sql`.
+3. Không commit file `.env`, mật khẩu hoặc thông tin kết nối thật.
+4. Chạy kiểm tra Python trước khi commit:
+
+   ```powershell
+   cd backend
+   python -m compileall -q app
    ```
-3. **Frontend:** VS Code → chuột phải `frontend/index.html` → *Open with Live Server*.
 
-Trang chủ frontend hiện **✅ Backend OK · MySQL: connected** là đã thông cả 3 tầng. Sau đó mỗi nhóm đổi ví dụ `items` thành các chức năng của đề tài mình (xem mục *Thêm chức năng* / *Thêm trang mới* trong từng README).
+5. Tạo branch theo task, ví dụ `feature/cn-04-store`.
+
+## Docker MySQL (tùy chọn)
+
+Nếu dùng Docker, chạy trong thư mục `backend`:
+
+```powershell
+docker compose up -d
+```
+
+Thiết lập `DB_PORT=3307` nếu MySQL container được expose qua cổng 3307 trên máy host.
