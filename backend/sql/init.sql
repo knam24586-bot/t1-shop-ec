@@ -22,8 +22,15 @@ CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     slug VARCHAR(150) NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'Active',
+    parent_id INT DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY uk_categories_slug (slug)
+    UNIQUE KEY uk_categories_slug (slug),
+    CONSTRAINT fk_categories_parent
+        FOREIGN KEY (parent_id)
+        REFERENCES categories (id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -43,6 +50,23 @@ CREATE TABLE products (
         FOREIGN KEY (category_id)
         REFERENCES categories (id)
         ON DELETE RESTRICT
+        ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE product_variants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    sku VARCHAR(100) NOT NULL,
+    color VARCHAR(100) DEFAULT NULL,
+    size VARCHAR(50) DEFAULT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    UNIQUE KEY uk_product_variants_sku (sku),
+    CONSTRAINT ck_product_variants_stock_nonnegative CHECK (stock >= 0),
+    CONSTRAINT fk_product_variants_product
+        FOREIGN KEY (product_id)
+        REFERENCES products (id)
+        ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
