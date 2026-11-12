@@ -1,4 +1,4 @@
-"""Model cho biến thể sản phẩm."""
+"""Model cho biến thể sản phẩm (ProductVariant)."""
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -9,6 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.session import Base
 
 if TYPE_CHECKING:
+    from app.models.cart_item import CartItem
     from app.models.product import Product
 
 
@@ -30,3 +31,8 @@ class ProductVariant(Base):
     stock: Mapped[int] = mapped_column(nullable=False, default=0, server_default="0")
 
     product: Mapped[Product] = relationship(back_populates="variants")
+    cart_items: Mapped[list[CartItem]] = relationship(
+        "CartItem",
+        back_populates="variant",
+        cascade="all, delete-orphan",
+    )
