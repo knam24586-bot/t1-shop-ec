@@ -54,6 +54,36 @@ CREATE TABLE products (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+CREATE TABLE vendors (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) DEFAULT NULL,
+    phone VARCHAR(30) DEFAULT NULL,
+    address VARCHAR(255) DEFAULT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'Active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_vendors_name (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE stores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vendor_id INT NOT NULL,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) DEFAULT NULL,
+    phone VARCHAR(30) DEFAULT NULL,
+    address VARCHAR(255) DEFAULT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'Active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_stores_vendor_name (vendor_id, name),
+    CONSTRAINT fk_stores_vendor
+        FOREIGN KEY (vendor_id)
+        REFERENCES vendors (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
 CREATE TABLE product_variants (
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
