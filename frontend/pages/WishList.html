@@ -95,5 +95,66 @@
       menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
     });
   </script>
+  
 </body>
+<footer class="site-footer">
+    <div class="footer-container">
+      
+      <!-- Cột 1: Exclusive & Subscribe -->
+      <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
+        <h2 id="newsletter-title">T1shop</h2>
+        <p class="column-subtitle">Subscribe</p>
+        <p class="newsletter-copy">Get 10% off your first order</p>
+        <form class="subscribe-form" action="#subscribe" method="post" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+          <label class="visually-hidden" for="subscriber-email">Enter your email</label>
+          <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+          <button type="submit" aria-label="Gửi đăng ký">
+            <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m22 2-7 20-4-9-9-4Z"/>
+              <path d="M22 2 11 13"/>
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- Cột 2: Support -->
+      <nav class="footer-column" aria-label="Support">
+        <h2>Support</h2>
+        <ul>
+          <li><a href="#">PTIT</a></li>
+          <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
+          <li><a href="tel:+84015888889999">+84015-88888-9999</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 3: Account -->
+      <nav class="footer-column" aria-label="Account">
+        <h2>Account</h2>
+        <ul>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">Login / Register</a></li>
+          <li><a href="#">Cart</a></li>
+          <li><a href="/frontend/pages/WishList.html">Wishlist</a></li>
+          <li><a href="#">Shop</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 4: Quick Link -->
+      <nav class="footer-column" aria-label="Quick links">
+        <h2>Quick Link</h2>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Dòng bản quyền phía dưới -->
+    <div class="footer-bottom">
+      <p>© Copyright Rimel 2022. All right reserved</p>
+    </div>
+  </footer>
 </html>

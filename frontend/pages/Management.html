@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f8fc">
+    <link rel="stylesheet" href="/frontend/css/Management.css">
+</head>
+<body>
+
+    <!-- Admin header -->
+    <header class="admin-header">
+        <form class="header-search" role="search" action="#" method="get">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m16 16 5 5"></path>
+            </svg>
+            <input
+                type="search"
+                name="q"
+                placeholder="Tìm đơn hàng, SKU, khách hàng..."
+                aria-label="Tìm đơn hàng, SKU, khách hàng"
+            >
+        </form>
+
+        <div class="header-status" aria-label="Cửa hàng đang mở bán">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Cửa hàng đang mở bán</span>
+        </div>
+
+        <button class="header-notification" type="button" aria-label="4 thông báo chưa đọc">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                <path d="M10 21h4"></path>
+            </svg>
+            <span class="notification-count">4</span>
+        </button>
+
+        <button class="header-profile" type="button" aria-label="Tài khoản TechZone Flagship Store">
+            <!-- Thay images/avatar.jpg bằng đường dẫn ảnh đại diện của bạn -->
+            <img
+                class="profile-avatar"
+                src="/frontend/assets/images/d5d807c724d7168532f5e7eca71c01f35bce172a.jpg"
+                alt="Ảnh đại diện TechZone"
+                onerror="this.hidden=true"
+            >
+
+            <span class="profile-info">
+                <strong>TechZone Flagship Store</strong>
+                <small>techzone@shopnest.vn</small>
+            </span>
+
+            <svg class="profile-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m7 10 5 5 5-5"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Nội dung trang của bạn đặt bên dưới header -->
+    <main class="page-content">
+        <!-- Page content -->
+    </main>
+
+</body>
+<footer class="site-footer">
+    <div class="footer-container">
+      
+      <!-- Cột 1: Exclusive & Subscribe -->
+      <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
+        <h2 id="newsletter-title">T1shop</h2>
+        <p class="column-subtitle">Subscribe</p>
+        <p class="newsletter-copy">Get 10% off your first order</p>
+        <form class="subscribe-form" action="#subscribe" method="post" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+          <label class="visually-hidden" for="subscriber-email">Enter your email</label>
+          <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+          <button type="submit" aria-label="Gửi đăng ký">
+            <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m22 2-7 20-4-9-9-4Z"/>
+              <path d="M22 2 11 13"/>
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- Cột 2: Support -->
+      <nav class="footer-column" aria-label="Support">
+        <h2>Support</h2>
+        <ul>
+          <li><a href="#">PTIT</a></li>
+          <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
+          <li><a href="tel:+84015888889999">+84015-88888-9999</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 3: Account -->
+      <nav class="footer-column" aria-label="Account">
+        <h2>Account</h2>
+        <ul>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">Login / Register</a></li>
+          <li><a href="#">Cart</a></li>
+          <li><a href="/frontend/pages/WishList.html">Wishlist</a></li>
+          <li><a href="#">Shop</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 4: Quick Link -->
+      <nav class="footer-column" aria-label="Quick links">
+        <h2>Quick Link</h2>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Dòng bản quyền phía dưới -->
+    <div class="footer-bottom">
+      <p>© Copyright Rimel 2022. All right reserved</p>
+    </div>
+  </footer>
+</html>
