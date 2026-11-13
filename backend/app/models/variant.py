@@ -39,4 +39,3 @@ class ProductVariant(Base):
         back_populates="variant",
         cascade="all, delete-orphan",
     )
-
