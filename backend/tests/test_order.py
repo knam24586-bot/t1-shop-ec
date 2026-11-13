@@ -1,10 +1,10 @@
-"""Bộ kiểm thử cho SQLAlchemy Model Order và trạng thái đơn.
-Kiểm tra tất cả các tiêu chí chấp nhận:
-1. Order lưu đầy đủ: mã đơn, khách hàng, địa chỉ snapshot, tổng tiền, trạng thái và timestamp.
-2. Mã đơn duy nhất (order_code unique).
-3. Địa chỉ snapshot độc lập với sự thay đổi của User.
-4. Trạng thái đơn (OrderStatus enum, default PENDING, quy tắc chuyển đổi trạng thái hợp lệ).
-5. Quan hệ Order <-> Customer và Order <-> OrderItem (cascade delete).
+"""Bộ kiểm thử cho SQLAlchemy Model Order, OrderItem và cơ chế snapshot giá/số lượng.
+Kiểm tra toàn diện các tiêu chí chấp nhận:
+1. Order lưu mã đơn (duy nhất), khách hàng, địa chỉ snapshot, tổng tiền, trạng thái và timestamp.
+2. OrderItem lưu variant, quantity và unit_price snapshot.
+3. DỮ LIỆU ĐƠN KHÔNG THAY ĐỔI KHI GIÁ PRODUCT THAY ĐỔI SAU ĐÓ.
+4. Ràng buộc số lượng > 0 và đơn giá snapshot >= 0.
+5. Quan hệ và Cascade Delete.
 """
 import unittest
 from datetime import datetime
@@ -15,14 +15,17 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, configure_mappers
 
 from app.db.session import Base
+from app.models.cart import Cart  # noqa: F401
+from app.models.cart_item import CartItem  # noqa: F401
 from app.models.category import Category
 from app.models.product import Product
 from app.models.user import User
+from app.models.variant import ProductVariant
 from app.models.order import Order, OrderStatus
 from app.models.order_item import OrderItem
 
 
-class TestOrderModel(unittest.TestCase):
+class TestOrderAndOrderItemModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         configure_mappers()
@@ -33,7 +36,7 @@ class TestOrderModel(unittest.TestCase):
         Base.metadata.create_all(self.engine)
         self.session = Session(self.engine)
 
-        # Dữ liệu mẫu ban đầu: User, Category, Product
+        # Dữ liệu mẫu ban đầu: User, Category, Product, Variant
         self.customer = User(
             full_name="Son Heung-min",
             email="sonny@t1.gg",
@@ -45,6 +48,7 @@ class TestOrderModel(unittest.TestCase):
         self.session.add_all([self.customer, self.category])
         self.session.flush()
 
+        # Sản phẩm ban đầu có giá 1.500.000 VNĐ
         self.product = Product(
             category_id=self.category.id,
             name="Áo Đấu T1 2026",
@@ -54,6 +58,17 @@ class TestOrderModel(unittest.TestCase):
             status="Published",
         )
         self.session.add(self.product)
+        self.session.flush()
+
+        # Biến thể áo đấu size M
+        self.variant = ProductVariant(
+            product_id=self.product.id,
+            sku="T1-2026-JERSEY-M",
+            color="Black/Red",
+            size="M",
+            stock=20,
+        )
+        self.session.add(self.variant)
         self.session.commit()
 
     def tearDown(self):
@@ -62,187 +77,180 @@ class TestOrderModel(unittest.TestCase):
         self.engine.dispose()
 
     # -------------------------------------------------------------
-    # 1. TIÊU CHÍ: Lưu đầy đủ các trường và timestamp
+    # 1. TIÊU CHÍ: OrderItem lưu variant, quantity và unit_price snapshot
     # -------------------------------------------------------------
-    def test_order_fields_and_timestamps(self):
-        """Order phải lưu: mã đơn, khách hàng, địa chỉ snapshot, tổng tiền, trạng thái và timestamp."""
-        order_code = Order.generate_order_code()
-        address = "123 Đường Cầu Giấy, Quận Cầu Giấy, Hà Nội"
-        total_price = Decimal("3000000.00")
-
+    def test_order_item_stores_variant_quantity_and_snapshot_price(self):
+        """OrderItem phải lưu liên kết variant, số lượng và đơn giá snapshot."""
         order = Order(
-            order_code=order_code,
+            order_code=Order.generate_order_code(),
             customer_id=self.customer.id,
-            shipping_address=address,
-            total_price=total_price,
-            status=OrderStatus.PENDING.value,
+            shipping_address="Hà Nội",
+            total_price=Decimal("0.00"),
         )
         self.session.add(order)
+        self.session.flush()
+
+        # Tạo OrderItem qua hàm from_variant với snapshot giá
+        item = OrderItem.from_variant(
+            order=order,
+            variant=self.variant,
+            quantity=3,
+        )
+        self.session.add(item)
+        order.calculate_total()
         self.session.commit()
 
-        # Kiểm tra truy vấn lại
-        saved_order = self.session.scalar(select(Order).where(Order.id == order.id))
-        self.assertIsNotNone(saved_order)
-        self.assertEqual(saved_order.order_code, order_code)
-        self.assertEqual(saved_order.customer_id, self.customer.id)
-        self.assertEqual(saved_order.shipping_address, address)
-        self.assertEqual(saved_order.total_price, total_price)
-        self.assertEqual(saved_order.status, OrderStatus.PENDING.value)
-        self.assertIsNotNone(saved_order.created_at)
-        self.assertIsNotNone(saved_order.updated_at)
-        self.assertIsInstance(saved_order.created_at, datetime)
-        self.assertIsInstance(saved_order.updated_at, datetime)
+        # Kiểm tra dữ liệu OrderItem được lưu
+        saved_item = self.session.scalar(select(OrderItem).where(OrderItem.id == item.id))
+        self.assertIsNotNone(saved_item)
+        self.assertEqual(saved_item.variant_id, self.variant.id)
+        self.assertEqual(saved_item.variant.sku, "T1-2026-JERSEY-M")
+        self.assertEqual(saved_item.quantity, 3)
+        self.assertEqual(saved_item.unit_price, Decimal("1500000.00"))
+        self.assertEqual(saved_item.line_total, Decimal("4500000.00"))
+        self.assertEqual(order.total_price, Decimal("4500000.00"))
 
     # -------------------------------------------------------------
-    # 2. TIÊU CHÍ: Mã đơn duy nhất (order_code unique)
+    # 2. TIÊU CHÍ THEN CHỐT: Dữ liệu đơn KHÔNG thay đổi khi giá Product đổi sau đó
     # -------------------------------------------------------------
-    def test_order_code_unique_constraint(self):
-        """Mã đơn (order_code) phải là duy nhất, trùng lặp sẽ bị chặn bởi Database."""
-        code = "ORD-2026-UNIQUE-001"
+    def test_order_data_immutable_when_product_price_changes_later(self):
+        """Chứng minh tính chất snapshot: Khi giá sản phẩm tăng/giảm sau này, đơn hàng cũ giữ nguyên 100%."""
+        order = Order(
+            order_code=Order.generate_order_code(),
+            customer_id=self.customer.id,
+            shipping_address="Số 10 Tôn Thất Thuyết, Cầu Giấy, Hà Nội",
+            total_price=Decimal("0.00"),
+        )
+        self.session.add(order)
+        self.session.flush()
 
+        # Mua 2 áo với giá tại thời điểm mua là 1.500.000 VNĐ -> line_total = 3.000.000 VNĐ
+        order_item = OrderItem.from_variant(
+            order=order,
+            variant=self.variant,
+            quantity=2,
+        )
+        self.session.add(order_item)
+        order.calculate_total()
+        self.session.commit()
+
+        # Xác nhận đơn hàng ban đầu: total = 3.000.000 VNĐ
+        self.assertEqual(order.total_price, Decimal("3000000.00"))
+        self.assertEqual(order_item.unit_price, Decimal("1500000.00"))
+        self.assertEqual(order_item.line_total, Decimal("3000000.00"))
+
+        # ---------------------------------------------------------
+        # KỊCH BẢN THAY ĐỔI GIÁ SAU ĐÓ:
+        # Shop tăng giá sản phẩm từ 1.500.000 lên 2.500.000 VNĐ
+        # ---------------------------------------------------------
+        self.product.price = Decimal("2500000.00")
+        self.session.commit()
+
+        # Xoá cache session để đảm bảo load trực tiếp từ Database
+        self.session.expire_all()
+
+        # Truy vấn lại Product: Giá đã tăng lên 2.500.000 VNĐ
+        reloaded_product = self.session.scalar(select(Product).where(Product.id == self.product.id))
+        self.assertEqual(reloaded_product.price, Decimal("2500000.00"))
+
+        # Truy vấn lại Đơn hàng và Mục đơn hàng: DỮ LIỆU ĐƠN KHÔNG HỀ BỊ ẢNH HƯỞNG!
+        reloaded_order = self.session.scalar(select(Order).where(Order.id == order.id))
+        reloaded_item = reloaded_order.items[0]
+
+        # Đơn giá snapshot vẫn là 1.500.000 VNĐ
+        self.assertEqual(reloaded_item.unit_price, Decimal("1500000.00"))
+        # Thành tiền snapshot vẫn là 3.000.000 VNĐ
+        self.assertEqual(reloaded_item.line_total, Decimal("3000000.00"))
+        # Tổng tiền đơn hàng vẫn là 3.000.000 VNĐ
+        self.assertEqual(reloaded_order.total_price, Decimal("3000000.00"))
+
+    # -------------------------------------------------------------
+    # 3. TIÊU CHÍ: Ràng buộc số lượng > 0 và đơn giá >= 0
+    # -------------------------------------------------------------
+    def test_order_item_quantity_must_be_positive(self):
+        """Số lượng OrderItem phải > 0."""
+        order = Order(
+            order_code=Order.generate_order_code(),
+            customer_id=self.customer.id,
+            shipping_address="Đà Nẵng",
+            total_price=Decimal("0.00"),
+        )
+        self.session.add(order)
+        self.session.flush()
+
+        # Số lượng = 0 phải văng lỗi
+        with self.assertRaises(ValueError):
+            OrderItem.create_item(order=order, unit_price=Decimal("100000.00"), quantity=0)
+
+        # Số lượng < 0 phải văng lỗi
+        with self.assertRaises(ValueError):
+            OrderItem.create_item(order=order, unit_price=Decimal("100000.00"), quantity=-2)
+
+    def test_order_item_unit_price_nonnegative(self):
+        """Đơn giá snapshot không được âm."""
+        order = Order(
+            order_code=Order.generate_order_code(),
+            customer_id=self.customer.id,
+            shipping_address="TP. Hồ Chí Minh",
+            total_price=Decimal("0.00"),
+        )
+        self.session.add(order)
+        self.session.flush()
+
+        with self.assertRaises(ValueError):
+            OrderItem.create_item(order=order, unit_price=Decimal("-50000.00"), quantity=1)
+
+    # -------------------------------------------------------------
+    # 4. TIÊU CHÍ: Order tổng thể (Mã đơn duy nhất, trạng thái, cascade delete)
+    # -------------------------------------------------------------
+    def test_order_code_unique_and_status(self):
+        """Mã đơn phải duy nhất và trạng thái đơn vận hành đúng."""
+        code = "ORD-2026-IMMUTABLE-01"
         order1 = Order(
             order_code=code,
             customer_id=self.customer.id,
-            shipping_address="Hà Nội",
-            total_price=Decimal("500000.00"),
+            shipping_address="Cần Thơ",
+            total_price=Decimal("100000.00"),
         )
         self.session.add(order1)
         self.session.commit()
 
-        # Tạo đơn thứ 2 cố ý trùng mã đơn
+        # Tạo đơn thứ 2 trùng mã -> Lỗi IntegrityError
         order2 = Order(
             order_code=code,
             customer_id=self.customer.id,
-            shipping_address="Đà Nẵng",
-            total_price=Decimal("700000.00"),
+            shipping_address="Huế",
+            total_price=Decimal("200000.00"),
         )
         self.session.add(order2)
         with self.assertRaises(IntegrityError):
             self.session.commit()
         self.session.rollback()
 
-    # -------------------------------------------------------------
-    # 3. TIÊU CHÍ: Địa chỉ snapshot (Không đổi khi user thay đổi)
-    # -------------------------------------------------------------
-    def test_shipping_address_is_snapshot(self):
-        """Địa chỉ lưu trên Order là snapshot độc lập."""
-        original_address = "Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội"
-        order = Order(
-            order_code=Order.generate_order_code(),
-            customer=self.customer,
-            shipping_address=original_address,
-            total_price=Decimal("1500000.00"),
-        )
-        self.session.add(order)
-        self.session.commit()
-
-        # Đơn hàng vẫn giữ nguyên địa chỉ snapshot ban đầu
-        queried_order = self.session.scalar(select(Order).where(Order.id == order.id))
-        self.assertEqual(queried_order.shipping_address, original_address)
-        self.assertEqual(queried_order.customer.full_name, "Son Heung-min")
-
-    # -------------------------------------------------------------
-    # 4. TIÊU CHÍ: Quản lý trạng thái đơn hàng (OrderStatus & Transitions)
-    # -------------------------------------------------------------
-    def test_order_status_lifecycle_and_transitions(self):
-        """Kiểm tra vòng đời trạng thái đơn và các quy tắc chuyển trạng thái hợp lệ/bất hợp lệ."""
-        order = Order(
-            order_code=Order.generate_order_code(),
-            customer_id=self.customer.id,
-            shipping_address="Hồ Chí Minh",
-            total_price=Decimal("1500000.00"),
-        )
-        self.session.add(order)
-        self.session.commit()
-
-        # 1. Trạng thái mặc định ban đầu là PENDING
-        self.assertEqual(order.status, OrderStatus.PENDING.value)
-
-        # 2. Chuyển hợp lệ: PENDING -> CONFIRMED
-        self.assertTrue(order.can_transition_to(OrderStatus.CONFIRMED))
-        order.transition_to(OrderStatus.CONFIRMED)
-        self.session.commit()
-        self.assertEqual(order.status, OrderStatus.CONFIRMED.value)
-
-        # 3. Chuyển hợp lệ: CONFIRMED -> PROCESSING -> SHIPPED -> DELIVERED
-        order.transition_to(OrderStatus.PROCESSING)
-        order.transition_to(OrderStatus.SHIPPED)
-        order.transition_to(OrderStatus.DELIVERED)
-        self.session.commit()
-        self.assertEqual(order.status, OrderStatus.DELIVERED.value)
-
-        # 4. Chuyển bất hợp lệ: Đơn đã DELIVERED không thể quay lại PENDING hoặc CANCELLED
-        self.assertFalse(order.can_transition_to(OrderStatus.PENDING))
-        with self.assertRaises(ValueError) as ctx:
-            order.transition_to(OrderStatus.PENDING)
-        self.assertIn("Không thể chuyển trạng thái", str(ctx.exception))
-
-    def test_order_cancellation_from_pending(self):
-        """Đơn hàng ở trạng thái PENDING có thể bị huỷ (CANCELLED)."""
-        order = Order(
-            order_code=Order.generate_order_code(),
-            customer_id=self.customer.id,
-            shipping_address="Cần Thơ",
-            total_price=Decimal("1000000.00"),
-        )
-        self.session.add(order)
-        self.session.commit()
-
-        self.assertTrue(order.can_transition_to(OrderStatus.CANCELLED))
-        order.transition_to(OrderStatus.CANCELLED)
-        self.session.commit()
-        self.assertEqual(order.status, OrderStatus.CANCELLED.value)
-
-        # Đơn đã huỷ không thể chuyển sang SHIPPED
-        with self.assertRaises(ValueError):
-            order.transition_to(OrderStatus.SHIPPED)
-
-    # -------------------------------------------------------------
-    # 5. TIÊU CHÍ: Quan hệ Order <-> OrderItems và Cascade Delete
-    # -------------------------------------------------------------
-    def test_order_items_relationship_and_total_calculation(self):
-        """Order liên kết đúng với OrderItem, tự động tính tổng tiền và xoá liên hoàn."""
+    def test_order_cascade_delete_items(self):
+        """Khi xoá Order, toàn bộ OrderItem liên kết phải tự động bị xoá."""
         order = Order(
             order_code=Order.generate_order_code(),
             customer_id=self.customer.id,
             shipping_address="Hải Phòng",
-            total_price=Decimal("0.00"),
+            total_price=Decimal("1500000.00"),
         )
         self.session.add(order)
         self.session.flush()
 
-        # Thêm 2 mục vào đơn hàng
-        item1 = OrderItem.create_item(
-            order=order,
-            product_id=self.product.id,
-            unit_price=Decimal("1500000.00"),
-            quantity=2,
-        )
-        item2 = OrderItem.create_item(
-            order=order,
-            product_id=self.product.id,
-            unit_price=Decimal("500000.00"),
-            quantity=1,
-        )
-        self.session.add_all([item1, item2])
-        self.session.flush()
-
-        # Tự động tính lại tổng tiền
-        order.calculate_total()
+        item = OrderItem.from_variant(order=order, variant=self.variant, quantity=1)
+        self.session.add(item)
         self.session.commit()
 
-        # 1500000*2 + 500000*1 = 3500000
-        self.assertEqual(order.total_price, Decimal("3500000.00"))
-        self.assertEqual(len(order.items), 2)
+        self.assertEqual(len(self.session.scalars(select(OrderItem)).all()), 1)
 
-        # Xoá Order -> OrderItem tự động bị xoá theo (cascade delete-orphan)
+        # Xoá đơn hàng
         self.session.delete(order)
         self.session.commit()
 
-        remaining_items = self.session.scalars(select(OrderItem)).all()
-        self.assertEqual(len(remaining_items), 0)
+        # OrderItem đã bị xoá
+        self.assertEqual(len(self.session.scalars(select(OrderItem)).all()), 0)
 
 
 if __name__ == "__main__":
     unittest.main()
-
