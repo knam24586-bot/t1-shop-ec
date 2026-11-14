@@ -30,10 +30,7 @@ class ProductVariant(Base):
     size: Mapped[str | None] = mapped_column(String(50), nullable=True)
     stock: Mapped[int] = mapped_column(nullable=False, default=0, server_default="0")
 
-    # Quan hệ đơn hướng với Product (không sửa product.py có sẵn)
-    product: Mapped[Product] = relationship("Product")
-
-    # Quan hệ 1-N với CartItem
+    product: Mapped[Product] = relationship(back_populates="variants")
     cart_items: Mapped[list[CartItem]] = relationship(
         "CartItem",
         back_populates="variant",
