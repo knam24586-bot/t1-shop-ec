@@ -36,6 +36,15 @@ def get_product(db: Session, product_id: int) -> Product | None:
     return db.scalars(query).unique().first()
 
 
+def get_public_product(db: Session, product_id: int) -> Product | None:
+    query = (
+        select(Product)
+        .options(selectinload(Product.variants))
+        .where(Product.id == product_id, Product.status == "Published")
+    )
+    return db.scalars(query).unique().first()
+
+
 def create_product(db: Session, data: ProductCreate) -> Product:
     payload = data.model_dump(exclude={"variants"})
     if payload["image_url"] is not None:

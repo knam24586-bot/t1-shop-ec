@@ -42,6 +42,7 @@ CREATE TABLE products (
     slug VARCHAR(255) NOT NULL,
     description TEXT DEFAULT NULL,
     price DECIMAL(12,2) NOT NULL,
+    rating DECIMAL(2,1) NOT NULL DEFAULT 0,
     stock INT NOT NULL DEFAULT 0,
     image_url VARCHAR(500) DEFAULT NULL,
     status VARCHAR(30) NOT NULL DEFAULT 'Published',

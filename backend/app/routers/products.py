@@ -9,6 +9,7 @@ from app.crud.product import (
     create_product,
     delete_product,
     get_product,
+    get_public_product,
     get_products,
     update_product,
 )
@@ -81,9 +82,25 @@ def list_products(
     )
 
 
-@router.get("/{product_id}", response_model=ProductResponse)
+@router.get(
+    "/{product_id}",
+    response_model=ProductResponse,
+    responses={404: {"description": "Product not found"}},
+)
 def read_product(product_id: int, db: DbSession):
-    product = get_product(db, product_id)
+    product = get_public_product(db, product_id)
+    if product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
+@router.get(
+    "/{product_id}/details",
+    response_model=ProductResponse,
+    responses={404: {"description": "Product not found"}},
+)
+def read_product_details(product_id: int, db: DbSession):
+    product = get_public_product(db, product_id)
     if product is None:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
