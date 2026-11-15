@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.routers import categories
+from app.routers.products import router as products_router
 
 app = FastAPI(title=settings.APP_NAME)
 
@@ -15,3 +16,4 @@ app.add_middleware(
 )
 
 app.include_router(categories.router, prefix="/api")
+app.include_router(products_router)

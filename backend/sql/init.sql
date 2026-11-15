@@ -37,6 +37,7 @@ CREATE TABLE categories (
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
+    store_id INT DEFAULT NULL,
     name VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL,
     description TEXT DEFAULT NULL,
@@ -168,7 +169,3 @@ CREATE TABLE order_items (
         ON DELETE SET NULL
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO items (name, description, price) VALUES
-  ('Cơm rang dưa bò', 'Món mẫu để kiểm tra API', 45000),
-  ('Trà đá', 'Dữ liệu mẫu số 2', 5000);
