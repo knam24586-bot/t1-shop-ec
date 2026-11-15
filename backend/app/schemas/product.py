@@ -31,6 +31,13 @@ class ProductBase(BaseModel):
     slug: str = Field(min_length=1, max_length=255)
     description: str | None = None
     price: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
+    rating: Decimal = Field(
+        default=Decimal("0"),
+        ge=0,
+        le=5,
+        max_digits=2,
+        decimal_places=1,
+    )
     stock: int = Field(default=0, ge=0)
     image_url: AnyHttpUrl | None = None
     status: str = "Published"
@@ -62,6 +69,9 @@ class ProductUpdate(BaseModel):
     slug: str | None = Field(default=None, min_length=1, max_length=255)
     description: str | None = None
     price: Decimal | None = Field(default=None, gt=0, max_digits=12, decimal_places=2)
+    rating: Decimal | None = Field(
+        default=None, ge=0, le=5, max_digits=2, decimal_places=1
+    )
     stock: int | None = Field(default=None, ge=0)
     image_url: AnyHttpUrl | None = None
     status: str | None = None
@@ -92,3 +102,11 @@ class ProductResponse(ProductBase):
     id: int
     created_at: datetime
     variants: list[ProductVariantResponse] = Field(default_factory=list)
+
+
+class ProductSearchResponse(BaseModel):
+    items: list[ProductResponse]
+    page: int
+    page_size: int
+    total: int
+    total_pages: int

@@ -31,6 +31,9 @@ class Product(Base):
     )
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
+    rating: Mapped[Decimal] = mapped_column(
+        Numeric(2, 1), nullable=False, default=0, server_default="0"
+    )
     stock: Mapped[int] = mapped_column(nullable=False, default=0, server_default="0")
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     status: Mapped[str] = mapped_column(
