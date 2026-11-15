@@ -11,6 +11,7 @@ from app.crud.product import (
     get_product,
     get_public_product,
     get_products,
+    search_public_products,
     update_product,
 )
 from app.db.session import get_db
@@ -19,6 +20,7 @@ from app.schemas.product import (
     PRODUCT_STATUSES,
     ProductCreate,
     ProductResponse,
+    ProductSearchResponse,
     ProductUpdate,
 )
 
@@ -79,6 +81,34 @@ def list_products(
         category_id=category_id,
         status=product_status,
         store_id=store_id,
+    )
+
+
+@router.get("/search", response_model=ProductSearchResponse)
+def search_products(
+    db: DbSession,
+    keyword: Annotated[str | None, Query(alias="q", max_length=100)] = None,
+    page: Annotated[int, Query(ge=1)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100)] = 20,
+):
+    normalized_keyword = keyword.strip() if keyword is not None else ""
+    if not normalized_keyword:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Query parameter 'q' must not be empty",
+        )
+    items, total = search_public_products(
+        db,
+        keyword=normalized_keyword,
+        page=page,
+        page_size=page_size,
+    )
+    return ProductSearchResponse(
+        items=items,
+        page=page,
+        page_size=page_size,
+        total=total,
+        total_pages=(total + page_size - 1) // page_size,
     )
 
 

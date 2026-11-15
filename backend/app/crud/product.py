@@ -1,5 +1,5 @@
 """CRUD cho sản phẩm."""
-from sqlalchemy import select
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.models.product import Product
@@ -43,6 +43,34 @@ def get_public_product(db: Session, product_id: int) -> Product | None:
         .where(Product.id == product_id, Product.status == "Published")
     )
     return db.scalars(query).unique().first()
+
+
+def search_public_products(
+    db: Session,
+    *,
+    keyword: str,
+    page: int,
+    page_size: int,
+) -> tuple[list[Product], int]:
+    pattern = f"%{keyword.lower()}%"
+    filters = (
+        Product.status == "Published",
+        or_(
+            func.lower(Product.name).like(pattern),
+            func.lower(Product.slug).like(pattern),
+            func.lower(Product.description).like(pattern),
+        ),
+    )
+    total = db.scalar(select(func.count(Product.id)).where(*filters)) or 0
+    query = (
+        select(Product)
+        .options(selectinload(Product.variants))
+        .where(*filters)
+        .order_by(Product.id.desc())
+        .offset((page - 1) * page_size)
+        .limit(page_size)
+    )
+    return list(db.scalars(query).unique()), total
 
 
 def create_product(db: Session, data: ProductCreate) -> Product:
