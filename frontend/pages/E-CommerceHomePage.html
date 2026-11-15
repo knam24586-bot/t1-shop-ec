@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="/frontend/css/style1.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <!-- CSS Footer (Hỗ trợ Sticky Footer và Responsive cả Desk lẫn Mobile) -->
   <link rel="stylesheet" href="../css/footer.css">
 </head>
@@ -81,35 +83,1877 @@
   </header>
 
   <main id="home">
+    <div class="home-container">
+
+      <!-- ========================================================
+           1. HERO BANNER & CATEGORY SIDEBAR
+           ======================================================== -->
+      <section class="hero-section" aria-label="Hero Banner và Danh mục">
+        <div class="hero-layout">
+          <!-- Sidebar danh mục bên trái -->
+          <ul class="hero-categories" aria-label="Danh mục nổi bật">
+            <li class="hero-category-item">
+              <a href="#fashion-women">
+                <span>Woman's Fashion</span>
+                <svg viewBox="0 0 8 12">
+                  <path d="m1.5 1 5 5-5 5" />
+                </svg>
+              </a>
+            </li>
+            <li class="hero-category-item">
+              <a href="#fashion-men">
+                <span>Men's Fashion</span>
+                <svg viewBox="0 0 8 12">
+                  <path d="m1.5 1 5 5-5 5" />
+                </svg>
+              </a>
+            </li>
+            <li class="hero-category-item"><a href="#electronics"><span>Electronics</span></a></li>
+            <li class="hero-category-item"><a href="#home-lifestyle"><span>Home & Lifestyle</span></a></li>
+            <li class="hero-category-item"><a href="#medicine"><span>Medicine</span></a></li>
+            <li class="hero-category-item"><a href="#sports"><span>Sports & Outdoor</span></a></li>
+            <li class="hero-category-item"><a href="#baby-toys"><span>Baby's & Toys</span></a></li>
+            <li class="hero-category-item"><a href="#groceries"><span>Groceries & Pets</span></a></li>
+            <li class="hero-category-item"><a href="#health-beauty"><span>Health & Beauty</span></a></li>
+          </ul>
+
+          <!-- Banner Slider bên phải với Nút chuyển slide và Dot điều hướng -->
+          <div class="hero-slider-wrapper">
+            <div class="hero-slider" id="heroBannerSlider" aria-roledescription="carousel"
+              aria-label="Khuyến mãi nổi bật">
+              <!-- Track chứa các slide -->
+              <div class="hero-slider__track" id="heroSliderTrack">
+
+                <!-- Slide 1: iPhone 14 Series -->
+                <article class="hero-slide" aria-roledescription="slide" aria-label="1 of 3">
+                  <div class="hero-slide__content">
+                    <div class="hero-slide__brand">
+                      <!-- Apple Logo SVG -->
+                      <svg viewBox="0 0 170 170">
+                        <path
+                          d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.69-7.85-11.97-14.43-5.77-8.91-10.33-19.14-13.68-30.68-3.35-11.54-5.03-22.39-5.03-32.55 0-14.02 3.42-25.59 10.26-34.71 6.84-9.12 15.53-13.78 26.07-13.98 4.79 0 10.22 1.3 16.29 3.91 6.07 2.61 10.02 3.96 11.84 4.07 1.83-.11 5.99-1.54 12.49-4.29 6.5-2.75 12.08-3.95 16.74-3.6 12.3.93 21.94 5.37 28.92 13.33-10.92 6.64-16.23 15.78-15.93 27.42.3 9.4 3.95 17.15 10.94 23.25 4.3 3.79 9.35 6.5 15.15 8.14-2.39 6.96-5.18 13.88-8.36 20.76zM119.22 33.15c0-7.25 2.62-13.98 7.86-20.19 5.24-6.21 11.75-10.22 19.53-12.03.3 1.15.45 2.24.45 3.26 0 7.37-2.79 14.19-8.37 20.46-5.58 6.27-12.35 10.2-20.31 11.79-.39-1.12-.58-2.22-.58-3.29z" />
+                      </svg>
+                      <span>iPhone 14 Series</span>
+                    </div>
+                    <h2 class="hero-slide__title">Up to 10%<br>off Voucher</h2>
+                    <a class="hero-slide__link" href="#shop">
+                      <span>Shop Now</span>
+                      <svg viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="hero-slide__visual">
+                    <img
+                      src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=700&q=80"
+                      alt="iPhone 14 Series Voucher"
+                      onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+                  </div>
+                </article>
+
+                <!-- Slide 2: T1 Champions Collection -->
+                <article class="hero-slide" aria-roledescription="slide" aria-label="2 of 3">
+                  <div class="hero-slide__content">
+                    <div class="hero-slide__brand">
+                      <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="T1 Logo"
+                        style="width:36px; height:auto;">
+                      <span>T1 Official Merch</span>
+                    </div>
+                    <h2 class="hero-slide__title">Worlds 2026<br>Champion Jersey</h2>
+                    <a class="hero-slide__link" href="#shop">
+                      <span>Shop Now</span>
+                      <svg viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="hero-slide__visual">
+                    <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png"
+                      alt="T1 Worlds Jersey">
+                  </div>
+                </article>
+
+                <!-- Slide 3: Pro Gaming Gear -->
+                <article class="hero-slide" aria-roledescription="slide" aria-label="3 of 3">
+                  <div class="hero-slide__content">
+                    <div class="hero-slide__brand">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                        <path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"></path>
+                      </svg>
+                      <span>Pro Gaming Series</span>
+                    </div>
+                    <h2 class="hero-slide__title">Mechanical<br>Keyboards 35% Off</h2>
+                    <a class="hero-slide__link" href="#shop">
+                      <span>Shop Now</span>
+                      <svg viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="hero-slide__visual">
+                    <img
+                      src="https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=700&q=80"
+                      alt="Pro Gaming Gear"
+                      onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+                  </div>
+                </article>
+
+              </div>
+
+              <!-- Nút chuyển slide (Prev / Next) -->
+              <button class="hero-slider__arrow hero-slider__arrow--prev" id="heroSlidePrev" type="button"
+                aria-label="Slide trước">
+                <svg viewBox="0 0 24 24">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button class="hero-slider__arrow hero-slider__arrow--next" id="heroSlideNext" type="button"
+                aria-label="Slide sau">
+                <svg viewBox="0 0 24 24">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+
+              <!-- Dot điều hướng nhận biết slide đang chọn -->
+              <div class="hero-slider__dots" role="tablist" aria-label="Điều hướng slide">
+                <button class="hero-slider__dot hero-slider__dot--active" type="button" data-slide-index="0" role="tab"
+                  aria-selected="true" aria-label="Chuyển đến Slide 1"></button>
+                <button class="hero-slider__dot" type="button" data-slide-index="1" role="tab" aria-selected="false"
+                  aria-label="Chuyển đến Slide 2"></button>
+                <button class="hero-slider__dot" type="button" data-slide-index="2" role="tab" aria-selected="false"
+                  aria-label="Chuyển đến Slide 3"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           2. FLASH SALES SECTION & COUNTDOWN
+           - Có mốc countdown cấu hình
+           - Hết hạn không hiển thị thời gian âm
+           - Có Loading Skeleton và Empty State
+           ======================================================== -->
+      <section class="flash-sales-section" id="flashSaleSection" aria-label="Khu vực Flash Sale">
+        <div class="section-tag">
+          <span class="section-tag__pill" aria-hidden="true"></span>
+          <span class="section-tag__text">Today's</span>
+        </div>
+
+        <div class="section-header-row">
+          <div class="flash-sales-header-left">
+            <h2 class="section-title">Flash Sales</h2>
+
+            <!-- Countdown Timer cấu hình kết thúc qua data-end-time -->
+            <div class="countdown-timer" id="flashSaleCountdown" data-end-time="2026-11-20T23:59:59"
+              aria-label="Thời gian đếm ngược Flash Sale">
+              <div class="countdown-unit">
+                <span class="countdown-label">Days</span>
+                <span class="countdown-value" id="cdDays">05</span>
+              </div>
+              <div class="countdown-separator" aria-hidden="true">
+                <span class="countdown-dot"></span>
+                <span class="countdown-dot"></span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-label">Hours</span>
+                <span class="countdown-value" id="cdHours">23</span>
+              </div>
+              <div class="countdown-separator" aria-hidden="true">
+                <span class="countdown-dot"></span>
+                <span class="countdown-dot"></span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-label">Minutes</span>
+                <span class="countdown-value" id="cdMinutes">59</span>
+              </div>
+              <div class="countdown-separator" aria-hidden="true">
+                <span class="countdown-dot"></span>
+                <span class="countdown-dot"></span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-label">Seconds</span>
+                <span class="countdown-value" id="cdSeconds">35</span>
+              </div>
+              <span class="countdown-expired-badge" id="cdExpiredBadge">
+                ⚡ Đã kết thúc
+              </span>
+            </div>
+          </div>
+
+          <!-- Nút điều hướng danh sách Flash Sale -->
+          <div class="section-nav-arrows">
+            <button class="nav-arrow-btn" id="flashSalePrev" type="button" aria-label="Sản phẩm trước">
+              <svg viewBox="0 0 24 24">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </button>
+            <button class="nav-arrow-btn" id="flashSaleNext" type="button" aria-label="Sản phẩm kế tiếp">
+              <svg viewBox="0 0 24 24">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Carousel Danh sách sản phẩm Flash Sale -->
+        <div class="products-carousel-wrapper" id="flashSaleTrack">
+          <div class="products-carousel-track">
+
+            <!-- Sản phẩm 1 -->
+            <article class="product-card" data-sale-price="$120" data-original-price="$160" data-discount="-40%">
+              <div class="product-card__thumb">
+                <span class="product-badge">-40%</span>
+                <div class="product-card__actions">
+                  <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                    </svg>
+                  </button>
+                  <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
+                <img src="/frontend/assets/images/products/Frame 611.png" alt="HAVIT HV-G92 Gamepad">
+                <button class="product-card__add-cart" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                    <circle cx="9" cy="20" r="1.2" />
+                    <circle cx="18" cy="20" r="1.2" />
+                  </svg>
+                  <span>Add To Cart</span>
+                </button>
+              </div>
+              <div class="product-card__details">
+                <h3 class="product-card__name">HAVIT HV-G92 Gamepad</h3>
+                <div class="product-card__pricing">
+                  <span class="product-card__price">$120</span>
+                  <span class="product-card__old-price">$160</span>
+                </div>
+                <div class="product-card__rating">
+                  <div class="product-stars">
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </div>
+                  <span class="product-reviews-count">(88)</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Sản phẩm 2 -->
+            <article class="product-card" data-sale-price="$960" data-original-price="$1160" data-discount="-35%">
+              <div class="product-card__thumb">
+                <span class="product-badge">-35%</span>
+                <div class="product-card__actions">
+                  <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                    </svg>
+                  </button>
+                  <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
+                <img src="/frontend/assets/images/products/Frame 612.png" alt="AK-900 Wired Keyboard">
+                <button class="product-card__add-cart" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                    <circle cx="9" cy="20" r="1.2" />
+                    <circle cx="18" cy="20" r="1.2" />
+                  </svg>
+                  <span>Add To Cart</span>
+                </button>
+              </div>
+              <div class="product-card__details">
+                <h3 class="product-card__name">AK-900 Wired Keyboard</h3>
+                <div class="product-card__pricing">
+                  <span class="product-card__price">$960</span>
+                  <span class="product-card__old-price">$1160</span>
+                </div>
+                <div class="product-card__rating">
+                  <div class="product-stars">
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </div>
+                  <span class="product-reviews-count">(75)</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Sản phẩm 3 -->
+            <article class="product-card" data-sale-price="$370" data-original-price="$400" data-discount="-30%">
+              <div class="product-card__thumb">
+                <span class="product-badge">-30%</span>
+                <div class="product-card__actions">
+                  <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                    </svg>
+                  </button>
+                  <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
+                <img src="/frontend/assets/images/products/Frame 613.png" alt="IPS LCD Gaming Monitor">
+                <button class="product-card__add-cart" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                    <circle cx="9" cy="20" r="1.2" />
+                    <circle cx="18" cy="20" r="1.2" />
+                  </svg>
+                  <span>Add To Cart</span>
+                </button>
+              </div>
+              <div class="product-card__details">
+                <h3 class="product-card__name">IPS LCD Gaming Monitor</h3>
+                <div class="product-card__pricing">
+                  <span class="product-card__price">$370</span>
+                  <span class="product-card__old-price">$400</span>
+                </div>
+                <div class="product-card__rating">
+                  <div class="product-stars">
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </div>
+                  <span class="product-reviews-count">(99)</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Sản phẩm 4 -->
+            <article class="product-card" data-sale-price="$375" data-original-price="$400" data-discount="-25%">
+              <div class="product-card__thumb">
+                <span class="product-badge">-25%</span>
+                <div class="product-card__actions">
+                  <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                    </svg>
+                  </button>
+                  <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
+                <img src="/frontend/assets/images/products/Frame 614.png" alt="S-Series Comfort Chair"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1580481077195-c3a821a506cb?auto=format&fit=crop&w=400&q=80';">
+                <button class="product-card__add-cart" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                    <circle cx="9" cy="20" r="1.2" />
+                    <circle cx="18" cy="20" r="1.2" />
+                  </svg>
+                  <span>Add To Cart</span>
+                </button>
+              </div>
+              <div class="product-card__details">
+                <h3 class="product-card__name">S-Series Comfort Chair</h3>
+                <div class="product-card__pricing">
+                  <span class="product-card__price">$375</span>
+                  <span class="product-card__old-price">$400</span>
+                </div>
+                <div class="product-card__rating">
+                  <div class="product-stars">
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </div>
+                  <span class="product-reviews-count">(99)</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Sản phẩm 5 -->
+            <article class="product-card" data-sale-price="$180" data-original-price="$225" data-discount="-20%">
+              <div class="product-card__thumb">
+                <span class="product-badge">-20%</span>
+                <div class="product-card__actions">
+                  <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                    </svg>
+                  </button>
+                  <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80"
+                  alt="T1 Wireless Headset">
+                <button class="product-card__add-cart" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                    <circle cx="9" cy="20" r="1.2" />
+                    <circle cx="18" cy="20" r="1.2" />
+                  </svg>
+                  <span>Add To Cart</span>
+                </button>
+              </div>
+              <div class="product-card__details">
+                <h3 class="product-card__name">T1 Wireless Gaming Headset</h3>
+                <div class="product-card__pricing">
+                  <span class="product-card__price">$180</span>
+                  <span class="product-card__old-price">$225</span>
+                </div>
+                <div class="product-card__rating">
+                  <div class="product-stars">
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <svg viewBox="0 0 24 24">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </div>
+                  <span class="product-reviews-count">(120)</span>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- Skeleton Loading State View (Hiển thị khi ở chế độ loading) -->
+        <div class="skeleton-container" aria-hidden="true">
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-thumb"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--short"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--tiny"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-thumb"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--short"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--tiny"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-thumb"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--short"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--tiny"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-thumb"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--short"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--tiny"></div>
+          </div>
+        </div>
+
+        <!-- Empty State View (Hiển thị khi API trả về trống) -->
+        <div class="empty-state" role="status">
+          <div class="empty-state__icon">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5M12 22V12" />
+            </svg>
+          </div>
+          <h3 class="empty-state__title">Hiện chưa có sản phẩm Flash Sale</h3>
+          <p class="empty-state__desc">Các chương trình ưu đãi Flash Sale sẽ sớm quay trở lại. Bạn có thể nhấn nút bên
+            dưới để thử tải lại dữ liệu.</p>
+          <button class="btn-primary-red" id="emptyRetryBtn" type="button">Tải lại dữ liệu</button>
+        </div>
+
+        <div class="section-center-action">
+          <a class="btn-primary-red" href="#all-products">View All Products</a>
+        </div>
+
+        <hr class="section-divider">
+      </section>
+
+      <!-- ========================================================
+           3. BROWSE BY CATEGORY SECTION
+           ======================================================== -->
+      <section class="category-section" aria-label="Khám phá theo danh mục">
+        <div class="section-tag">
+          <span class="section-tag__pill" aria-hidden="true"></span>
+          <span class="section-tag__text">Categories</span>
+        </div>
+
+        <div class="section-header-row">
+          <h2 class="section-title">Browse By Category</h2>
+          <div class="section-nav-arrows">
+            <button class="nav-arrow-btn" type="button" aria-label="Danh mục trước">
+              <svg viewBox="0 0 24 24">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </button>
+            <button class="nav-arrow-btn" type="button" aria-label="Danh mục tiếp theo">
+              <svg viewBox="0 0 24 24">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="category-grid">
+          <a class="category-card" href="#cat-phones">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+              <line x1="12" y1="18" x2="12.01" y2="18" />
+            </svg>
+            <span>Phones</span>
+          </a>
+          <a class="category-card" href="#cat-computers">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span>Computers</span>
+          </a>
+          <a class="category-card" href="#cat-smartwatch">
+            <svg viewBox="0 0 24 24">
+              <polyline points="12 6 12 12 16 14" />
+              <rect x="4" y="4" width="16" height="16" rx="2" />
+              <path d="M8 2h8M8 22h8" />
+            </svg>
+            <span>SmartWatch</span>
+          </a>
+          <!-- Camera nổi bật với trạng thái active -->
+          <a class="category-card" href="#cat-camera">
+            <svg viewBox="0 0 24 24">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            <span>Camera</span>
+          </a>
+          <a class="category-card" href="#cat-headphones">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+              <path
+                d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+            </svg>
+            <span>HeadPhones</span>
+          </a>
+          <a class="category-card" href="#cat-gaming">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="6" width="20" height="12" rx="2" />
+              <path d="M6 12h4M8 10v4M15 13h.01M18 11h.01" />
+            </svg>
+            <span>Gaming</span>
+          </a>
+        </div>
+
+        <hr class="section-divider">
+      </section>
+
+      <!-- ========================================================
+           4. BEST SELLING PRODUCTS (Sản phẩm nổi bật)
+           ======================================================== -->
+      <section class="best-selling-section" aria-label="Sản phẩm bán chạy nhất tháng">
+        <div class="section-tag">
+          <span class="section-tag__pill" aria-hidden="true"></span>
+          <span class="section-tag__text">This Month</span>
+        </div>
+
+        <div class="section-header-row">
+          <h2 class="section-title">Best Selling Products</h2>
+          <a class="btn-primary-red" href="#all-bestsellers" style="padding: 12px 36px;">View All</a>
+        </div>
+
+        <div class="products-grid">
+          <!-- Item 1 -->
+          <article class="product-card" data-sale-price="$260" data-original-price="$360">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/Frame 605.png" alt="The North Coat">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">The North Coat</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$260</span>
+                <span class="product-card__old-price">$360</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(65)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 2 -->
+          <article class="product-card" data-sale-price="$960" data-original-price="$1160">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/Frame 606.png" alt="Gucci Duffle Bag">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Gucci Duffle Bag</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$960</span>
+                <span class="product-card__old-price">$1160</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(65)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 3 -->
+          <article class="product-card" data-sale-price="$160" data-original-price="$170">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/Frame 610.png" alt="RGB Liquid CPU Cooler">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">RGB Liquid CPU Cooler</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$160</span>
+                <span class="product-card__old-price">$170</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(65)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 4 -->
+          <article class="product-card" data-sale-price="$360" data-original-price="$360">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/Frame 611.png" alt="Small BookShelf">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Small BookShelf</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$360</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(65)</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           5. PROMOTIONAL BIG BANNER (Music Experience)
+           ======================================================== -->
+      <section class="promo-banner" aria-label="Banner trải nghiệm âm thanh đặc biệt">
+        <div class="promo-banner__blur-glow" aria-hidden="true"></div>
+        <div class="promo-banner__content">
+          <div class="promo-banner__category">Categories</div>
+          <h2 class="promo-banner__title">Enhance Your<br>Music Experience</h2>
+
+          <div class="promo-countdown">
+            <div class="promo-countdown-circle">
+              <span class="promo-countdown-number" id="promoHours">23</span>
+              <span class="promo-countdown-unit">Hours</span>
+            </div>
+            <div class="promo-countdown-circle">
+              <span class="promo-countdown-number" id="promoDays">05</span>
+              <span class="promo-countdown-unit">Days</span>
+            </div>
+            <div class="promo-countdown-circle">
+              <span class="promo-countdown-number" id="promoMinutes">59</span>
+              <span class="promo-countdown-unit">Minutes</span>
+            </div>
+            <div class="promo-countdown-circle">
+              <span class="promo-countdown-number" id="promoSeconds">35</span>
+              <span class="promo-countdown-unit">Seconds</span>
+            </div>
+          </div>
+
+          <a class="promo-btn" href="#buy-now">Buy Now!</a>
+        </div>
+
+        <div class="promo-banner__visual">
+          <img src="/frontend/assets/images/products/Frame 694.png" alt="JBL Boombox Wireless Speaker"
+            onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+        </div>
+      </section>
+
+      <!-- ========================================================
+           6. EXPLORE OUR PRODUCTS SECTION (8 sản phẩm, color dots)
+           ======================================================== -->
+      <section class="explore-section" aria-label="Khám phá các sản phẩm">
+        <div class="section-tag">
+          <span class="section-tag__pill" aria-hidden="true"></span>
+          <span class="section-tag__text">Our Products</span>
+        </div>
+
+        <div class="section-header-row">
+          <h2 class="section-title">Explore Our Products</h2>
+          <div class="section-nav-arrows">
+            <button class="nav-arrow-btn" type="button" aria-label="Trang sản phẩm trước">
+              <svg viewBox="0 0 24 24">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </button>
+            <button class="nav-arrow-btn" type="button" aria-label="Trang sản phẩm sau">
+              <svg viewBox="0 0 24 24">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="products-grid">
+          <!-- Item 1 -->
+          <article class="product-card">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/71RdoeXxtrL 1.png"
+                alt="Breed Dry Dog Food">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Breed Dry Dog Food</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$100</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(35)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 2 -->
+          <article class="product-card">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/eos-250d-03-500x500 1.png"
+                alt="CANON EOS DSLR Camera">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">CANON EOS DSLR Camera</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$360</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(95)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 3 -->
+          <article class="product-card">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/ideapad-gaming-3i-01-500x500 1.png"
+                alt="ASUS FHD Gaming Laptop">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">ASUS FHD Gaming Laptop</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$700</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(325)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 4 -->
+          <article class="product-card">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/curology-j7pKVQrTUsM-unsplash 1.png"
+                alt="Curology Product Set">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Curology Product Set</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$500</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(145)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 5 (Có badge NEW và Color Dots) -->
+          <article class="product-card">
+            <div class="product-card__thumb">
+              <span class="product-badge product-badge--new">NEW</span>
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/New-Mercedes-Benz-Gtr-Licensed-Ride-on-Car-Kids-Electric-Toy-Car 1.png"
+                alt="Kids Electric Car">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Kids Electric Car</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$960</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(65)</span>
+              </div>
+              <div class="product-color-options">
+                <span class="color-dot color-dot--active" style="background: #fb2e86;" title="Hồng"></span>
+                <span class="color-dot" style="background: #db4444;" title="Đỏ"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 6 -->
+          <article class="product-card">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/Copa_Sense 1.png"
+                alt="Jr. Zoom Soccer Cleats">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Jr. Zoom Soccer Cleats</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$1160</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(35)</span>
+              </div>
+              <div class="product-color-options">
+                <span class="color-dot color-dot--active" style="background: #eeff61;" title="Vàng neon"></span>
+                <span class="color-dot" style="background: #db4444;" title="Đỏ"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 7 (Có badge NEW và Color Dots) -->
+          <article class="product-card">
+            <div class="product-card__thumb">
+              <span class="product-badge product-badge--new">NEW</span>
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/GP11_PRD3 1.png"
+                alt="GP11 Shooter USB Gamepad">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">GP11 Shooter USB Gamepad</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$660</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(55)</span>
+              </div>
+              <div class="product-color-options">
+                <span class="color-dot color-dot--active" style="background: #000000;" title="Đen"></span>
+                <span class="color-dot" style="background: #db4444;" title="Đỏ"></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 8 -->
+          <article class="product-card">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/698717_Z8A1X_3475_001_100_0000_Light-Reversible-quilted-satin-jacket 1.png"
+                alt="Quilted Satin Jacket">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Quilted Satin Jacket</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$660</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <span class="product-reviews-count">(55)</span>
+              </div>
+              <div class="product-color-options">
+                <span class="color-dot color-dot--active" style="background: #184a45;" title="Xanh lục sẫm"></span>
+                <span class="color-dot" style="background: #db4444;" title="Đỏ"></span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-center-action">
+          <a class="btn-primary-red" href="#all-explore">View All Products</a>
+        </div>
+
+        <hr class="section-divider">
+      </section>
+
+      <!-- ========================================================
+           7. NEW ARRIVAL SECTION (Bento Grid Figma T1Shop)
+           ======================================================== -->
+      <section class="new-arrival-section" aria-label="Sản phẩm mới ra mắt">
+        <div class="section-tag">
+          <span class="section-tag__pill" aria-hidden="true"></span>
+          <span class="section-tag__text">Featured</span>
+        </div>
+
+        <div class="section-header-row">
+          <h2 class="section-title">New Arrival</h2>
+        </div>
+
+        <div class="new-arrival-grid">
+          <!-- Card lớn bên trái: PlayStation 5 -->
+          <article class="new-arrival-item" style="background: #000000;">
+            <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=700&q=80"
+              alt="PlayStation 5"
+              onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+            <div class="new-arrival-overlay">
+              <h3 class="new-arrival-title">PlayStation 5</h3>
+              <p class="new-arrival-desc">Black and White version of the PS5 coming out on sale.</p>
+              <a class="new-arrival-link" href="#shop-ps5">Shop Now</a>
+            </div>
+          </article>
+
+          <!-- Cột bên phải: 1 Card ngang phía trên + 2 Card vuông phía dưới -->
+          <div class="new-arrival-right">
+            <!-- Card ngang trên: Women's Collections -->
+            <article class="new-arrival-item new-arrival-right__top" style="background: #0d0d0d;">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
+                alt="Women's Collections"
+                onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+              <div class="new-arrival-overlay">
+                <h3 class="new-arrival-title">Women's Collections</h3>
+                <p class="new-arrival-desc">Featured woman collections that give you another vibe.</p>
+                <a class="new-arrival-link" href="#shop-women">Shop Now</a>
+              </div>
+            </article>
+
+            <!-- 2 Card vuông phía dưới -->
+            <div class="new-arrival-right__bottom">
+              <!-- Speakers -->
+              <article class="new-arrival-item" style="background: #000000;">
+                <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=400&q=80"
+                  alt="Amazon Wireless Speakers"
+                  onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+                <div class="new-arrival-overlay">
+                  <h3 class="new-arrival-title">Speakers</h3>
+                  <p class="new-arrival-desc">Amazon wireless speakers</p>
+                  <a class="new-arrival-link" href="#shop-speakers">Shop Now</a>
+                </div>
+              </article>
+
+              <!-- Perfume -->
+              <article class="new-arrival-item" style="background: #000000;">
+                <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=400&q=80"
+                  alt="GUCCI INTENSE OUD EDP Perfume"
+                  onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+                <div class="new-arrival-overlay">
+                  <h3 class="new-arrival-title">Perfume</h3>
+                  <p class="new-arrival-desc">GUCCI INTENSE OUD EDP</p>
+                  <a class="new-arrival-link" href="#shop-perfume">Shop Now</a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           8. FEATURES & SERVICES SECTION
+           ======================================================== -->
+      <section class="features-section" aria-label="Cam kết dịch vụ">
+        <div class="features-grid">
+          <!-- Dịch vụ 1: Giao hàng nhanh & miễn phí -->
+          <div class="feature-item">
+            <div class="feature-icon-outer">
+              <div class="feature-icon-inner">
+                <svg viewBox="0 0 24 24">
+                  <rect x="1" y="3" width="15" height="13" />
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                  <circle cx="5.5" cy="18.5" r="2.5" />
+                  <circle cx="18.5" cy="18.5" r="2.5" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="feature-title">FREE AND FAST DELIVERY</h3>
+            <p class="feature-desc">Free delivery for all orders over $140</p>
+          </div>
+
+          <!-- Dịch vụ 2: Chăm sóc khách hàng 24/7 -->
+          <div class="feature-item">
+            <div class="feature-icon-outer">
+              <div class="feature-icon-inner">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                  <path
+                    d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="feature-title">24/7 CUSTOMER SERVICE</h3>
+            <p class="feature-desc">Friendly 24/7 customer support</p>
+          </div>
+
+          <!-- Dịch vụ 3: Hoàn tiền đảm bảo -->
+          <div class="feature-item">
+            <div class="feature-icon-outer">
+              <div class="feature-icon-inner">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="feature-title">MONEY BACK GUARANTEE</h3>
+            <p class="feature-desc">We return money within 30 days</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Nút cuộn lên đầu trang -->
+    <button class="back-to-top-btn" id="backToTopBtn" type="button" aria-label="Cuộn lên đầu trang">
+      <svg viewBox="0 0 24 24">
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
   </main>
 
+  <!-- Script xử lý tương tác trực tiếp (Đảm bảo 100% chạy trên mọi môi trường và file:///) -->
   <script>
-    const menuButton = document.querySelector(".menu-toggle");
-    const navigation = document.querySelector(".navigation");
+    (function () {
+      function initHomePage() {
+        if (window.__t1ShopHomeInitialized) return;
+        window.__t1ShopHomeInitialized = true;
 
-    menuButton.addEventListener("click", function () {
-      const isOpen = navigation.classList.toggle("navigation--open");
-      menuButton.setAttribute("aria-expanded", isOpen);
-      menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
-    });
+        /* 1. Header Mobile Menu Toggle */
+        var menuButton = document.querySelector(".menu-toggle");
+        var navigation = document.querySelector(".navigation");
+        if (menuButton && navigation) {
+          menuButton.addEventListener("click", function () {
+            var isOpen = navigation.classList.toggle("navigation--open");
+            menuButton.setAttribute("aria-expanded", String(isOpen));
+            menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+          });
+        }
+
+        /* 2. Hero Banner Slider */
+        var track = document.getElementById("heroSliderTrack");
+        var slides = document.querySelectorAll(".hero-slide");
+        var dots = document.querySelectorAll(".hero-slider__dot");
+        var prevBtn = document.getElementById("heroSlidePrev");
+        var nextBtn = document.getElementById("heroSlideNext");
+        var sliderEl = document.querySelector(".hero-slider");
+        var currentSlide = 0;
+        var totalSlides = slides.length;
+        var autoSlideTimer = null;
+
+        function updateSlider(index) {
+          if (totalSlides === 0 || !track) return;
+          currentSlide = (index + totalSlides) % totalSlides;
+          track.style.transform = "translateX(-" + (currentSlide * 100) + "%)";
+          dots.forEach(function (dot, idx) {
+            var isActive = idx === currentSlide;
+            dot.classList.toggle("hero-slider__dot--active", isActive);
+            dot.setAttribute("aria-selected", String(isActive));
+          });
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener("click", function () {
+            updateSlider(currentSlide - 1);
+            resetAutoSlide();
+          });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener("click", function () {
+            updateSlider(currentSlide + 1);
+            resetAutoSlide();
+          });
+        }
+        dots.forEach(function (dot) {
+          dot.addEventListener("click", function (e) {
+            var targetIndex = parseInt(e.currentTarget.getAttribute("data-slide-index") || "0", 10);
+            updateSlider(targetIndex);
+            resetAutoSlide();
+          });
+        });
+
+        function startAutoSlide() {
+          if (totalSlides > 1) {
+            autoSlideTimer = setInterval(function () {
+              updateSlider(currentSlide + 1);
+            }, 5000);
+          }
+        }
+        function resetAutoSlide() {
+          if (autoSlideTimer) clearInterval(autoSlideTimer);
+          startAutoSlide();
+        }
+        startAutoSlide();
+        if (sliderEl) {
+          sliderEl.addEventListener("mouseenter", function () {
+            if (autoSlideTimer) clearInterval(autoSlideTimer);
+          });
+          sliderEl.addEventListener("mouseleave", function () {
+            resetAutoSlide();
+          });
+        }
+
+        /* 3. Flash Sale Countdown Timer & Dynamic Pricing */
+        var flashSection = document.getElementById("flashSaleSection");
+        var bestSellingSection = document.querySelector(".best-selling-section");
+        var daysEl = document.getElementById("cdDays");
+        var hoursEl = document.getElementById("cdHours");
+        var minutesEl = document.getElementById("cdMinutes");
+        var secondsEl = document.getElementById("cdSeconds");
+        var promoHoursEl = document.getElementById("promoHours");
+        var promoDaysEl = document.getElementById("promoDays");
+        var promoMinutesEl = document.getElementById("promoMinutes");
+        var promoSecondsEl = document.getElementById("promoSeconds");
+        var expiredBadge = document.getElementById("cdExpiredBadge");
+
+        // Đồng bộ thời gian Flash Sale chuẩn theo ảnh: 05 Days, 23 Hours, 59 Minutes, 35 Seconds
+        var targetEndTime = Date.now() + (5 * 86400000 + 23 * 3600000 + 59 * 60000 + 35 * 1000);
+
+        // Hàm chuyển đổi giá:
+        // - Khi đang sale: Hiển thị giá mới và giá gốc gạch ngang như trong hình
+        // - Khi hết hạn đếm ngược: Tự động đưa giá về mức giá đã gạch ở trên hình (đồng bộ cả Flash Sale & Best Selling)
+        function setFlashSalePricing(isExpired) {
+          if (flashSection) {
+            flashSection.classList.toggle("flash-sales--ended", isExpired);
+          }
+          if (bestSellingSection) {
+            bestSellingSection.classList.toggle("flash-sales--ended", isExpired);
+          }
+          var cards = document.querySelectorAll("#flashSaleTrack .product-card, #flashSaleSection .product-card, .best-selling-section .product-card");
+          cards.forEach(function (card) {
+            var priceEl = card.querySelector(".product-card__price");
+            var oldPriceEl = card.querySelector(".product-card__old-price");
+            var badgeEl = card.querySelector(".product-badge");
+
+            // Trích xuất và lưu bộ nhớ đệm (cache) giá gốc đã gạch và giá khuyến mãi
+            if (!card._origPrice) {
+              card._origPrice = card.getAttribute("data-original-price") || (oldPriceEl ? oldPriceEl.textContent.trim() : "");
+            }
+            if (!card._salePrice) {
+              card._salePrice = card.getAttribute("data-sale-price") || (priceEl ? priceEl.textContent.trim() : "");
+            }
+            if (!card._discount) {
+              card._discount = card.getAttribute("data-discount") || (badgeEl ? badgeEl.textContent.trim() : "");
+            }
+
+            if (isExpired) {
+              // HẾT HẠN: Giá hiện tại tự động quay về đúng con số giá đã gạch ở trên hình ($160, $1160, $400, $400, $225)
+              if (priceEl && card._origPrice) {
+                priceEl.textContent = card._origPrice;
+              }
+              if (oldPriceEl) {
+                oldPriceEl.style.display = "none";
+              }
+              if (badgeEl) {
+                badgeEl.style.display = "none";
+              }
+            } else {
+              // ĐANG FLASH SALE: Giá mới màu đỏ kèm giá gốc đã gạch bên cạnh
+              if (priceEl && card._salePrice) {
+                priceEl.textContent = card._salePrice;
+              }
+              if (oldPriceEl && card._origPrice) {
+                oldPriceEl.textContent = card._origPrice;
+                oldPriceEl.style.display = "inline";
+              }
+              if (badgeEl && card._discount) {
+                badgeEl.textContent = card._discount;
+                badgeEl.style.display = "inline-block";
+              }
+            }
+          });
+        }
+
+        function updateCountdown() {
+          if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+          var now = Date.now();
+          var diff = targetEndTime - now;
+
+          // Khi hết hạn (diff <= 0): Giữ 00:00:00:00 và tự về giá đã gạch
+          if (diff <= 0) {
+            daysEl.textContent = "00";
+            hoursEl.textContent = "00";
+            minutesEl.textContent = "00";
+            secondsEl.textContent = "00";
+            if (promoDaysEl) promoDaysEl.textContent = "00";
+            if (promoHoursEl) promoHoursEl.textContent = "00";
+            if (promoMinutesEl) promoMinutesEl.textContent = "00";
+            if (promoSecondsEl) promoSecondsEl.textContent = "00";
+            if (expiredBadge) expiredBadge.style.display = "inline-flex";
+            setFlashSalePricing(true);
+            return;
+          }
+
+          if (expiredBadge) expiredBadge.style.display = "none";
+          setFlashSalePricing(false);
+
+          var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+          var dStr = String(days).padStart(2, "0");
+          var hStr = String(hours).padStart(2, "0");
+          var mStr = String(minutes).padStart(2, "0");
+          var sStr = String(seconds).padStart(2, "0");
+
+          daysEl.textContent = dStr;
+          hoursEl.textContent = hStr;
+          minutesEl.textContent = mStr;
+          secondsEl.textContent = sStr;
+
+          if (promoDaysEl) promoDaysEl.textContent = dStr;
+          if (promoHoursEl) promoHoursEl.textContent = hStr;
+          if (promoMinutesEl) promoMinutesEl.textContent = mStr;
+          if (promoSecondsEl) promoSecondsEl.textContent = sStr;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Nút Thử lại trong Empty State (nếu có)
+        var emptyRetryBtn = document.getElementById("emptyRetryBtn");
+        if (emptyRetryBtn && flashSection) {
+          emptyRetryBtn.addEventListener("click", function () {
+            flashSection.classList.remove("is-loading", "is-empty");
+          });
+        }
+
+        /* 4. Điều hướng danh sách Flash Sale */
+        var flashTrack = document.getElementById("flashSaleTrack");
+        var flashPrevBtn = document.getElementById("flashSalePrev");
+        var flashNextBtn = document.getElementById("flashSaleNext");
+        if (flashTrack && flashPrevBtn && flashNextBtn) {
+          flashPrevBtn.addEventListener("click", function () {
+            flashTrack.scrollBy({ left: -300, behavior: "smooth" });
+          });
+          flashNextBtn.addEventListener("click", function () {
+            flashTrack.scrollBy({ left: 300, behavior: "smooth" });
+          });
+        }
+
+        /* 5. Nút Yêu thích */
+        document.querySelectorAll(".product-action-btn[data-action='wishlist']").forEach(function (btn) {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            btn.classList.toggle("product-action-btn--active");
+          });
+        });
+
+        /* 6. Nút cuộn lên đầu trang */
+        var backToTopBtn = document.getElementById("backToTopBtn");
+        if (backToTopBtn) {
+          window.addEventListener("scroll", function () {
+            if (window.scrollY > 400) {
+              backToTopBtn.classList.add("back-to-top-btn--show");
+            } else {
+              backToTopBtn.classList.remove("back-to-top-btn--show");
+            }
+          });
+          backToTopBtn.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initHomePage);
+      } else {
+        initHomePage();
+      }
+    })();
   </script>
 </body>
 <footer class="site-footer">
   <div class="footer-container">
-    
+
     <!-- Cột 1: Exclusive & Subscribe -->
     <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
       <h2 id="newsletter-title">T1shop</h2>
       <p class="column-subtitle">Subscribe</p>
       <p class="newsletter-copy">Get 10% off your first order</p>
-      <form class="subscribe-form" action="#subscribe" method="post" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+      <form class="subscribe-form" action="#subscribe" method="post"
+        onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
         <label class="visually-hidden" for="subscriber-email">Enter your email</label>
         <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
         <button type="submit" aria-label="Gửi đăng ký">
           <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="m22 2-7 20-4-9-9-4Z"/>
-            <path d="M22 2 11 13"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="m22 2-7 20-4-9-9-4Z" />
+            <path d="M22 2 11 13" />
           </svg>
         </button>
       </form>
