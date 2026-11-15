@@ -102,3 +102,11 @@ class ProductResponse(ProductBase):
     id: int
     created_at: datetime
     variants: list[ProductVariantResponse] = Field(default_factory=list)
+
+
+class ProductSearchResponse(BaseModel):
+    items: list[ProductResponse]
+    page: int
+    page_size: int
+    total: int
+    total_pages: int
