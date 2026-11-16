@@ -20,6 +20,9 @@ class Settings(BaseSettings):
 
     # Chuỗi các origin cách nhau bằng dấu phẩy, hoặc "*"
     CORS_ORIGINS: str = "*"
+    UPLOAD_DIR: str = "uploads"
+    MAX_IMAGE_SIZE_BYTES: int = 5 * 1024 * 1024
+    ALLOWED_IMAGE_TYPES: str = "image/jpeg,image/png,image/gif,image/webp"
 
     @property
     def database_url(self) -> str:
@@ -33,6 +36,14 @@ class Settings(BaseSettings):
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
+
+    @property
+    def allowed_image_types(self) -> set[str]:
+        return {
+            image_type.strip()
+            for image_type in self.ALLOWED_IMAGE_TYPES.split(",")
+            if image_type.strip()
+        }
 
 
 settings = Settings()

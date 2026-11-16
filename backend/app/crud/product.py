@@ -17,7 +17,11 @@ def get_products(
     status: str | None = None,
     store_id: int | None = None,
 ) -> list[Product]:
-    query = select(Product).options(selectinload(Product.variants)).order_by(Product.id.desc())
+    query = (
+        select(Product)
+        .options(selectinload(Product.variants), selectinload(Product.images))
+        .order_by(Product.id.desc())
+    )
     if keyword:
         query = query.where(Product.name.contains(keyword))
     if category_id is not None:
@@ -32,7 +36,7 @@ def get_products(
 def get_product(db: Session, product_id: int) -> Product | None:
     query = (
         select(Product)
-        .options(selectinload(Product.variants))
+        .options(selectinload(Product.variants), selectinload(Product.images))
         .where(Product.id == product_id)
     )
     return db.scalars(query).unique().first()
@@ -41,7 +45,7 @@ def get_product(db: Session, product_id: int) -> Product | None:
 def get_public_product(db: Session, product_id: int) -> Product | None:
     query = (
         select(Product)
-        .options(selectinload(Product.variants))
+        .options(selectinload(Product.variants), selectinload(Product.images))
         .where(Product.id == product_id, Product.status == "Published")
     )
     return db.scalars(query).unique().first()
@@ -66,7 +70,7 @@ def search_public_products(
     total = db.scalar(select(func.count(Product.id)).where(*filters)) or 0
     query = (
         select(Product)
-        .options(selectinload(Product.variants))
+        .options(selectinload(Product.variants), selectinload(Product.images))
         .where(*filters)
         .order_by(Product.id.desc())
         .offset((page - 1) * page_size)
@@ -101,7 +105,7 @@ def filter_public_products(
     total = db.scalar(select(func.count(Product.id)).where(*filters)) or 0
     query = (
         select(Product)
-        .options(selectinload(Product.variants))
+        .options(selectinload(Product.variants), selectinload(Product.images))
         .where(*filters)
         .order_by(Product.id.desc())
         .offset((page - 1) * page_size)

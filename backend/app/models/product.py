@@ -12,6 +12,7 @@ from app.db.session import Base
 from app.models.category import Category
 
 if TYPE_CHECKING:
+    from app.models.product_image import ProductImage
     from app.models.variant import ProductVariant
 
 
@@ -45,6 +46,10 @@ class Product(Base):
 
     category: Mapped[Category] = relationship(back_populates="products")
     variants: Mapped[list[ProductVariant]] = relationship(
+        back_populates="product",
+        cascade="all, delete-orphan",
+    )
+    images: Mapped[list[ProductImage]] = relationship(
         back_populates="product",
         cascade="all, delete-orphan",
     )

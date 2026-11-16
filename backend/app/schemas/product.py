@@ -25,6 +25,17 @@ class ProductVariantResponse(ProductVariantBase):
     id: int
 
 
+class ProductImageResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    url: str
+    filename: str
+    content_type: str
+    size_bytes: int
+    created_at: datetime
+
+
 class ProductBase(BaseModel):
     category_id: int = Field(gt=0)
     name: str = Field(min_length=1, max_length=255)
@@ -102,6 +113,7 @@ class ProductResponse(ProductBase):
     id: int
     created_at: datetime
     variants: list[ProductVariantResponse] = Field(default_factory=list)
+    images: list[ProductImageResponse] = Field(default_factory=list)
 
 
 class ProductSearchResponse(BaseModel):
