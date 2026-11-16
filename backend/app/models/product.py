@@ -9,9 +9,10 @@ from sqlalchemy import DateTime, ForeignKey, Numeric, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.session import Base
+from app.models.category import Category
 
 if TYPE_CHECKING:
-    from app.models.category import Category
+    from app.models.variant import ProductVariant
 
 
 class Product(Base):
@@ -23,12 +24,16 @@ class Product(Base):
         nullable=False,
         index=True,
     )
+    store_id: Mapped[int | None] = mapped_column(nullable=True, index=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     slug: Mapped[str] = mapped_column(
         String(255), nullable=False, unique=True, index=True
     )
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
+    rating: Mapped[Decimal] = mapped_column(
+        Numeric(2, 1), nullable=False, default=0, server_default="0"
+    )
     stock: Mapped[int] = mapped_column(nullable=False, default=0, server_default="0")
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     status: Mapped[str] = mapped_column(
@@ -39,3 +44,7 @@ class Product(Base):
     )
 
     category: Mapped[Category] = relationship(back_populates="products")
+    variants: Mapped[list[ProductVariant]] = relationship(
+        back_populates="product",
+        cascade="all, delete-orphan",
+    )
