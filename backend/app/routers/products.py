@@ -1,4 +1,5 @@
 """HTTP endpoints quản lý sản phẩm."""
+from decimal import Decimal
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, status
@@ -8,6 +9,7 @@ from sqlalchemy.orm import Session
 from app.crud.product import (
     create_product,
     delete_product,
+    filter_public_products,
     get_product,
     get_public_product,
     get_products,
@@ -100,6 +102,47 @@ def search_products(
     items, total = search_public_products(
         db,
         keyword=normalized_keyword,
+        page=page,
+        page_size=page_size,
+    )
+    return ProductSearchResponse(
+        items=items,
+        page=page,
+        page_size=page_size,
+        total=total,
+        total_pages=(total + page_size - 1) // page_size,
+    )
+
+
+@router.get("/filter", response_model=ProductSearchResponse)
+def filter_products(
+    db: DbSession,
+    category_id: Annotated[int | None, Query(gt=0)] = None,
+    min_price: Annotated[Decimal | None, Query(ge=0)] = None,
+    max_price: Annotated[Decimal | None, Query(ge=0)] = None,
+    min_rating: Annotated[Decimal | None, Query(ge=0, le=5)] = None,
+    max_rating: Annotated[Decimal | None, Query(ge=0, le=5)] = None,
+    page: Annotated[int, Query(ge=1)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100)] = 20,
+):
+    if min_price is not None and max_price is not None and min_price > max_price:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="min_price must be less than or equal to max_price",
+        )
+    if min_rating is not None and max_rating is not None and min_rating > max_rating:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="min_rating must be less than or equal to max_rating",
+        )
+
+    items, total = filter_public_products(
+        db,
+        category_id=category_id,
+        min_price=min_price,
+        max_price=max_price,
+        min_rating=min_rating,
+        max_rating=max_rating,
         page=page,
         page_size=page_size,
     )
