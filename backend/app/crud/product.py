@@ -1,4 +1,6 @@
 """CRUD cho sản phẩm."""
+from decimal import Decimal
+
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
@@ -61,6 +63,41 @@ def search_public_products(
             func.lower(Product.description).like(pattern),
         ),
     )
+    total = db.scalar(select(func.count(Product.id)).where(*filters)) or 0
+    query = (
+        select(Product)
+        .options(selectinload(Product.variants))
+        .where(*filters)
+        .order_by(Product.id.desc())
+        .offset((page - 1) * page_size)
+        .limit(page_size)
+    )
+    return list(db.scalars(query).unique()), total
+
+
+def filter_public_products(
+    db: Session,
+    *,
+    category_id: int | None,
+    min_price: Decimal | None,
+    max_price: Decimal | None,
+    min_rating: Decimal | None,
+    max_rating: Decimal | None,
+    page: int,
+    page_size: int,
+) -> tuple[list[Product], int]:
+    filters = [Product.status == "Published"]
+    if category_id is not None:
+        filters.append(Product.category_id == category_id)
+    if min_price is not None:
+        filters.append(Product.price >= min_price)
+    if max_price is not None:
+        filters.append(Product.price <= max_price)
+    if min_rating is not None:
+        filters.append(Product.rating >= min_rating)
+    if max_rating is not None:
+        filters.append(Product.rating <= max_rating)
+
     total = db.scalar(select(func.count(Product.id)).where(*filters)) or 0
     query = (
         select(Product)
