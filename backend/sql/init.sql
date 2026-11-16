@@ -37,10 +37,12 @@ CREATE TABLE categories (
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
+    store_id INT DEFAULT NULL,
     name VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL,
     description TEXT DEFAULT NULL,
     price DECIMAL(12,2) NOT NULL,
+    rating DECIMAL(2,1) NOT NULL DEFAULT 0,
     stock INT NOT NULL DEFAULT 0,
     image_url VARCHAR(500) DEFAULT NULL,
     status VARCHAR(30) NOT NULL DEFAULT 'Published',
@@ -50,6 +52,68 @@ CREATE TABLE products (
         FOREIGN KEY (category_id)
         REFERENCES categories (id)
         ON DELETE RESTRICT
+        ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE vendors (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) DEFAULT NULL,
+    phone VARCHAR(30) DEFAULT NULL,
+    address VARCHAR(255) DEFAULT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'Active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_vendors_name (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE stores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vendor_id INT NOT NULL,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) DEFAULT NULL,
+    phone VARCHAR(30) DEFAULT NULL,
+    address VARCHAR(255) DEFAULT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'Active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_stores_vendor_name (vendor_id, name),
+    CONSTRAINT fk_stores_vendor
+        FOREIGN KEY (vendor_id)
+        REFERENCES vendors (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE product_variants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    sku VARCHAR(100) NOT NULL,
+    color VARCHAR(100) DEFAULT NULL,
+    size VARCHAR(50) DEFAULT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    UNIQUE KEY uk_product_variants_sku (sku),
+    CONSTRAINT ck_product_variants_stock_nonnegative CHECK (stock >= 0),
+    CONSTRAINT fk_product_variants_product
+        FOREIGN KEY (product_id)
+        REFERENCES products (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE product_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    url VARCHAR(500) NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    content_type VARCHAR(100) NOT NULL,
+    size_bytes INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_product_images_product
+        FOREIGN KEY (product_id)
+        REFERENCES products (id)
+        ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -121,7 +185,3 @@ CREATE TABLE order_items (
         ON DELETE SET NULL
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO items (name, description, price) VALUES
-  ('Cơm rang dưa bò', 'Món mẫu để kiểm tra API', 45000),
-  ('Trà đá', 'Dữ liệu mẫu số 2', 5000);
