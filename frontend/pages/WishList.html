@@ -16,12 +16,29 @@
           <a href="#shop">ShopNow</a>
         </p>
 
-        <button class="language" type="button" aria-label="Chọn ngôn ngữ">
-          English
-          <svg viewBox="0 0 12 8" aria-hidden="true">
-            <path d="m1 1.5 5 5 5-5" />
-          </svg>
-        </button>
+        <!-- Bộ chuyển đổi ngôn ngữ (English / Tiếng Việt) -->
+        <div class="language-picker" id="languagePicker">
+          <button class="language" id="languageBtn" type="button" aria-label="Chọn ngôn ngữ" aria-expanded="false" aria-haspopup="true">
+            <span class="language-current-label" id="currentLangLabel">English</span>
+            <svg viewBox="0 0 12 8" aria-hidden="true">
+              <path d="m1 1.5 5 5 5-5" />
+            </svg>
+          </button>
+          <ul class="language-dropdown" id="languageDropdown" role="menu" aria-label="Lựa chọn ngôn ngữ">
+            <li role="none">
+              <button class="language-item language-item--active" type="button" role="menuitem" data-lang="en">
+                <span class="lang-text">English</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+            <li role="none">
+              <button class="language-item" type="button" role="menuitem" data-lang="vi">
+                <span class="lang-text">Tiếng Việt</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -157,4 +174,75 @@
       <p>© Copyright Rimel 2022. All right reserved</p>
     </div>
   </footer>
+
+  <script>
+    (function() {
+      var langBtn = document.getElementById("languageBtn");
+      var langDropdown = document.getElementById("languageDropdown");
+      var langOptions = document.querySelectorAll(".language-item");
+      var currentLangLabel = document.getElementById("currentLangLabel");
+
+      function applyLanguage(lang) {
+        var isVi = lang === "vi";
+        if (currentLangLabel) {
+          currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
+        }
+        langOptions.forEach(function (item) {
+          item.classList.toggle("language-item--active", item.getAttribute("data-lang") === lang);
+        });
+        var announceText = document.querySelector(".announcement__inner p");
+        if (announceText) {
+          var shopLink = announceText.querySelector("a");
+          var linkHref = shopLink ? shopLink.getAttribute("href") : "#shop";
+          announceText.innerHTML = isVi
+            ? 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>'
+            : 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
+        }
+        var navLinks = document.querySelectorAll(".navigation .navigation__link");
+        if (navLinks.length >= 4) {
+          navLinks[0].textContent = isVi ? "Trang Chủ" : "Home";
+          navLinks[1].textContent = isVi ? "Liên Hệ" : "Contact";
+          navLinks[2].textContent = isVi ? "Giới Thiệu" : "About";
+          navLinks[3].textContent = isVi ? "Đăng Ký" : "Sign Up";
+        }
+        var searchInput = document.querySelector(".search input");
+        if (searchInput) {
+          searchInput.placeholder = isVi ? "Bạn đang tìm kiếm gì?" : "What are you looking for?";
+        }
+        document.documentElement.lang = lang;
+      }
+
+      if (langBtn && langDropdown) {
+        function toggleDropdown(show) {
+          var isOpen = typeof show === "boolean" ? show : !langDropdown.classList.contains("language-dropdown--open");
+          langDropdown.classList.toggle("language-dropdown--open", isOpen);
+          langBtn.setAttribute("aria-expanded", String(isOpen));
+        }
+        langBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          toggleDropdown();
+        });
+        langOptions.forEach(function(opt) {
+          opt.addEventListener("click", function(e) {
+            e.stopPropagation();
+            var selectedLang = opt.getAttribute("data-lang");
+            if (selectedLang) {
+              applyLanguage(selectedLang);
+              try { localStorage.setItem("t1_selected_lang", selectedLang); } catch (err) {}
+            }
+            toggleDropdown(false);
+          });
+        });
+        document.addEventListener("click", function(e) {
+          if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) toggleDropdown(false);
+        });
+        document.addEventListener("keydown", function(e) {
+          if (e.key === "Escape") toggleDropdown(false);
+        });
+        var savedLang = "en";
+        try { savedLang = localStorage.getItem("t1_selected_lang") || "en"; } catch (err) {}
+        applyLanguage(savedLang);
+      }
+    })();
+  </script>
 </html>
