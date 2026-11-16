@@ -24,12 +24,29 @@
           <a href="#shop">ShopNow</a>
         </p>
 
-        <button class="language" type="button" aria-label="Chọn ngôn ngữ">
-          English
-          <svg viewBox="0 0 12 8" aria-hidden="true">
-            <path d="m1 1.5 5 5 5-5" />
-          </svg>
-        </button>
+        <!-- Bộ chuyển đổi ngôn ngữ (English / Tiếng Việt) -->
+        <div class="language-picker" id="languagePicker">
+          <button class="language" id="languageBtn" type="button" aria-label="Chọn ngôn ngữ" aria-expanded="false" aria-haspopup="true">
+            <span class="language-current-label" id="currentLangLabel">English</span>
+            <svg viewBox="0 0 12 8" aria-hidden="true">
+              <path d="m1 1.5 5 5 5-5" />
+            </svg>
+          </button>
+          <ul class="language-dropdown" id="languageDropdown" role="menu" aria-label="Lựa chọn ngôn ngữ">
+            <li role="none">
+              <button class="language-item language-item--active" type="button" role="menuitem" data-lang="en">
+                <span class="lang-text">English</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+            <li role="none">
+              <button class="language-item" type="button" role="menuitem" data-lang="vi">
+                <span class="lang-text">Tiếng Việt</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -93,7 +110,7 @@
           <!-- Sidebar danh mục bên trái -->
           <ul class="hero-categories" aria-label="Danh mục nổi bật">
             <li class="hero-category-item">
-              <a href="#fashion-women">
+              <a href="#exploreSection" data-category="fashion-women">
                 <span>Woman's Fashion</span>
                 <svg viewBox="0 0 8 12">
                   <path d="m1.5 1 5 5-5 5" />
@@ -101,20 +118,20 @@
               </a>
             </li>
             <li class="hero-category-item">
-              <a href="#fashion-men">
+              <a href="#exploreSection" data-category="fashion-men">
                 <span>Men's Fashion</span>
                 <svg viewBox="0 0 8 12">
                   <path d="m1.5 1 5 5-5 5" />
                 </svg>
               </a>
             </li>
-            <li class="hero-category-item"><a href="#electronics"><span>Electronics</span></a></li>
-            <li class="hero-category-item"><a href="#home-lifestyle"><span>Home & Lifestyle</span></a></li>
-            <li class="hero-category-item"><a href="#medicine"><span>Medicine</span></a></li>
-            <li class="hero-category-item"><a href="#sports"><span>Sports & Outdoor</span></a></li>
-            <li class="hero-category-item"><a href="#baby-toys"><span>Baby's & Toys</span></a></li>
-            <li class="hero-category-item"><a href="#groceries"><span>Groceries & Pets</span></a></li>
-            <li class="hero-category-item"><a href="#health-beauty"><span>Health & Beauty</span></a></li>
+            <li class="hero-category-item"><a href="#exploreSection" data-category="electronics"><span>Electronics</span></a></li>
+            <li class="hero-category-item"><a href="#exploreSection" data-category="home-lifestyle"><span>Home & Lifestyle</span></a></li>
+            <li class="hero-category-item"><a href="#exploreSection" data-category="medicine"><span>Medicine</span></a></li>
+            <li class="hero-category-item"><a href="#exploreSection" data-category="sports"><span>Sports & Outdoor</span></a></li>
+            <li class="hero-category-item"><a href="#exploreSection" data-category="baby-toys"><span>Baby's & Toys</span></a></li>
+            <li class="hero-category-item"><a href="#exploreSection" data-category="groceries"><span>Groceries & Pets</span></a></li>
+            <li class="hero-category-item"><a href="#exploreSection" data-category="health-beauty"><span>Health & Beauty</span></a></li>
           </ul>
 
           <!-- Banner Slider bên phải với Nút chuyển slide và Dot điều hướng -->
@@ -670,12 +687,12 @@
         <div class="section-header-row">
           <h2 class="section-title">Browse By Category</h2>
           <div class="section-nav-arrows">
-            <button class="nav-arrow-btn" type="button" aria-label="Danh mục trước">
+            <button class="nav-arrow-btn" id="categoryPrev" type="button" aria-label="Danh mục trước">
               <svg viewBox="0 0 24 24">
                 <path d="m15 18-6-6 6-6" />
               </svg>
             </button>
-            <button class="nav-arrow-btn" type="button" aria-label="Danh mục tiếp theo">
+            <button class="nav-arrow-btn" id="categoryNext" type="button" aria-label="Danh mục tiếp theo">
               <svg viewBox="0 0 24 24">
                 <path d="m9 18 6-6-6-6" />
               </svg>
@@ -683,15 +700,15 @@
           </div>
         </div>
 
-        <div class="category-grid">
-          <a class="category-card" href="#cat-phones">
+        <div class="category-grid" id="categoryGrid" role="tablist" aria-label="Danh sách danh mục sản phẩm">
+          <a class="category-card" href="#exploreSection" data-category="phones" role="tab" aria-selected="false" aria-label="Danh mục Phones">
             <svg viewBox="0 0 24 24">
               <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
               <line x1="12" y1="18" x2="12.01" y2="18" />
             </svg>
             <span>Phones</span>
           </a>
-          <a class="category-card" href="#cat-computers">
+          <a class="category-card" href="#exploreSection" data-category="computers" role="tab" aria-selected="false" aria-label="Danh mục Computers">
             <svg viewBox="0 0 24 24">
               <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
               <line x1="8" y1="21" x2="16" y2="21" />
@@ -699,7 +716,7 @@
             </svg>
             <span>Computers</span>
           </a>
-          <a class="category-card" href="#cat-smartwatch">
+          <a class="category-card" href="#exploreSection" data-category="smartwatch" role="tab" aria-selected="false" aria-label="Danh mục SmartWatch">
             <svg viewBox="0 0 24 24">
               <polyline points="12 6 12 12 16 14" />
               <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -707,15 +724,14 @@
             </svg>
             <span>SmartWatch</span>
           </a>
-          <!-- Camera nổi bật với trạng thái active -->
-          <a class="category-card" href="#cat-camera">
+          <a class="category-card" href="#exploreSection" data-category="camera" role="tab" aria-selected="false" aria-label="Danh mục Camera">
             <svg viewBox="0 0 24 24">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
               <circle cx="12" cy="13" r="4" />
             </svg>
             <span>Camera</span>
           </a>
-          <a class="category-card" href="#cat-headphones">
+          <a class="category-card" href="#exploreSection" data-category="headphones" role="tab" aria-selected="false" aria-label="Danh mục HeadPhones">
             <svg viewBox="0 0 24 24">
               <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
               <path
@@ -723,7 +739,7 @@
             </svg>
             <span>HeadPhones</span>
           </a>
-          <a class="category-card" href="#cat-gaming">
+          <a class="category-card" href="#exploreSection" data-category="gaming" role="tab" aria-selected="false" aria-label="Danh mục Gaming">
             <svg viewBox="0 0 24 24">
               <rect x="2" y="6" width="20" height="12" rx="2" />
               <path d="M6 12h4M8 10v4M15 13h.01M18 11h.01" />
@@ -1035,7 +1051,7 @@
       <!-- ========================================================
            6. EXPLORE OUR PRODUCTS SECTION (8 sản phẩm, color dots)
            ======================================================== -->
-      <section class="explore-section" aria-label="Khám phá các sản phẩm">
+      <section class="explore-section" id="exploreSection" aria-label="Khám phá các sản phẩm">
         <div class="section-tag">
           <span class="section-tag__pill" aria-hidden="true"></span>
           <span class="section-tag__text">Our Products</span>
@@ -1057,9 +1073,21 @@
           </div>
         </div>
 
-        <div class="products-grid">
+        <!-- Thanh trạng thái lọc danh mục -->
+        <div class="category-filter-status" id="categoryFilterStatus" role="status" aria-live="polite">
+          <div class="category-filter-status__info">
+            <span id="filterLabelText">Đang lọc theo danh mục:</span>
+            <span class="category-filter-status__badge" id="activeCategoryBadge">All</span>
+            <span class="category-filter-status__count" id="activeCategoryCount">(0 sản phẩm)</span>
+          </div>
+          <button class="category-filter-status__clear" id="clearCategoryFilterBtn" type="button" aria-label="Xóa bộ lọc danh mục">
+            ✕ <span id="clearFilterBtnText">Xóa bộ lọc</span>
+          </button>
+        </div>
+
+        <div class="products-grid" id="exploreProductsGrid">
           <!-- Item 1 -->
-          <article class="product-card">
+          <article class="product-card" data-category="groceries">
             <div class="product-card__thumb">
               <div class="product-card__actions">
                 <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
@@ -1112,7 +1140,7 @@
           </article>
 
           <!-- Item 2 -->
-          <article class="product-card">
+          <article class="product-card" data-category="camera electronics">
             <div class="product-card__thumb">
               <div class="product-card__actions">
                 <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
@@ -1169,7 +1197,7 @@
           </article>
 
           <!-- Item 3 -->
-          <article class="product-card">
+          <article class="product-card" data-category="computers gaming electronics">
             <div class="product-card__thumb">
               <div class="product-card__actions">
                 <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
@@ -1230,7 +1258,7 @@
           </article>
 
           <!-- Item 4 -->
-          <article class="product-card">
+          <article class="product-card" data-category="health-beauty medicine">
             <div class="product-card__thumb">
               <div class="product-card__actions">
                 <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
@@ -1287,7 +1315,7 @@
           </article>
 
           <!-- Item 5 (Có badge NEW và Color Dots) -->
-          <article class="product-card">
+          <article class="product-card" data-category="baby-toys">
             <div class="product-card__thumb">
               <span class="product-badge product-badge--new">NEW</span>
               <div class="product-card__actions">
@@ -1353,7 +1381,7 @@
           </article>
 
           <!-- Item 6 -->
-          <article class="product-card">
+          <article class="product-card" data-category="sports">
             <div class="product-card__thumb">
               <div class="product-card__actions">
                 <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
@@ -1418,7 +1446,7 @@
           </article>
 
           <!-- Item 7 (Có badge NEW và Color Dots) -->
-          <article class="product-card">
+          <article class="product-card" data-category="gaming electronics">
             <div class="product-card__thumb">
               <span class="product-badge product-badge--new">NEW</span>
               <div class="product-card__actions">
@@ -1484,7 +1512,7 @@
           </article>
 
           <!-- Item 8 -->
-          <article class="product-card">
+          <article class="product-card" data-category="fashion-women fashion-men">
             <div class="product-card__thumb">
               <div class="product-card__actions">
                 <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
@@ -1543,6 +1571,209 @@
               </div>
             </div>
           </article>
+
+          <!-- Item 9: iPhone 14 Pro Max (Phones) -->
+          <article class="product-card" data-category="phones electronics">
+            <div class="product-card__thumb">
+              <span class="product-badge product-badge--new">NEW</span>
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=500&q=80"
+                alt="iPhone 14 Pro Max 128GB"
+                onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">iPhone 14 Pro Max 128GB</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$1099</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                </div>
+                <span class="product-reviews-count">(195)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 10: Smart Watch Series 8 (SmartWatch) -->
+          <article class="product-card" data-category="smartwatch electronics">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80"
+                alt="Smart Watch Series 8 GPS"
+                onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Smart Watch Series 8 GPS</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$399</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                </div>
+                <span class="product-reviews-count">(88)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 11: JBL Boombox 2 Pro Sound (HeadPhones / Audio) -->
+          <article class="product-card" data-category="headphones electronics audio">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/Frame 694.png"
+                alt="JBL Boombox 2 Pro Wireless Sound"
+                onerror="this.src='https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=500&q=80'">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">JBL Boombox 2 Pro Sound</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$499</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                </div>
+                <span class="product-reviews-count">(112)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 12: AK-900 Pro Wired Mechanical Keyboard (Computers / Gaming) -->
+          <article class="product-card" data-category="computers gaming electronics">
+            <div class="product-card__thumb">
+              <span class="product-badge">-35%</span>
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/Frame 612.png"
+                alt="AK-900 Pro Wired Mechanical Keyboard">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">AK-900 Pro Wired Mechanical Keyboard</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$960</span>
+                <span class="product-card__old-price">$1160</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                </div>
+                <span class="product-reviews-count">(75)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Trạng thái trống khi lọc không có sản phẩm (Empty State) -->
+          <div class="category-filter-empty" id="categoryFilterEmpty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <h3 id="emptyCategoryTitle">Không tìm thấy sản phẩm</h3>
+            <p id="emptyCategoryDesc">Hiện chưa có sản phẩm nào thuộc danh mục này.</p>
+            <button class="btn-primary-red" id="emptyCategoryResetBtn" type="button" style="padding: 10px 24px; border:none; border-radius:4px; cursor:pointer;">
+              Xem tất cả sản phẩm
+            </button>
+          </div>
         </div>
 
         <div class="section-center-action">
@@ -1702,7 +1933,305 @@
           });
         }
 
-        /* 2. Hero Banner Slider */
+        /* 2. Language Switcher (English <-> Tiếng Việt) */
+        var langBtn = document.getElementById("languageBtn");
+        var langDropdown = document.getElementById("languageDropdown");
+        var langOptions = document.querySelectorAll(".language-item");
+        var currentLangLabel = document.getElementById("currentLangLabel");
+
+        function applyLanguage(lang) {
+          var isVi = lang === "vi";
+
+          if (currentLangLabel) {
+            currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
+          }
+
+          langOptions.forEach(function (item) {
+            var itemLang = item.getAttribute("data-lang");
+            item.classList.toggle("language-item--active", itemLang === lang);
+          });
+
+          var announceText = document.querySelector(".announcement__inner p");
+          if (announceText) {
+            var shopLink = announceText.querySelector("a");
+            var linkHref = shopLink ? shopLink.getAttribute("href") : "#shop";
+            if (isVi) {
+              announceText.innerHTML = 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>';
+            } else {
+              announceText.innerHTML = 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
+            }
+          }
+
+          var navLinks = document.querySelectorAll(".navigation .navigation__link");
+          if (navLinks.length >= 4) {
+            navLinks[0].textContent = isVi ? "Trang Chủ" : "Home";
+            navLinks[1].textContent = isVi ? "Liên Hệ" : "Contact";
+            navLinks[2].textContent = isVi ? "Giới Thiệu" : "About";
+            navLinks[3].textContent = isVi ? "Đăng Ký" : "Sign Up";
+          }
+
+          var searchInput = document.querySelector(".search input");
+          if (searchInput) {
+            searchInput.placeholder = isVi ? "Bạn đang tìm kiếm gì?" : "What are you looking for?";
+          }
+
+          var catNames = isVi
+            ? [
+                "Thời Trang Nữ",
+                "Thời Trang Nam",
+                "Đồ Điện Tử",
+                "Nhà Cửa & Đời Sống",
+                "Dược Phẩm",
+                "Thể Thao & Dã Ngoại",
+                "Đồ Chơi & Mẹ Bé",
+                "Tạp Hóa & Thú Cưng",
+                "Sức Khỏe & Sắc Đẹp"
+              ]
+            : [
+                "Woman's Fashion",
+                "Men's Fashion",
+                "Electronics",
+                "Home & Lifestyle",
+                "Medicine",
+                "Sports & Outdoor",
+                "Baby's & Toys",
+                "Groceries & Pets",
+                "Health & Beauty"
+              ];
+          document.querySelectorAll(".hero-category-item").forEach(function (item, idx) {
+            var span = item.querySelector("span");
+            if (span && catNames[idx]) {
+              span.textContent = catNames[idx];
+            }
+          });
+
+          var flashTodayTag = document.querySelector("#flashSaleSection .section-tag__text");
+          if (flashTodayTag) flashTodayTag.textContent = isVi ? "Hôm nay" : "Today's";
+
+          var flashTitle = document.querySelector("#flashSaleSection .section-title");
+          if (flashTitle) flashTitle.textContent = isVi ? "Flash Sale" : "Flash Sales";
+
+          var cdUnits = document.querySelectorAll("#flashSaleCountdown .countdown-label");
+          if (cdUnits.length >= 4) {
+            cdUnits[0].textContent = isVi ? "Ngày" : "Days";
+            cdUnits[1].textContent = isVi ? "Giờ" : "Hours";
+            cdUnits[2].textContent = isVi ? "Phút" : "Minutes";
+            cdUnits[3].textContent = isVi ? "Giây" : "Seconds";
+          }
+
+          var cdBadge = document.getElementById("cdExpiredBadge");
+          if (cdBadge) {
+            cdBadge.textContent = isVi ? "⚡ Đã kết thúc" : "⚡ Ended";
+          }
+
+          document.querySelectorAll("#flashSaleSection .product-card__add-btn").forEach(function (btn) {
+            btn.textContent = isVi ? "Thêm Vào Giỏ Hàng" : "Add To Cart";
+          });
+
+          var viewAllFlash = document.querySelector("#flashSaleSection .section-center-action .btn-primary-red");
+          if (viewAllFlash) viewAllFlash.textContent = isVi ? "Xem Tất Cả Sản Phẩm" : "View All Products";
+
+          var catSecTag = document.querySelector(".category-section .section-tag__text");
+          if (catSecTag) catSecTag.textContent = isVi ? "Danh mục" : "Categories";
+          var catSecTitle = document.querySelector(".category-section .section-title");
+          if (catSecTitle) catSecTitle.textContent = isVi ? "Duyệt Theo Danh Mục" : "Browse By Category";
+
+          var catCardNames = isVi
+            ? ["Điện Thoại", "Máy Tính", "SmartWatch", "Máy Ảnh", "Tai Nghe", "Gaming"]
+            : ["Phones", "Computers", "SmartWatch", "Camera", "HeadPhones", "Gaming"];
+          document.querySelectorAll(".category-card").forEach(function (card, idx) {
+            var span = card.querySelector("span");
+            if (span && catCardNames[idx]) span.textContent = catCardNames[idx];
+          });
+
+          var bsTag = document.querySelector(".best-selling-section .section-tag__text");
+          if (bsTag) bsTag.textContent = isVi ? "Tháng này" : "This Month";
+          var bsTitle = document.querySelector(".best-selling-section .section-title");
+          if (bsTitle) bsTitle.textContent = isVi ? "Sản Phẩm Bán Chạy" : "Best Selling Products";
+          var bsBtn = document.querySelector(".best-selling-section .section-view-all-btn");
+          if (bsBtn) bsBtn.textContent = isVi ? "Xem Tất Cả" : "View All";
+
+          var promoCat = document.querySelector(".promo-banner__category");
+          if (promoCat) promoCat.textContent = isVi ? "Danh mục" : "Categories";
+          var promoTitle = document.querySelector(".promo-banner__title");
+          if (promoTitle) {
+            promoTitle.innerHTML = isVi ? "Nâng Tầm Trải Nghiệm<br>Âm Nhạc" : "Enhance Your<br>Music Experience";
+          }
+          var promoUnits = document.querySelectorAll(".promo-countdown-unit");
+          if (promoUnits.length >= 4) {
+            promoUnits[0].textContent = isVi ? "Giờ" : "Hours";
+            promoUnits[1].textContent = isVi ? "Ngày" : "Days";
+            promoUnits[2].textContent = isVi ? "Phút" : "Minutes";
+            promoUnits[3].textContent = isVi ? "Giây" : "Seconds";
+          }
+          var promoBtn = document.querySelector(".promo-btn");
+          if (promoBtn) promoBtn.textContent = isVi ? "Mua Ngay!" : "Buy Now!";
+
+          var exploreTag = document.querySelector(".explore-section .section-tag__text");
+          if (exploreTag) exploreTag.textContent = isVi ? "Sản phẩm" : "Our Products";
+          var exploreTitle = document.querySelector(".explore-section .section-title");
+          if (exploreTitle) exploreTitle.textContent = isVi ? "Khám Phá Sản Phẩm Của Chúng Tôi" : "Explore Our Products";
+          var exploreViewAll = document.querySelector(".explore-section .section-center-action .btn-primary-red");
+          if (exploreViewAll) exploreViewAll.textContent = isVi ? "Xem Tất Cả Sản Phẩm" : "View All Products";
+
+          var featTag = document.querySelector(".featured-section .section-tag__text");
+          if (featTag) featTag.textContent = isVi ? "Nổi bật" : "Featured";
+          var featTitle = document.querySelector(".featured-section .section-title");
+          if (featTitle) featTitle.textContent = isVi ? "Hàng Mới Về" : "New Arrival";
+
+          var bCard1Desc = document.querySelector(".featured-bento__card--large p");
+          if (bCard1Desc) {
+            bCard1Desc.textContent = isVi
+              ? "Phiên bản PS5 đen trắng cực hot sắp mở bán."
+              : "Black and White version of the PS5 coming out on sale.";
+          }
+
+          var bCard2Title = document.querySelector(".featured-bento__card--wide h3");
+          if (bCard2Title) bCard2Title.textContent = isVi ? "Bộ Sưu Tập Nữ" : "Women's Collections";
+          var bCard2Desc = document.querySelector(".featured-bento__card--wide p");
+          if (bCard2Desc) {
+            bCard2Desc.textContent = isVi
+              ? "Bộ sưu tập thời trang nữ đem lại phong cách cuốn hút."
+              : "Featured woman collections that give you another vibe.";
+          }
+
+          var bCardSmall = document.querySelectorAll(".featured-bento__card--small");
+          if (bCardSmall.length >= 2) {
+            var spkTitle = bCardSmall[0].querySelector("h3");
+            if (spkTitle) spkTitle.textContent = isVi ? "Loa Không Dây" : "Speakers";
+            var spkDesc = bCardSmall[0].querySelector("p");
+            if (spkDesc) spkDesc.textContent = isVi ? "Loa Bluetooth Amazon cao cấp" : "Amazon wireless speakers";
+
+            var pfTitle = bCardSmall[1].querySelector("h3");
+            if (pfTitle) pfTitle.textContent = isVi ? "Nước Hoa" : "Perfume";
+            var pfDesc = bCardSmall[1].querySelector("p");
+            if (pfDesc) pfDesc.textContent = isVi ? "Nước hoa GUCCI INTENSE OUD EDP" : "GUCCI INTENSE OUD EDP";
+          }
+
+          document.querySelectorAll(".featured-link").forEach(function (link) {
+            link.textContent = isVi ? "Mua Ngay" : "Shop Now";
+          });
+
+          var srvItems = document.querySelectorAll(".service-item");
+          if (srvItems.length >= 3) {
+            var h3_1 = srvItems[0].querySelector("h3");
+            if (h3_1) h3_1.textContent = isVi ? "GIAO HÀNG NHANH & MIỄN PHÍ" : "FREE AND FAST DELIVERY";
+            var p_1 = srvItems[0].querySelector("p");
+            if (p_1) p_1.textContent = isVi ? "Miễn phí giao hàng cho tất cả đơn trên $140" : "Free delivery for all orders over $140";
+
+            var h3_2 = srvItems[1].querySelector("h3");
+            if (h3_2) h3_2.textContent = isVi ? "HỖ TRỢ KHÁCH HÀNG 24/7" : "24/7 CUSTOMER SERVICE";
+            var p_2 = srvItems[1].querySelector("p");
+            if (p_2) p_2.textContent = isVi ? "Đội ngũ hỗ trợ thân thiện 24/7" : "Friendly 24/7 customer support";
+
+            var h3_3 = srvItems[2].querySelector("h3");
+            if (h3_3) h3_3.textContent = isVi ? "HOÀN TIỀN ĐẢM BẢO" : "MONEY BACK GUARANTEE";
+            var p_3 = srvItems[2].querySelector("p");
+            if (p_3) p_3.textContent = isVi ? "Hoàn tiền nhanh chóng trong vòng 30 ngày" : "We return money within 30 days";
+          }
+
+          var fSub = document.querySelector(".footer-newsletter .column-subtitle");
+          if (fSub) fSub.textContent = isVi ? "Đăng Ký" : "Subscribe";
+          var fCopy = document.querySelector(".footer-newsletter .newsletter-copy");
+          if (fCopy) fCopy.textContent = isVi ? "Giảm 10% cho đơn hàng đầu tiên của bạn" : "Get 10% off your first order";
+          var fInput = document.getElementById("subscriber-email");
+          if (fInput) fInput.placeholder = isVi ? "Nhập email của bạn" : "Enter your email";
+
+          var fCols = document.querySelectorAll(".site-footer .footer-column");
+          if (fCols.length >= 4) {
+            var h2_sup = fCols[1].querySelector("h2");
+            if (h2_sup) h2_sup.textContent = isVi ? "Hỗ Trợ" : "Support";
+
+            var h2_acc = fCols[2].querySelector("h2");
+            if (h2_acc) h2_acc.textContent = isVi ? "Tài Khoản" : "Account";
+            var accLinks = fCols[2].querySelectorAll("ul li a");
+            if (accLinks.length >= 5) {
+              accLinks[0].textContent = isVi ? "Tài Khoản Của Tôi" : "My Account";
+              accLinks[1].textContent = isVi ? "Đăng Nhập / Đăng Ký" : "Login / Register";
+              accLinks[2].textContent = isVi ? "Giỏ Hàng" : "Cart";
+              accLinks[3].textContent = isVi ? "Yêu Thích" : "Wishlist";
+              accLinks[4].textContent = isVi ? "Cửa Hàng" : "Shop";
+            }
+
+            var h2_quick = fCols[3].querySelector("h2");
+            if (h2_quick) h2_quick.textContent = isVi ? "Liên Kết Nhanh" : "Quick Link";
+            var qLinks = fCols[3].querySelectorAll("ul li a");
+            if (qLinks.length >= 4) {
+              qLinks[0].textContent = isVi ? "Chính Sách Bảo Mật" : "Privacy Policy";
+              qLinks[1].textContent = isVi ? "Điều Khoản Sử Dụng" : "Terms Of Use";
+              qLinks[2].textContent = isVi ? "Câu Hỏi Thường Gặp" : "FAQ";
+              qLinks[3].textContent = isVi ? "Liên Hệ" : "Contact";
+            }
+          }
+
+          if (typeof categoryDisplayNames !== "undefined" && currentActiveCategory) {
+            var activeCatInfo = categoryDisplayNames[currentActiveCategory] || { en: currentActiveCategory, vi: currentActiveCategory };
+            var actBadge = document.getElementById("activeCategoryBadge");
+            if (actBadge) actBadge.textContent = isVi ? activeCatInfo.vi : activeCatInfo.en;
+            var curMatchCount = document.querySelectorAll("#exploreProductsGrid .product-card:not([style*='display: none'])").length;
+            var actCount = document.getElementById("activeCategoryCount");
+            if (actCount) actCount.textContent = isVi ? "(" + curMatchCount + " sản phẩm)" : "(" + curMatchCount + " products)";
+          }
+          var filterLbl = document.getElementById("filterLabelText");
+          if (filterLbl) filterLbl.textContent = isVi ? "Đang lọc theo danh mục:" : "Filtered by category:";
+          var clearBtnTxt = document.getElementById("clearFilterBtnText");
+          if (clearBtnTxt) clearBtnTxt.textContent = isVi ? "Xóa bộ lọc" : "Clear filter";
+          var emptyTitle = document.getElementById("emptyCategoryTitle");
+          if (emptyTitle) emptyTitle.textContent = isVi ? "Không tìm thấy sản phẩm" : "No products found";
+          var emptyDesc = document.getElementById("emptyCategoryDesc");
+          if (emptyDesc) emptyDesc.textContent = isVi ? "Hiện chưa có sản phẩm nào thuộc danh mục này." : "There are currently no products in this category.";
+          var emptyReset = document.getElementById("emptyCategoryResetBtn");
+          if (emptyReset) emptyReset.textContent = isVi ? "Xem tất cả sản phẩm" : "View all products";
+
+          document.documentElement.lang = lang;
+        }
+
+        if (langBtn && langDropdown) {
+          function toggleDropdown(show) {
+            var isOpen = typeof show === "boolean" ? show : !langDropdown.classList.contains("language-dropdown--open");
+            langDropdown.classList.toggle("language-dropdown--open", isOpen);
+            langBtn.setAttribute("aria-expanded", String(isOpen));
+          }
+
+          langBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            toggleDropdown();
+          });
+
+          langOptions.forEach(function (opt) {
+            opt.addEventListener("click", function (e) {
+              e.stopPropagation();
+              var selectedLang = opt.getAttribute("data-lang");
+              if (selectedLang) {
+                applyLanguage(selectedLang);
+                try {
+                  localStorage.setItem("t1_selected_lang", selectedLang);
+                } catch (err) {}
+              }
+              toggleDropdown(false);
+            });
+          });
+
+          document.addEventListener("click", function (e) {
+            if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+              toggleDropdown(false);
+            }
+          });
+
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+              toggleDropdown(false);
+            }
+          });
+
+          var savedLang = "en";
+          try {
+            savedLang = localStorage.getItem("t1_selected_lang") || "en";
+          } catch (err) {}
+          applyLanguage(savedLang);
+        }
+
+        /* 3. Hero Banner Slider */
         var track = document.getElementById("heroSliderTrack");
         var slides = document.querySelectorAll(".hero-slide");
         var dots = document.querySelectorAll(".hero-slider__dot");
@@ -1765,7 +2294,7 @@
           });
         }
 
-        /* 3. Flash Sale Countdown Timer & Dynamic Pricing */
+        /* 4. Flash Sale Countdown Timer & Dynamic Pricing */
         var flashSection = document.getElementById("flashSaleSection");
         var bestSellingSection = document.querySelector(".best-selling-section");
         var daysEl = document.getElementById("cdDays");
@@ -1891,7 +2420,7 @@
           });
         }
 
-        /* 4. Điều hướng danh sách Flash Sale */
+        /* 5. Điều hướng danh sách Flash Sale */
         var flashTrack = document.getElementById("flashSaleTrack");
         var flashPrevBtn = document.getElementById("flashSalePrev");
         var flashNextBtn = document.getElementById("flashSaleNext");
@@ -1904,7 +2433,7 @@
           });
         }
 
-        /* 5. Nút Yêu thích */
+        /* 6. Nút Yêu thích */
         document.querySelectorAll(".product-action-btn[data-action='wishlist']").forEach(function (btn) {
           btn.addEventListener("click", function (e) {
             e.preventDefault();
@@ -1912,7 +2441,7 @@
           });
         });
 
-        /* 6. Nút cuộn lên đầu trang */
+        /* 7. Nút cuộn lên đầu trang */
         var backToTopBtn = document.getElementById("backToTopBtn");
         if (backToTopBtn) {
           window.addEventListener("scroll", function () {
@@ -1924,6 +2453,165 @@
           });
           backToTopBtn.addEventListener("click", function () {
             window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        }
+
+        /* 8. Category Filter & Active State */
+        var currentActiveCategory = null;
+        var categoryCards = document.querySelectorAll(".category-card");
+        var heroCategoryLinks = document.querySelectorAll(".hero-categories a[data-category]");
+        var filterStatusEl = document.getElementById("categoryFilterStatus");
+        var activeBadgeEl = document.getElementById("activeCategoryBadge");
+        var activeCountEl = document.getElementById("activeCategoryCount");
+        var clearFilterBtn = document.getElementById("clearCategoryFilterBtn");
+        var emptyResetBtn = document.getElementById("emptyCategoryResetBtn");
+        var emptyFilterEl = document.getElementById("categoryFilterEmpty");
+        var productCards = document.querySelectorAll("#exploreProductsGrid .product-card");
+        var exploreSection = document.getElementById("exploreSection");
+
+        var categoryDisplayNames = {
+          phones: { en: "Phones", vi: "Điện Thoại" },
+          computers: { en: "Computers", vi: "Máy Tính" },
+          smartwatch: { en: "SmartWatch", vi: "SmartWatch" },
+          camera: { en: "Camera", vi: "Máy Ảnh" },
+          headphones: { en: "HeadPhones", vi: "Tai Nghe / Âm Thanh" },
+          gaming: { en: "Gaming", vi: "Gaming" },
+          "fashion-women": { en: "Woman's Fashion", vi: "Thời Trang Nữ" },
+          "fashion-men": { en: "Men's Fashion", vi: "Thời Trang Nam" },
+          electronics: { en: "Electronics", vi: "Đồ Điện Tử" },
+          "home-lifestyle": { en: "Home & Lifestyle", vi: "Đời Sống & Nhà Cửa" },
+          medicine: { en: "Medicine", vi: "Dược Phẩm" },
+          sports: { en: "Sports & Outdoor", vi: "Thể Thao & Dã Ngoại" },
+          "baby-toys": { en: "Baby's & Toys", vi: "Mẹ & Bé - Đồ Chơi" },
+          groceries: { en: "Groceries & Pets", vi: "Bách Hóa & Thú Cưng" },
+          "health-beauty": { en: "Health & Beauty", vi: "Sức Khỏe & Làm Đẹp" }
+        };
+
+        function filterProductsByCategory(categoryKey, scrollToResults) {
+          var isVi = document.documentElement.lang === "vi";
+          if (!categoryKey || categoryKey === "all") {
+            currentActiveCategory = null;
+            categoryCards.forEach(function (card) {
+              card.classList.remove("category-card--active");
+              card.setAttribute("aria-selected", "false");
+            });
+            document.querySelectorAll(".hero-category-item").forEach(function (item) {
+              item.classList.remove("hero-category-item--active");
+            });
+            productCards.forEach(function (card) {
+              card.style.display = "";
+            });
+            if (filterStatusEl) filterStatusEl.classList.remove("category-filter-status--show");
+            if (emptyFilterEl) emptyFilterEl.classList.remove("category-filter-empty--show");
+            return;
+          }
+
+          currentActiveCategory = categoryKey;
+
+          categoryCards.forEach(function (card) {
+            var cat = card.getAttribute("data-category");
+            var isActive = (cat === categoryKey);
+            card.classList.toggle("category-card--active", isActive);
+            card.setAttribute("aria-selected", String(isActive));
+          });
+
+          document.querySelectorAll(".hero-categories a[data-category]").forEach(function (link) {
+            var cat = link.getAttribute("data-category");
+            var parentLi = link.closest(".hero-category-item");
+            var isActive = (cat && (cat === categoryKey || cat.split(" ").indexOf(categoryKey) !== -1));
+            if (parentLi) {
+              parentLi.classList.toggle("hero-category-item--active", isActive);
+            }
+          });
+
+          var matchCount = 0;
+          productCards.forEach(function (card) {
+            var prodCats = (card.getAttribute("data-category") || "").toLowerCase().split(" ");
+            var isMatch = false;
+            var targetTokens = categoryKey.toLowerCase().split(" ");
+            for (var i = 0; i < targetTokens.length; i++) {
+              if (prodCats.indexOf(targetTokens[i]) !== -1) {
+                isMatch = true;
+                break;
+              }
+            }
+            if (isMatch) {
+              card.style.display = "";
+              matchCount++;
+            } else {
+              card.style.display = "none";
+            }
+          });
+
+          var catInfo = categoryDisplayNames[categoryKey] || { en: categoryKey, vi: categoryKey };
+          var displayName = isVi ? catInfo.vi : catInfo.en;
+
+          if (activeBadgeEl) activeBadgeEl.textContent = displayName;
+          if (activeCountEl) {
+            activeCountEl.textContent = isVi ? "(" + matchCount + " sản phẩm)" : "(" + matchCount + " products)";
+          }
+          if (filterStatusEl) filterStatusEl.classList.add("category-filter-status--show");
+
+          if (emptyFilterEl) {
+            if (matchCount === 0) {
+              emptyFilterEl.classList.add("category-filter-empty--show");
+            } else {
+              emptyFilterEl.classList.remove("category-filter-empty--show");
+            }
+          }
+
+          if (scrollToResults && exploreSection) {
+            exploreSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
+
+        categoryCards.forEach(function (card) {
+          card.addEventListener("click", function (e) {
+            e.preventDefault();
+            var cat = card.getAttribute("data-category");
+            if (currentActiveCategory === cat) {
+              filterProductsByCategory(null, false);
+            } else {
+              filterProductsByCategory(cat, true);
+            }
+          });
+        });
+
+        heroCategoryLinks.forEach(function (link) {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            var cat = link.getAttribute("data-category");
+            if (currentActiveCategory === cat) {
+              filterProductsByCategory(null, false);
+            } else {
+              filterProductsByCategory(cat, true);
+            }
+          });
+        });
+
+        if (clearFilterBtn) {
+          clearFilterBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            filterProductsByCategory(null, false);
+          });
+        }
+
+        if (emptyResetBtn) {
+          emptyResetBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            filterProductsByCategory(null, false);
+          });
+        }
+
+        var categoryGrid = document.getElementById("categoryGrid");
+        var categoryPrev = document.getElementById("categoryPrev");
+        var categoryNext = document.getElementById("categoryNext");
+        if (categoryGrid && categoryPrev && categoryNext) {
+          categoryPrev.addEventListener("click", function () {
+            categoryGrid.scrollBy({ left: -200, behavior: "smooth" });
+          });
+          categoryNext.addEventListener("click", function () {
+            categoryGrid.scrollBy({ left: 200, behavior: "smooth" });
           });
         }
       }
