@@ -2,7 +2,7 @@
 from decimal import Decimal
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query, status
+from fastapi import APIRouter, Depends, File, Header, HTTPException, Query, UploadFile, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -16,11 +16,21 @@ from app.crud.product import (
     search_public_products,
     update_product,
 )
+from app.crud.product_image import (
+    IMAGE_EXTENSIONS,
+    delete_product_image,
+    get_product_image,
+    get_product_images,
+    image_has_valid_signature,
+    save_product_image,
+)
+from app.core.config import settings
 from app.db.session import get_db
 from app.models.category import Category
 from app.schemas.product import (
     PRODUCT_STATUSES,
     ProductCreate,
+    ProductImageResponse,
     ProductResponse,
     ProductSearchResponse,
     ProductUpdate,
@@ -28,6 +38,7 @@ from app.schemas.product import (
 
 router = APIRouter(prefix="/api/products", tags=["products"])
 DbSession = Annotated[Session, Depends(get_db)]
+IMAGE_CHUNK_SIZE = 64 * 1024
 
 
 def _role_context(
@@ -177,6 +188,99 @@ def read_product_details(product_id: int, db: DbSession):
     if product is None:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
+
+
+@router.get(
+    "/{product_id}/images",
+    response_model=list[ProductImageResponse],
+    responses={404: {"description": "Product not found"}},
+)
+def list_product_images(product_id: int, db: DbSession):
+    product = get_public_product(db, product_id)
+    if product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return get_product_images(db, product_id)
+
+
+@router.post(
+    "/{product_id}/images",
+    response_model=ProductImageResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def upload_product_image(
+    product_id: int,
+    db: DbSession,
+    image: Annotated[UploadFile, File(...)],
+    context: Annotated[tuple[str, int | None], Depends(_role_context)],
+):
+    product = get_product(db, product_id)
+    if product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    _check_store_access(product.store_id, *context)
+
+    content_type = image.content_type or ""
+    if content_type not in settings.allowed_image_types.intersection(IMAGE_EXTENSIONS):
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail="Only JPEG, PNG, GIF, and WebP images are supported",
+        )
+
+    chunks: list[bytes] = []
+    total_size = 0
+    header = b""
+    while True:
+        chunk = image.file.read(IMAGE_CHUNK_SIZE)
+        if not chunk:
+            break
+        if not header:
+            header = chunk[:12]
+        total_size += len(chunk)
+        if total_size > settings.MAX_IMAGE_SIZE_BYTES:
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"Image must not exceed {settings.MAX_IMAGE_SIZE_BYTES} bytes",
+            )
+        chunks.append(chunk)
+
+    if not chunks or not image_has_valid_signature(content_type, header):
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail="Uploaded file is not a valid image",
+        )
+
+    try:
+        return save_product_image(
+            db,
+            product_id=product_id,
+            content_type=content_type,
+            chunks=chunks,
+            size_bytes=total_size,
+        )
+    except OSError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Could not store image",
+        ) from exc
+
+
+@router.delete(
+    "/{product_id}/images/{image_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def remove_product_image(
+    product_id: int,
+    image_id: int,
+    db: DbSession,
+    context: Annotated[tuple[str, int | None], Depends(_role_context)],
+):
+    product = get_product(db, product_id)
+    if product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    _check_store_access(product.store_id, *context)
+    image = get_product_image(db, product_id, image_id)
+    if image is None:
+        raise HTTPException(status_code=404, detail="Image not found")
+    delete_product_image(db, image)
 
 
 @router.post("", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)

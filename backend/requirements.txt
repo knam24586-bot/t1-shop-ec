@@ -5,3 +5,4 @@ PyMySQL==1.1.1
 # cryptography: bắt buộc để PyMySQL đăng nhập được MySQL 8 (caching_sha2_password)
 cryptography==43.0.3
 pydantic-settings==2.6.1
+python-multipart==0.0.20
