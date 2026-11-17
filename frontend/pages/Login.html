@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Login - TShop</title>
+
+    <link rel="stylesheet" href="../css/login.css" />
+
+    <script src="../js/auth-layout.js" defer></script>
+   
+  </head>
+
+  <body class="auth-page">
+    <div id="site-header"></div>
+
+    <main class="auth-main">
+      <div class="auth-layout">
+        <div class="auth-visual">
+          <div class="visual-circle"></div>
+
+          <div class="visual-content">
+            <div class="visual-icon">🛒</div>
+            <h2>Welcome Back!</h2>
+            <p>Discover amazing products at TShop.</p>
+          </div>
+        </div>
+
+        <div class="auth-form">
+          <h1>Log in to TShop</h1>
+
+          <p class="auth-subtitle">Enter your details below</p>
+
+          <form id="loginForm">
+            <input
+              class="auth-input"
+              type="text"
+              id="loginEmail"
+              placeholder="Email or Phone Number"
+              required
+            />
+
+            <input
+              class="auth-input"
+              type="password"
+              id="loginPassword"
+              placeholder="Password"
+              required
+            />
+
+            <div class="auth-login-actions">
+              <button type="submit" class="auth-btn">Log In</button>
+
+              <a href="#" class="auth-forgot" id="forgotPassword">
+                Forget Password?
+              </a>
+            </div>
+          </form>
+
+          <p class="auth-switch">
+            Don't have an account?
+            <a href="signup.html">Sign up</a>
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <div id="site-footer"></div>
+  </body>
+</html>
