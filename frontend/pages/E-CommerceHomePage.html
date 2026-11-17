@@ -754,7 +754,7 @@
       <!-- ========================================================
            4. BEST SELLING PRODUCTS (Sản phẩm nổi bật)
            ======================================================== -->
-      <section class="best-selling-section" aria-label="Sản phẩm bán chạy nhất tháng">
+      <section class="best-selling-section" id="bestSellingSection" aria-label="Sản phẩm bán chạy nhất tháng">
         <div class="section-tag">
           <span class="section-tag__pill" aria-hidden="true"></span>
           <span class="section-tag__text">This Month</span>
@@ -762,10 +762,53 @@
 
         <div class="section-header-row">
           <h2 class="section-title">Best Selling Products</h2>
-          <a class="btn-primary-red" href="#all-bestsellers" style="padding: 12px 36px;">View All</a>
+          <button class="btn-primary-red section-view-all-btn" id="bestSellingViewAllBtn" type="button" style="padding: 12px 36px;">
+            <span class="btn-text">View All</span>
+          </button>
         </div>
 
-        <div class="products-grid">
+        <!-- Skeleton Loading State View (Hiển thị khi ở chế độ loading) -->
+        <div class="skeleton-container" aria-hidden="true">
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-thumb"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--short"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--tiny"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-thumb"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--short"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--tiny"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-thumb"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--short"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--tiny"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-box skeleton-thumb"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--short"></div>
+            <div class="skeleton-box skeleton-text skeleton-text--tiny"></div>
+          </div>
+        </div>
+
+        <!-- Empty State View (Hiển thị khi không có dữ liệu) -->
+        <div class="empty-state" id="bestSellingEmptyState" role="status">
+          <div class="empty-state__icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5M12 22V12" />
+            </svg>
+          </div>
+          <h3 class="empty-state__title">Chưa có sản phẩm bán chạy trong tháng này</h3>
+          <p class="empty-state__desc">Danh sách các sản phẩm bán chạy nhất sẽ được cập nhật liên tục. Bạn có thể nhấn nút bên dưới để thử tải lại dữ liệu.</p>
+          <button class="btn-primary-red" id="bestSellingRetryBtn" type="button">Tải lại dữ liệu</button>
+        </div>
+
+        <div class="products-grid" id="bestSellingGrid">
           <!-- Item 1 -->
           <article class="product-card" data-sale-price="$260" data-original-price="$360">
             <div class="product-card__thumb">
@@ -1005,6 +1048,186 @@
                   </svg>
                 </div>
                 <span class="product-reviews-count">(65)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Extra Item 5: Quilted Satin Jacket -->
+          <article class="product-card product-card--extra" data-sale-price="$750" data-original-price="$750">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/698717_Z8A1X_3475_001_100_0000_Light-Reversible-quilted-satin-jacket 1.png" alt="Quilted Satin Jacket">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">Quilted Satin Jacket</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$750</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                </div>
+                <span class="product-reviews-count">(85)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Extra Item 6: GP11 Shooter USB Gamepad -->
+          <article class="product-card product-card--extra" data-sale-price="$550" data-original-price="$600">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/GP11_PRD3 1.png" alt="GP11 Shooter USB Gamepad">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">GP11 Shooter USB Gamepad</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$550</span>
+                <span class="product-card__old-price">$600</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                </div>
+                <span class="product-reviews-count">(95)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Extra Item 7: ASUS FHD Gaming Laptop -->
+          <article class="product-card product-card--extra" data-sale-price="$960" data-original-price="$1160">
+            <div class="product-card__thumb">
+              <span class="product-badge">-20%</span>
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/ideapad-gaming-3i-01-500x500 1.png" alt="ASUS FHD Gaming Laptop">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">ASUS FHD Gaming Laptop</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$960</span>
+                <span class="product-card__old-price">$1160</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                </div>
+                <span class="product-reviews-count">(325)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Extra Item 8: AK-900 Wired Keyboard -->
+          <article class="product-card product-card--extra" data-sale-price="$200" data-original-price="$250">
+            <div class="product-card__thumb">
+              <div class="product-card__actions">
+                <button class="product-action-btn" type="button" data-action="wishlist" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                  </svg>
+                </button>
+                <button class="product-action-btn" type="button" data-action="quickview" aria-label="Xem nhanh">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <img src="/frontend/assets/images/products/Frame 612.png" alt="AK-900 Wired Keyboard">
+              <button class="product-card__add-cart" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span>Add To Cart</span>
+              </button>
+            </div>
+            <div class="product-card__details">
+              <h3 class="product-card__name">AK-900 Wired Keyboard</h3>
+              <div class="product-card__pricing">
+                <span class="product-card__price">$200</span>
+                <span class="product-card__old-price">$250</span>
+              </div>
+              <div class="product-card__rating">
+                <div class="product-stars">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                </div>
+                <span class="product-reviews-count">(75)</span>
               </div>
             </div>
           </article>
@@ -2049,7 +2272,21 @@
           var bsTitle = document.querySelector(".best-selling-section .section-title");
           if (bsTitle) bsTitle.textContent = isVi ? "Sản Phẩm Bán Chạy" : "Best Selling Products";
           var bsBtn = document.querySelector(".best-selling-section .section-view-all-btn");
-          if (bsBtn) bsBtn.textContent = isVi ? "Xem Tất Cả" : "View All";
+          if (bsBtn) {
+            var isExpanded = document.getElementById("bestSellingSection") && document.getElementById("bestSellingSection").classList.contains("is-expanded");
+            var spanText = bsBtn.querySelector(".btn-text") || bsBtn;
+            if (isExpanded) {
+              spanText.textContent = isVi ? "Thu Gọn" : "View Less";
+            } else {
+              spanText.textContent = isVi ? "Xem Tất Cả" : "View All";
+            }
+          }
+          var bsEmptyTitle = document.querySelector("#bestSellingEmptyState .empty-state__title");
+          if (bsEmptyTitle) bsEmptyTitle.textContent = isVi ? "Chưa có sản phẩm bán chạy trong tháng này" : "No best-selling products this month";
+          var bsEmptyDesc = document.querySelector("#bestSellingEmptyState .empty-state__desc");
+          if (bsEmptyDesc) bsEmptyDesc.textContent = isVi ? "Danh sách các sản phẩm bán chạy nhất sẽ được cập nhật liên tục. Bạn có thể nhấn nút bên dưới để thử tải lại dữ liệu." : "Best-selling products will be updated soon. You can try reloading or explore other categories.";
+          var bsRetry = document.getElementById("bestSellingRetryBtn");
+          if (bsRetry) bsRetry.textContent = isVi ? "Tải lại dữ liệu" : "Reload Data";
 
           var promoCat = document.querySelector(".promo-banner__category");
           if (promoCat) promoCat.textContent = isVi ? "Danh mục" : "Categories";
@@ -2419,6 +2656,54 @@
             flashSection.classList.remove("is-loading", "is-empty");
           });
         }
+
+        /* 4b. Xử lý Best Selling: View All & Empty State */
+        var bestSellingSectionEl = document.getElementById("bestSellingSection");
+        var bestSellingViewAllBtn = document.getElementById("bestSellingViewAllBtn");
+        var bestSellingGridEl = document.getElementById("bestSellingGrid");
+        var bestSellingRetryBtn = document.getElementById("bestSellingRetryBtn");
+
+        function updateBestSellingEmptyState() {
+          if (!bestSellingSectionEl || !bestSellingGridEl) return;
+          var cards = bestSellingGridEl.querySelectorAll(".product-card");
+          if (cards.length === 0) {
+            bestSellingSectionEl.classList.add("is-empty");
+            if (bestSellingViewAllBtn) bestSellingViewAllBtn.style.display = "none";
+          } else {
+            bestSellingSectionEl.classList.remove("is-empty");
+            if (bestSellingViewAllBtn) bestSellingViewAllBtn.style.display = "inline-flex";
+          }
+        }
+
+        if (bestSellingViewAllBtn) {
+          bestSellingViewAllBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (!bestSellingSectionEl) return;
+            var isExpanded = bestSellingSectionEl.classList.toggle("is-expanded");
+            var isVi = document.documentElement.lang === "vi";
+            var textSpan = bestSellingViewAllBtn.querySelector(".btn-text") || bestSellingViewAllBtn;
+
+            if (isExpanded) {
+              textSpan.textContent = isVi ? "Thu Gọn" : "View Less";
+            } else {
+              textSpan.textContent = isVi ? "Xem Tất Cả" : "View All";
+              bestSellingSectionEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          });
+        }
+
+        if (bestSellingRetryBtn && bestSellingSectionEl) {
+          bestSellingRetryBtn.addEventListener("click", function () {
+            bestSellingSectionEl.classList.add("is-loading");
+            bestSellingSectionEl.classList.remove("is-empty");
+            setTimeout(function () {
+              bestSellingSectionEl.classList.remove("is-loading");
+              updateBestSellingEmptyState();
+            }, 600);
+          });
+        }
+
+        updateBestSellingEmptyState();
 
         /* 5. Điều hướng danh sách Flash Sale */
         var flashTrack = document.getElementById("flashSaleTrack");

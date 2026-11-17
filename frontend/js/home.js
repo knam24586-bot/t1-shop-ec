@@ -153,7 +153,21 @@
       const bsTitle = document.querySelector(".best-selling-section .section-title");
       if (bsTitle) bsTitle.textContent = isVi ? "Sản Phẩm Bán Chạy" : "Best Selling Products";
       const bsBtn = document.querySelector(".best-selling-section .section-view-all-btn");
-      if (bsBtn) bsBtn.textContent = isVi ? "Xem Tất Cả" : "View All";
+      if (bsBtn) {
+        const isExp = document.getElementById("bestSellingSection")?.classList.contains("is-expanded");
+        const spanText = bsBtn.querySelector(".btn-text") || bsBtn;
+        if (isExp) {
+          spanText.textContent = isVi ? "Thu Gọn" : "View Less";
+        } else {
+          spanText.textContent = isVi ? "Xem Tất Cả" : "View All";
+        }
+      }
+      const bsEmptyTitle = document.querySelector("#bestSellingEmptyState .empty-state__title");
+      if (bsEmptyTitle) bsEmptyTitle.textContent = isVi ? "Chưa có sản phẩm bán chạy trong tháng này" : "No best-selling products this month";
+      const bsEmptyDesc = document.querySelector("#bestSellingEmptyState .empty-state__desc");
+      if (bsEmptyDesc) bsEmptyDesc.textContent = isVi ? "Danh sách các sản phẩm bán chạy nhất sẽ được cập nhật liên tục. Bạn có thể nhấn nút bên dưới để thử tải lại dữ liệu." : "Best-selling products will be updated soon. You can try reloading or explore other categories.";
+      const bsRetry = document.getElementById("bestSellingRetryBtn");
+      if (bsRetry) bsRetry.textContent = isVi ? "Tải lại dữ liệu" : "Reload Data";
 
       // 10. Promo Banner (Music Experience)
       const promoCat = document.querySelector(".promo-banner__category");
@@ -559,6 +573,56 @@
         flashSection.classList.remove("is-loading", "is-empty");
       });
     }
+
+    /* ====================================================
+     * 4b. Best Selling Products: View All & Empty State
+     * ==================================================== */
+    const bestSellingSectionEl = document.getElementById("bestSellingSection");
+    const bestSellingViewAllBtn = document.getElementById("bestSellingViewAllBtn");
+    const bestSellingGridEl = document.getElementById("bestSellingGrid");
+    const bestSellingRetryBtn = document.getElementById("bestSellingRetryBtn");
+
+    function updateBestSellingEmptyState() {
+      if (!bestSellingSectionEl || !bestSellingGridEl) return;
+      const cards = bestSellingGridEl.querySelectorAll(".product-card");
+      if (cards.length === 0) {
+        bestSellingSectionEl.classList.add("is-empty");
+        if (bestSellingViewAllBtn) bestSellingViewAllBtn.style.display = "none";
+      } else {
+        bestSellingSectionEl.classList.remove("is-empty");
+        if (bestSellingViewAllBtn) bestSellingViewAllBtn.style.display = "inline-flex";
+      }
+    }
+
+    if (bestSellingViewAllBtn) {
+      bestSellingViewAllBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!bestSellingSectionEl) return;
+        const isExpanded = bestSellingSectionEl.classList.toggle("is-expanded");
+        const isVi = document.documentElement.lang === "vi";
+        const textSpan = bestSellingViewAllBtn.querySelector(".btn-text") || bestSellingViewAllBtn;
+
+        if (isExpanded) {
+          textSpan.textContent = isVi ? "Thu Gọn" : "View Less";
+        } else {
+          textSpan.textContent = isVi ? "Xem Tất Cả" : "View All";
+          bestSellingSectionEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
+
+    if (bestSellingRetryBtn && bestSellingSectionEl) {
+      bestSellingRetryBtn.addEventListener("click", () => {
+        bestSellingSectionEl.classList.add("is-loading");
+        bestSellingSectionEl.classList.remove("is-empty");
+        setTimeout(() => {
+          bestSellingSectionEl.classList.remove("is-loading");
+          updateBestSellingEmptyState();
+        }, 600);
+      });
+    }
+
+    updateBestSellingEmptyState();
 
     /* ====================================================
      * 5. Flash Sale Carousel Navigation Buttons
