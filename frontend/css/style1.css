@@ -1800,6 +1800,40 @@ main,
   padding-top: 10px;
 }
 
+/* Ẩn các sản phẩm mở rộng khi chưa mở */
+.best-selling-section .product-card--extra {
+  display: none;
+}
+
+/* Khi bấm View All (thêm class .is-expanded): hiện toàn bộ */
+.best-selling-section.is-expanded .product-card--extra {
+  display: flex;
+  animation: bestSellingFadeIn 0.35s ease forwards;
+}
+
+@keyframes bestSellingFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.best-selling-section .section-view-all-btn {
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
 /* ========================================================
    5. PROMOTIONAL BIG BANNER (MUSIC EXPERIENCE)
    ======================================================== */
