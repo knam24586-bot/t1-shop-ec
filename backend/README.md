@@ -13,12 +13,30 @@ Backend của dự án thương mại điện tử T1 Shop EC, xây dựng bằn
   - `ProductVariant`
   - `Vendor`
   - `Store`
+- Vendor Store Management API: Vendor xem/cập nhật Store được gán qua `X-Role: VENDOR`
+  và `X-Store-Id`; dữ liệu trả về không bao gồm thông tin Vendor nội bộ.
 - CORS để frontend gọi API
 - Swagger UI tự sinh tại `/docs`
 
 Các model sản phẩm, biến thể, vendor và store đã được định nghĩa ở tầng dữ liệu. Router CRUD riêng cho các model này sẽ được bổ sung theo từng task.
 
 ## Category API
+
+## Vendor Store API
+
+Vendor chỉ được truy cập Store có ID trong header `X-Store-Id`. Admin có thể
+truy cập Store bất kỳ; endpoint `/api/stores/me` vẫn cần header này.
+
+| Method | URL | Mô tả |
+|---|---|---|
+| GET | `/api/stores/me` | Xem Store được gán |
+| PATCH | `/api/stores/me` | Cập nhật thông tin Store được gán |
+| GET | `/api/stores/{id}` | Xem Store theo ID |
+| PATCH | `/api/stores/{id}` | Cập nhật Store theo ID |
+
+Vendor được cập nhật tên, email, số điện thoại và địa chỉ; chỉ Admin được đổi
+`status`. Hai endpoint đều từ chối Vendor truy cập Store khác với
+`X-Store-Id`.
 
 Các endpoint danh mục nằm dưới `/api/categories`. Endpoint đọc không yêu cầu quyền; endpoint tạo, cập nhật và vô hiệu hóa yêu cầu header quản trị:
 
