@@ -822,6 +822,38 @@
         categoryGrid.scrollBy({ left: 200, behavior: "smooth" });
       });
     }
+
+    /* ====================================================
+     * 9. Image Fallback Handling (Tự động phục hồi ảnh lỗi)
+     * ==================================================== */
+    const FALLBACK_IMAGE = "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22300%22%20viewBox%3D%220%200%20300%20300%22%20fill%3D%22none%22%3E%3Crect%20width%3D%22300%22%20height%3D%22300%22%20fill%3D%22%23F5F5F5%22%2F%3E%3Cpath%20d%3D%22M150%20110c-16.57%200-30%2013.43-30%2030s13.43%2030%2030%2030%2030-13.43%2030-30-13.43-30-30-30zm0%2048c-9.94%200-18-8.06-18-18s8.06-18%2018-18%2018%208.06%2018%2018-8.06%2018-18%2018zm60-88H90c-11.05%200-20%208.95-20%2020v120c0%2011.05%208.95%2020%2020%2020h120c11.05%200%2020-8.95%2020-20V90c0-11.05-8.95-20-20-20zm8%20140c0%204.41-3.59%208-8%208H90c-4.41%200-8-3.59-8-8V90c0-4.41%203.59-8%208-8h120c4.41%200%208%203.59%208%208v120z%22%20fill%3D%22%23B0B0B0%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22225%22%20text-anchor%3D%22middle%22%20fill%3D%22%23888888%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20font-weight%3D%22500%22%3EImage%20Not%20Available%3C%2Ftext%3E%3C%2Fsvg%3E";
+
+    function setupImageFallback(img) {
+      if (!img) return;
+      img.addEventListener("error", function () {
+        if (this.dataset.fallbackApplied === "final") return;
+        if (this.dataset.fallbackApplied === "alt-path") {
+          this.dataset.fallbackApplied = "final";
+          this.src = FALLBACK_IMAGE;
+          return;
+        }
+        this.dataset.fallbackApplied = "alt-path";
+        if (this.src.includes("/frontend/assets/")) {
+          this.src = this.src.replace(/.*\/frontend\/assets\//, "../assets/");
+        } else if (this.src.includes("../assets/")) {
+          this.src = this.src.replace(/.*\/assets\//, "/frontend/assets/");
+        } else {
+          this.src = FALLBACK_IMAGE;
+        }
+      });
+
+      if (img.complete && img.naturalWidth === 0) {
+        img.dataset.fallbackApplied = "final";
+        img.src = FALLBACK_IMAGE;
+      }
+    }
+
+    document.querySelectorAll("img").forEach(setupImageFallback);
   }
 
   if (document.readyState === "loading") {
