@@ -16,16 +16,17 @@
 </head>
 
 <body>
-  <!-- Header chính của T1 Shop -->
+  <!-- Header chính của T1 Shop (Lấy chuẩn từ test.html & wishlist.css) -->
   <header class="site-header">
+    <!-- Thanh khuyến mãi phía trên -->
     <div class="announcement">
       <div class="announcement__inner">
         <p>
           Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%!
-          <a href="./Shop.html">ShopNow</a>
+          <a href="#shop">ShopNow</a>
         </p>
 
-        <!-- Bộ chuyển đổi ngôn ngữ -->
+        <!-- Bộ chuyển đổi ngôn ngữ (English / Tiếng Việt) -->
         <div class="language-picker" id="languagePicker">
           <button class="language" id="languageBtn" type="button" aria-label="Chọn ngôn ngữ" aria-expanded="false"
             aria-haspopup="true">
@@ -52,11 +53,13 @@
       </div>
     </div>
 
+    <!-- Header chính -->
     <div class="main-header">
       <div class="main-header__inner">
-        <a class="brand" href="./E-CommerceHomePage.html" aria-label="Trang chủ T1 Shop">
-          <img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="Logo T1 Shop"
-            onerror="this.onerror=null; this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png';">
+        <a class="brand" href="./E-CommerceHomePage.html" aria-label="Trang chủ">
+          <img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png"
+            onerror="this.onerror=null; this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png';"
+            alt="Logo thương hiệu">
         </a>
 
         <button class="menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false"
@@ -65,8 +68,7 @@
         </button>
 
         <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
-          <a class="navigation__link" href="./E-CommerceHomePage.html">Home</a>
-          <a class="navigation__link navigation__link--active" href="./Shop.html">Shop</a>
+          <a class="navigation__link navigation__link--active" href="./E-CommerceHomePage.html">Home</a>
           <a class="navigation__link" href="#contact">Contact</a>
           <a class="navigation__link" href="#about">About</a>
           <a class="navigation__link" href="./Sign-in.html">Sign Up</a>
@@ -74,7 +76,8 @@
 
         <div class="header-actions">
           <form class="search" role="search" action="./Shop.html" method="get">
-            <input type="search" name="q" placeholder="What are you looking for?" aria-label="Tìm kiếm sản phẩm">
+            <input type="search" name="q" placeholder="What are you looking for?" aria-label="Tìm kiếm sản phẩm" autocomplete="off">
+            <button class="search-clear-btn" type="button" aria-label="Xóa từ khóa" style="display: none;"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
             <button type="submit" aria-label="Tìm kiếm">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="10.8" cy="10.8" r="6.8"></circle>
@@ -83,7 +86,7 @@
             </button>
           </form>
 
-          <a class="icon-link" href="./WishList.html" aria-label="Danh sách yêu thích">
+          <a class="icon-link" href="./WishList.html" aria-label="Wishlist">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
               </path>
@@ -97,18 +100,24 @@
               <circle cx="18" cy="20" r="1.2"></circle>
             </svg>
           </a>
+
+          <a class="icon-link account-link" href="./AccountDropdownWithAccount.html" aria-label="Tài khoản">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
+            </svg>
+          </a>
         </div>
       </div>
     </div>
   </header>
+
 
   <!-- Nội dung trang Shop -->
   <main>
     <!-- Breadcrumb -->
     <nav class="shop-breadcrumb" aria-label="Breadcrumb">
       <a href="./E-CommerceHomePage.html">Home</a>
-      <span>/</span>
-      <a href="./Shop.html" id="breadcrumbShop">Shop</a>
       <span>/</span>
       <span class="current" id="breadcrumbCurrent">All Products</span>
     </nav>
@@ -120,18 +129,6 @@
           <div class="shop-title-bar"></div>
           <h1 class="shop-title" id="shopPageTitle">Explore Our Products</h1>
           <span class="shop-product-count" id="shopProductCount">(Loading...)</span>
-        </div>
-
-        <!-- Thanh nút demo tiêu chí nghiệm thu (Dành cho kiểm thử) -->
-        <div class="shop-demo-controls">
-          <span class="shop-demo-controls__label">Test UI:</span>
-          <button class="demo-btn" id="demoToggleLoading" type="button"
-            title="Bật/tắt hiệu ứng khung xương tải dữ liệu">
-            ⚡ Loading Skeleton
-          </button>
-          <button class="demo-btn" id="demoToggleEmpty" type="button" title="Mô phỏng trường hợp không có sản phẩm">
-            📦 Empty State
-          </button>
         </div>
       </div>
 
@@ -150,15 +147,37 @@
         </div>
 
         <div class="shop-filter-actions">
+          <!-- Ô tìm kiếm kèm nút Xóa nhanh -->
           <div class="shop-search-box">
             <input class="shop-search-input" id="shopSearchInput" type="text" placeholder="Search products..."
               aria-label="Tìm kiếm nhanh">
+            <button class="shop-search-clear" id="shopSearchClear" type="button" aria-label="Xóa từ khóa" style="display: none;"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
             <svg class="shop-search-icon" viewBox="0 0 24 24">
               <circle cx="10.8" cy="10.8" r="6.8"></circle>
               <path d="m16 16 5 5"></path>
             </svg>
           </div>
 
+          <!-- Bộ lọc khoảng giá (Price Range Filter) -->
+          <div class="shop-price-filter-wrap">
+            <select class="shop-filter-select" id="shopPriceFilter" aria-label="Lọc theo khoảng giá">
+              <option value="all">All Prices</option>
+              <option value="0-100">Under $100</option>
+              <option value="100-500">$100 – $500</option>
+              <option value="500-1000">$500 – $1,000</option>
+              <option value="1000-plus">Over $1,000</option>
+              <option value="custom">Custom Range...</option>
+            </select>
+
+            <div class="shop-price-custom" id="shopPriceCustom" style="display: none;">
+              <input type="number" id="shopPriceMin" class="shop-price-num" placeholder="Min $" min="0" aria-label="Giá tối thiểu">
+              <span class="shop-price-dash">–</span>
+              <input type="number" id="shopPriceMax" class="shop-price-num" placeholder="Max $" min="0" aria-label="Giá tối đa">
+              <button type="button" id="shopPriceApply" class="shop-price-apply-btn" aria-label="Áp dụng giá">Apply</button>
+            </div>
+          </div>
+
+          <!-- Sắp xếp -->
           <select class="shop-sort-select" id="shopSortSelect" aria-label="Sắp xếp sản phẩm">
             <option value="featured">Featured</option>
             <option value="price-low">Price: Low to High</option>
@@ -166,6 +185,13 @@
             <option value="rating">Highest Rated</option>
           </select>
         </div>
+      </div>
+
+      <!-- Thanh hiển thị tiêu chí lọc đang kích hoạt (Active Filters Bar) -->
+      <div class="shop-active-filters" id="shopActiveFilters" style="display: none;">
+        <span class="active-filters-label" id="activeFiltersLabel">Active Filters:</span>
+        <div class="active-filters-chips" id="activeFiltersChips"></div>
+        <button class="active-filters-clear-all" id="clearAllFiltersBtn" type="button">Clear All</button>
       </div>
     </section>
 
@@ -311,7 +337,7 @@
               <span class="product-modal__stock product-modal__stock--in" id="modalProductStock">In Stock</span>
             </div>
 
-            <div class="product-modal__pricing">
+            <div class="product-modal__price-row">
               <span class="product-modal__price" id="modalProductPrice">$0</span>
               <span class="product-modal__old-price" id="modalProductOldPrice" style="display: none;">$0</span>
             </div>
@@ -321,17 +347,18 @@
               durability. Backed by 100% genuine warranty from T1 Shop.
             </p>
 
-            <div class="product-modal__controls">
+            <div class="product-modal__divider-line"></div>
+
+            <!-- Tùy chọn số lượng & Nút hành động -->
+            <div class="product-modal__actions">
               <div class="product-modal__qty">
-                <button class="product-modal__qty-btn" id="modalQtyMinus" type="button"
-                  aria-label="Giảm số lượng">-</button>
-                <input class="product-modal__qty-input" id="modalQtyInput" type="number" value="1" min="1" max="99"
+                <button type="button" class="qty-btn" id="modalQtyMinus" aria-label="Giảm số lượng">-</button>
+                <input type="number" id="modalQtyInput" class="product-modal__qty-input" value="1" min="1" max="99"
                   aria-label="Số lượng">
-                <button class="product-modal__qty-btn" id="modalQtyPlus" type="button"
-                  aria-label="Tăng số lượng">+</button>
+                <button type="button" class="qty-btn" id="modalQtyPlus" aria-label="Tăng số lượng">+</button>
               </div>
 
-              <button class="product-modal__add-btn" id="modalAddCartBtn" type="button">
+              <button class="btn-primary-red product-modal__buy-btn product-modal__add-btn" id="modalAddCartBtn" type="button">
                 <svg viewBox="0 0 24 24">
                   <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
                   <circle cx="9" cy="20" r="1.2" />
@@ -357,101 +384,70 @@
     </div>
   </main>
 
-  <!-- Footer chuẩn của T1 Shop -->
   <footer class="site-footer">
     <div class="footer-container">
+
+      <!-- Cột 1: Exclusive & Subscribe -->
       <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
         <h2 id="newsletter-title">T1shop</h2>
         <p class="column-subtitle">Subscribe</p>
         <p class="newsletter-copy">Get 10% off your first order</p>
         <form class="subscribe-form" action="#subscribe" method="post"
           onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
-          <label class="sr-only" for="subscriber-email">Nhập email của bạn</label>
-          <input id="subscriber-email" type="email" placeholder="Enter your email" required>
-          <button type="submit" aria-label="Gửi email">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 12h18M15 6l6 6-6 6" />
+          <label class="visually-hidden" for="subscriber-email">Enter your email</label>
+          <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+          <button type="submit" aria-label="Gửi đăng ký">
+            <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
             </svg>
           </button>
         </form>
       </section>
 
-      <nav class="footer-column" aria-labelledby="support-title">
-        <h2 id="support-title">Support</h2>
-        <address class="footer-address">
-          Hanoi, Vietnam.
-        </address>
-        <ul class="footer-links">
+      <!-- Cột 2: Support -->
+      <nav class="footer-column" aria-label="Support">
+        <h2>Support</h2>
+        <ul>
+          <li><a href="#">PTIT</a></li>
           <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
           <li><a href="tel:+84015888889999">+84015-88888-9999</a></li>
         </ul>
       </nav>
 
-      <nav class="footer-column" aria-labelledby="account-title">
-        <h2 id="account-title">Account</h2>
-        <ul class="footer-links">
-          <li><a href="./AccountDropdownWithAccount.html">My Account</a></li>
-          <li><a href="./Login.html">Login / Register</a></li>
-          <li><a href="#cart">Cart</a></li>
-          <li><a href="./WishList.html">Wishlist</a></li>
-          <li><a href="./Shop.html">Shop</a></li>
+      <!-- Cột 3: Account -->
+      <nav class="footer-column" aria-label="Account">
+        <h2>Account</h2>
+        <ul>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">Login / Register</a></li>
+          <li><a href="#">Cart</a></li>
+          <li><a href="/frontend/pages/WishList.html">Wishlist</a></li>
+          <li><a href="#">Shop</a></li>
         </ul>
       </nav>
 
-      <nav class="footer-column" aria-labelledby="quicklink-title">
-        <h2 id="quicklink-title">Quick Link</h2>
-        <ul class="footer-links">
-          <li><a href="#privacy">Privacy Policy</a></li>
-          <li><a href="#terms">Terms Of Use</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contact">Contact</a></li>
+      <!-- Cột 4: Quick Link -->
+      <nav class="footer-column" aria-label="Quick links">
+        <h2>Quick Link</h2>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
         </ul>
       </nav>
-
-      <section class="footer-column footer-download" aria-labelledby="download-title">
-        <h2 id="download-title">Download App</h2>
-        <p class="download-caption">Save $3 with App New User Only</p>
-        <div class="app-distribution">
-          <div class="qr-placeholder" aria-label="Mã QR tải ứng dụng">
-            <svg viewBox="0 0 24 24" width="70" height="70" fill="currentColor">
-              <path
-                d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm13-2h3v2h-3zm-5 0h2v3h-2zm2 3h3v2h-3zm-2 2h2v4h-2zm4 2h3v2h-3z" />
-            </svg>
-          </div>
-          <div class="store-buttons">
-            <a class="store-btn" href="#google-play" aria-label="Google Play">Google Play</a>
-            <a class="store-btn" href="#app-store" aria-label="App Store">App Store</a>
-          </div>
-        </div>
-
-        <ul class="social-links" aria-label="Mạng xã hội">
-          <li><a href="#facebook" aria-label="Facebook"><svg viewBox="0 0 24 24">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-              </svg></a></li>
-          <li><a href="#twitter" aria-label="Twitter"><svg viewBox="0 0 24 24">
-                <path
-                  d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
-              </svg></a></li>
-          <li><a href="#instagram" aria-label="Instagram"><svg viewBox="0 0 24 24">
-                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-              </svg></a></li>
-          <li><a href="#linkedin" aria-label="LinkedIn"><svg viewBox="0 0 24 24">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                <rect width="4" height="12" x="2" y="9" />
-                <circle cx="4" cy="4" r="2" />
-              </svg></a></li>
-        </ul>
-      </section>
     </div>
 
+    <!-- Dòng bản quyền phía dưới -->
     <div class="footer-bottom">
-      <p>© Copyright Rimel 2026. All right reserved</p>
+      <p>© Copyright Rimel 2022. All right reserved</p>
     </div>
   </footer>
 
-  <!-- Header scripts: Menu toggle & Language switcher -->
+  <!-- Header scripts: Menu toggle & Language switcher (Đồng bộ 100% test.html) -->
   <script>
     (function () {
       const menuButton = document.querySelector(".menu-toggle");
@@ -465,84 +461,82 @@
         });
       }
 
-      const langBtn = document.getElementById("languageBtn");
-      const langDropdown = document.getElementById("languageDropdown");
-      const langOptions = document.querySelectorAll(".language-item");
-      const currentLangLabel = document.getElementById("currentLangLabel");
+      var langBtn = document.getElementById("languageBtn");
+      var langDropdown = document.getElementById("languageDropdown");
+      var langOptions = document.querySelectorAll(".language-item");
+      var currentLangLabel = document.getElementById("currentLangLabel");
 
       function applyLanguage(lang) {
-        const isVi = lang === "vi";
-        if (currentLangLabel) currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
-
+        var isVi = lang === "vi";
+        if (currentLangLabel) {
+          currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
+        }
         langOptions.forEach(function (item) {
-          const itemLang = item.getAttribute("data-lang");
-          item.classList.toggle("language-item--active", itemLang === lang);
+          item.classList.toggle("language-item--active", item.getAttribute("data-lang") === lang);
         });
-
-        const announceText = document.querySelector(".announcement__inner p");
+        var announceText = document.querySelector(".announcement__inner p");
         if (announceText) {
-          const shopLink = announceText.querySelector("a");
-          const linkHref = shopLink ? shopLink.getAttribute("href") : "./Shop.html";
+          var shopLink = announceText.querySelector("a");
+          var linkHref = shopLink ? shopLink.getAttribute("href") : "./Shop.html";
           announceText.innerHTML = isVi
             ? 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>'
             : 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
         }
-
-        const navLinks = document.querySelectorAll(".navigation .navigation__link");
-        if (navLinks.length >= 5) {
+        var navLinks = document.querySelectorAll(".navigation .navigation__link");
+        if (navLinks.length >= 4) {
           navLinks[0].textContent = isVi ? "Trang Chủ" : "Home";
-          navLinks[1].textContent = isVi ? "Cửa Hàng" : "Shop";
-          navLinks[2].textContent = isVi ? "Liên Hệ" : "Contact";
-          navLinks[3].textContent = isVi ? "Giới Thiệu" : "About";
-          navLinks[4].textContent = isVi ? "Đăng Ký" : "Sign Up";
+          navLinks[1].textContent = isVi ? "Liên Hệ" : "Contact";
+          navLinks[2].textContent = isVi ? "Giới Thiệu" : "About";
+          navLinks[3].textContent = isVi ? "Đăng Ký" : "Sign Up";
         }
-
-        const searchInput = document.querySelector(".search input");
+        var searchInput = document.querySelector(".search input");
         if (searchInput) {
           searchInput.placeholder = isVi ? "Bạn đang tìm kiếm gì?" : "What are you looking for?";
         }
-
         document.documentElement.lang = lang;
       }
 
       if (langBtn && langDropdown) {
+        function toggleDropdown(show) {
+          var isOpen = typeof show === "boolean" ? show : !langDropdown.classList.contains("language-dropdown--open");
+          langDropdown.classList.toggle("language-dropdown--open", isOpen);
+          langBtn.setAttribute("aria-expanded", String(isOpen));
+        }
+
         langBtn.addEventListener("click", function (e) {
           e.stopPropagation();
-          const isOpen = langDropdown.classList.toggle("language-dropdown--open");
-          langBtn.setAttribute("aria-expanded", String(isOpen));
+          toggleDropdown();
         });
 
         langOptions.forEach(function (opt) {
           opt.addEventListener("click", function (e) {
             e.stopPropagation();
-            const selectedLang = opt.getAttribute("data-lang");
+            var selectedLang = opt.getAttribute("data-lang");
             if (selectedLang) {
               applyLanguage(selectedLang);
-              try {
-                localStorage.setItem("t1_selected_lang", selectedLang);
-              } catch (err) { }
+              try { localStorage.setItem("t1_selected_lang", selectedLang); } catch (err) { }
             }
-            langDropdown.classList.remove("language-dropdown--open");
-            langBtn.setAttribute("aria-expanded", "false");
+            toggleDropdown(false);
           });
         });
 
         document.addEventListener("click", function (e) {
-          if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
-            langDropdown.classList.remove("language-dropdown--open");
-            langBtn.setAttribute("aria-expanded", "false");
-          }
+          if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) toggleDropdown(false);
         });
-      }
 
-      var savedLang = "en";
-      try {
-        savedLang = localStorage.getItem("t1_selected_lang") || "en";
-      } catch (err) { }
-      applyLanguage(savedLang);
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") toggleDropdown(false);
+        });
+
+        var savedLang = "en";
+        try { savedLang = localStorage.getItem("t1_selected_lang") || "en"; } catch (err) { }
+        applyLanguage(savedLang);
+      }
     })();
   </script>
 
+  <!-- Global Search Bar & Live Autocomplete -->
+  <script src="../js/search-bar.js"></script>
   <!-- Script quản lý sản phẩm, phân trang, lọc, tìm kiếm, modal chi tiết -->
   <script src="../js/shop.js"></script>
 </body>
