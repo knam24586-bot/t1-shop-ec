@@ -57,6 +57,7 @@ def add_to_cart(
         db=db,
         user_id=current_user.id,
         variant_id=payload.variant_id,
+        product_id=payload.product_id,
         quantity=payload.quantity,
     )
     return CartActionMessage(

@@ -1,139 +1,67 @@
-# Backend T1 Shop EC
+# T1 Shop EC — Backend
 
-Backend của dự án thương mại điện tử T1 Shop EC, xây dựng bằng FastAPI và SQLAlchemy, kết nối MySQL qua PyMySQL.
+FastAPI, SQLAlchemy 2 và MySQL 8. SQLAlchemy models là nguồn schema chính; các migration có revision được áp dụng qua một lệnh duy nhất.
 
-## Chức năng hiện có
+## Khởi tạo hoặc nâng cấp database
 
-- Kết nối MySQL bằng cấu hình trong `.env`
-- Health check kiểm tra trạng thái API và database
-- CRUD mẫu cho bảng `items`
-- SQLAlchemy models cho:
-  - `Category`
-  - `Product`
-  - `ProductVariant`
-  - `Vendor`
-  - `Store`
-- Vendor Store Management API: Vendor xem/cập nhật Store được gán qua `X-Role: VENDOR`
-  và `X-Store-Id`; dữ liệu trả về không bao gồm thông tin Vendor nội bộ.
-- CORS để frontend gọi API
-- Swagger UI tự sinh tại `/docs`
-
-Các model sản phẩm, biến thể, vendor và store đã được định nghĩa ở tầng dữ liệu. Router CRUD riêng cho các model này sẽ được bổ sung theo từng task.
-
-## Category API
-
-## Vendor Store API
-
-Vendor chỉ được truy cập Store có ID trong header `X-Store-Id`. Admin có thể
-truy cập Store bất kỳ; endpoint `/api/stores/me` vẫn cần header này.
-
-| Method | URL | Mô tả |
-|---|---|---|
-| GET | `/api/stores/me` | Xem Store được gán |
-| PATCH | `/api/stores/me` | Cập nhật thông tin Store được gán |
-| GET | `/api/stores/{id}` | Xem Store theo ID |
-| PATCH | `/api/stores/{id}` | Cập nhật Store theo ID |
-
-Vendor được cập nhật tên, email, số điện thoại và địa chỉ; chỉ Admin được đổi
-`status`. Hai endpoint đều từ chối Vendor truy cập Store khác với
-`X-Store-Id`.
-
-Các endpoint danh mục nằm dưới `/api/categories`. Endpoint đọc không yêu cầu quyền; endpoint tạo, cập nhật và vô hiệu hóa yêu cầu header quản trị:
-
-```http
-X-Admin-Role: admin
-```
-
-| Method | URL | Mô tả |
-|---|---|---|
-| GET | `/api/categories` | Danh sách danh mục |
-| GET | `/api/categories/{id}` | Chi tiết danh mục |
-| POST | `/api/categories` | Tạo danh mục |
-| PUT | `/api/categories/{id}` | Cập nhật danh mục |
-| PATCH | `/api/categories/{id}/disable` | Chuyển trạng thái sang `Inactive` |
-
-Body tạo/cập nhật hỗ trợ `name`, `slug`, `status` và `parent_id`. `slug` phải ở dạng chữ thường, số và dấu gạch ngang; `parent_id` phải trỏ tới danh mục tồn tại và không được trỏ tới chính danh mục đó.
-
-## Cấu trúc
-
-```text
-backend/
-├── app/
-│   ├── core/config.py       # Đọc cấu hình từ .env
-│   ├── crud/                # Logic truy vấn dữ liệu
-│   ├── db/session.py        # Base, engine và database session
-│   ├── models/              # SQLAlchemy models
-│   ├── routers/             # FastAPI routers
-│   └── schemas/             # Pydantic schemas
-├── sql/init.sql             # Tạo database, bảng và dữ liệu mẫu
-├── requirements.txt
-└── .env.example
-```
-
-## Yêu cầu
-
-- Python 3.10 trở lên
-- MySQL 8 trở lên
-
-## Cài đặt và chạy
-
-### 1. Tạo database
-
-Chạy toàn bộ file `sql/init.sql` bằng MySQL Workbench.
-
-### 2. Tạo cấu hình
+Từ thư mục `backend`, cấu hình `.env`, sau đó chạy:
 
 ```powershell
+python -m app.db.migrate
+```
+
+Lệnh này tạo database khi tài khoản DB có quyền, tạo các bảng còn thiếu, nâng cấp schema cũ, ghi revision đã áp dụng và tạo dữ liệu mẫu cho trang Shop. Chạy lại lệnh này an toàn; dữ liệu hiện có được giữ lại. Không chạy `sql/init.sql` bằng Workbench hoặc để Docker tự nạp file SQL.
+
+`sql/init.sql` là bản SQL tham chiếu được sinh từ model hiện tại. Cập nhật bản tham chiếu sau khi sửa model bằng:
+
+```powershell
+python -m app.db.migrate --write-sql
+```
+
+## Cài đặt và chạy local
+
+```powershell
+cd backend
 copy .env.example .env
 ```
 
-Điền thông tin kết nối trong `.env`:
-
-```env
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=mat_khau_mysql
-DB_NAME=t1shop_db
-```
-
-### 3. Cài dependency
+Điền kết nối MySQL trong `.env`, cài dependency và khởi tạo schema:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-```
-
-### 4. Chạy server
-
-```powershell
+python -m app.db.migrate
 uvicorn app.main:app --reload
 ```
 
-Truy cập:
+Mặc định API ở `http://127.0.0.1:8000`; Swagger tại `/docs`; health check tại `/api/health`.
 
-- API: `http://127.0.0.1:8000`
-- Health check: `http://127.0.0.1:8000/api/health`
-- Swagger UI: `http://127.0.0.1:8000/docs`
-
-## Kiểm tra
+## MySQL bằng Docker
 
 ```powershell
-python -m compileall -q app
-```
-
-Khi thêm hoặc sửa model:
-
-1. Cập nhật file model tương ứng.
-2. Đăng ký model trong `app/models/__init__.py`.
-3. Cập nhật `sql/init.sql`.
-4. Kiểm tra lại metadata và chạy compile.
-
-## Docker MySQL (tùy chọn)
-
-```powershell
+cd backend
 docker compose up -d
+copy .env.example .env
 ```
 
-Docker expose MySQL tại cổng `3307` trên host. Khi đó đặt `DB_PORT=3307` trong `.env`.
+Trong `.env`, dùng `DB_HOST=127.0.0.1`, `DB_PORT=3307`, `DB_USER=app_user`, `DB_PASSWORD=app_password`, `DB_NAME=t1shop_db`, rồi chạy đúng lệnh `python -m app.db.migrate` như trên. Compose chỉ cung cấp MySQL; schema được tạo và nâng cấp bởi migrator.
+
+## Đăng nhập và quyền
+
+- `POST /api/auth/register`: tạo tài khoản CUSTOMER và trả access token.
+- `POST /api/auth/login`: đăng nhập bằng email/mật khẩu.
+- Các API cần tài khoản nhận `Authorization: Bearer <access_token>`.
+- Role và `store_id` được đọc từ bản ghi User hiện tại trong database. Không dùng `X-User-Id`, `X-Role`, `X-Store-Id` hay `X-Admin-Role` để cấp quyền.
+- Để tạo administrator đầu tiên, đặt `BOOTSTRAP_ADMIN_EMAIL` và `BOOTSTRAP_ADMIN_PASSWORD` (ít nhất 12 ký tự) trong `.env`, rồi chạy migrator. Tài khoản chỉ được tạo nếu email chưa tồn tại; migrator không tự nâng quyền tài khoản cũ.
+- `JWT_SECRET` trong ví dụ chỉ dành cho local development. Trước khi đặt `APP_ENV=production`, thay bằng secret ngẫu nhiên riêng dài tối thiểu 32 ký tự.
+
+## Luồng mua hàng hiện có
+
+1. Đăng ký hoặc đăng nhập.
+2. `GET /api/products`, `GET/POST/PUT/DELETE /api/cart` để xem và sửa giỏ hàng.
+3. `POST /api/orders/checkout` với địa chỉ giao hàng và `payment_method: "COD"`.
+4. Trong cùng transaction, backend kiểm tra tồn kho, tạo order/order items/payment, giảm tồn kho biến thể và sản phẩm, rồi dọn cart.
+5. `GET /api/orders/{id}` chỉ trả đơn hàng thuộc tài khoản đang đăng nhập.
+
+Checkout luôn lấy giá từ database, khóa các dòng tồn kho khi xử lý và rollback toàn bộ nếu có lỗi.

@@ -3,13 +3,20 @@ from __future__ import annotations
 
 from datetime import datetime
 from decimal import Decimal
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class CartItemAdd(BaseModel):
     """Dữ liệu gửi lên khi thêm sản phẩm vào giỏ."""
-    variant_id: int = Field(..., gt=0, description="ID của biến thể sản phẩm")
+    variant_id: int | None = Field(default=None, gt=0, description="ID của biến thể sản phẩm")
+    product_id: int | None = Field(default=None, gt=0, description="Sản phẩm; chọn biến thể còn hàng đầu tiên")
     quantity: int = Field(1, gt=0, description="Số lượng muốn thêm (phải > 0)")
+
+    @model_validator(mode="after")
+    def require_product_or_variant(self):
+        if self.variant_id is None and self.product_id is None:
+            raise ValueError("Cần cung cấp product_id hoặc variant_id.")
+        return self
 
 
 class CartItemUpdate(BaseModel):

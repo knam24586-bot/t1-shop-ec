@@ -116,6 +116,8 @@ def filter_public_products(
 
 def create_product(db: Session, data: ProductCreate) -> Product:
     payload = data.model_dump(exclude={"variants"})
+    if data.variants:
+        payload["stock"] = sum(variant.stock for variant in data.variants)
     if payload["image_url"] is not None:
         payload["image_url"] = str(payload["image_url"])
     product = Product(**payload)
@@ -139,6 +141,7 @@ def update_product(db: Session, product: Product, data: ProductUpdate) -> Produc
         product.variants.extend(
             ProductVariant(**variant.model_dump()) for variant in data.variants
         )
+        product.stock = sum(variant.stock for variant in data.variants)
     db.commit()
     saved_product = get_product(db, product.id)
     assert saved_product is not None

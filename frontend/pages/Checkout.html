@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thanh toán | T1 Shop</title>
+  <link rel="stylesheet" href="../css/commerce.css">
+  <script src="../js/api.js" defer></script>
+  <script src="../js/checkout-page.js" defer></script>
+</head>
+<body>
+  <header class="commerce-header">
+    <div class="commerce-header-inner">
+      <a class="commerce-brand" href="./E-CommerceHomePage.html">T1 Shop</a>
+      <nav class="commerce-nav" aria-label="Điều hướng chính">
+        <a href="./Shop.html">Cửa hàng</a>
+        <a href="./Cart.html">Giỏ hàng</a>
+        <a href="./Login.html">Đăng nhập</a>
+      </nav>
+    </div>
+  </header>
+  <main class="commerce-main">
+    <h1>Thanh toán</h1>
+    <p class="commerce-muted">Hoàn tất thông tin giao hàng và thanh toán khi nhận hàng.</p>
+    <p id="checkoutMessage" class="commerce-alert" role="alert" hidden></p>
+    <section id="checkoutComplete" class="commerce-card commerce-success" hidden aria-live="polite"></section>
+    <form id="checkoutForm" class="commerce-card">
+      <div class="commerce-field">
+        <label for="shippingAddress">Địa chỉ giao hàng</label>
+        <textarea id="shippingAddress" name="shipping_address" rows="3" minlength="8" maxlength="255" required></textarea>
+      </div>
+      <div class="commerce-field">
+        <span>Phương thức thanh toán</span>
+        <label class="commerce-radio"><input type="radio" name="payment_method" value="COD" checked> Thanh toán khi nhận hàng (COD)</label>
+      </div>
+      <div id="checkoutSummary" class="commerce-total"><span>Tổng cộng</span><span>—</span></div>
+      <div class="commerce-actions">
+        <a class="commerce-button secondary" href="./Cart.html">Quay lại giỏ hàng</a>
+        <button id="placeOrderButton" class="commerce-button" type="submit">Đặt hàng</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

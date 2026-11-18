@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: app_db
+      MYSQL_DATABASE: t1shop_db
       MYSQL_USER: app_user
       MYSQL_PASSWORD: app_password
       TZ: Asia/Ho_Chi_Minh
@@ -20,8 +20,6 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      # Lần đầu tạo container, MySQL tự chạy sql/init.sql
-      - ./sql:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 5s

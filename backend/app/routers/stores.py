@@ -1,44 +1,41 @@
-"""HTTP endpoints xem và cập nhật cửa hàng của Vendor."""
+"""HTTP endpoints xem và cập nhật cửa hàng thuộc tài khoản hiện tại."""
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Path, status
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.core.deps import get_current_user
 from app.crud.store import get_store, update_store
 from app.db.session import get_db
+from app.models.user import User
 from app.schemas.store import StoreResponse, StoreUpdate
 
 router = APIRouter(prefix="/api/stores", tags=["stores"])
 DbSession = Annotated[Session, Depends(get_db)]
 
 
-def _store_context(
-    role: Annotated[str | None, Header(alias="X-Role")] = None,
-    assigned_store_id: Annotated[int | None, Header(alias="X-Store-Id")] = None,
-) -> tuple[str, int | None]:
-    normalized_role = role.upper() if role else ""
-    if normalized_role not in {"ADMIN", "VENDOR"}:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="X-Role must be ADMIN or VENDOR",
-        )
-    if normalized_role == "VENDOR" and assigned_store_id is None:
+def _require_store_role(user: User) -> tuple[str, int | None]:
+    role = user.role.upper()
+    if role not in {"ADMIN", "VENDOR"}:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Store requests require X-Store-Id",
+            detail="Admin or vendor access is required.",
         )
-    return normalized_role, assigned_store_id
+    if role == "VENDOR" and user.store_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Vendor account is not assigned to a store.",
+        )
+    return role, user.store_id
 
 
-def _get_authorized_store(
-    requested_store_id: int, db: Session, context: tuple[str, int | None]
-):
-    role, assigned_store_id = context
+def _get_authorized_store(requested_store_id: int, db: Session, user: User):
+    role, assigned_store_id = _require_store_role(user)
     if role == "VENDOR" and requested_store_id != assigned_store_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Vendor can only manage their assigned store",
+            detail="Vendor can only manage their assigned store.",
         )
     store = get_store(db, requested_store_id)
     if store is None:
@@ -49,14 +46,12 @@ def _get_authorized_store(
 @router.get("/me", response_model=StoreResponse)
 def read_assigned_store(
     db: DbSession,
-    context: Annotated[tuple[str, int | None], Depends(_store_context)],
+    current_user: User = Depends(get_current_user),
 ):
-    if context[1] is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="X-Store-Id is required for this endpoint",
-        )
-    return _get_authorized_store(context[1], db, context)
+    _, store_id = _require_store_role(current_user)
+    if store_id is None:
+        raise HTTPException(status_code=404, detail="No store is assigned to this account.")
+    return _get_authorized_store(store_id, db, current_user)
 
 
 @router.patch("/me", response_model=StoreResponse)
@@ -64,15 +59,13 @@ def read_assigned_store(
 def edit_assigned_store(
     data: StoreUpdate,
     db: DbSession,
-    context: Annotated[tuple[str, int | None], Depends(_store_context)],
+    current_user: User = Depends(get_current_user),
 ):
-    if context[1] is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="X-Store-Id is required for this endpoint",
-        )
-    store = _get_authorized_store(context[1], db, context)
-    if context[0] == "VENDOR" and data.status is not None:
+    _, store_id = _require_store_role(current_user)
+    if store_id is None:
+        raise HTTPException(status_code=404, detail="No store is assigned to this account.")
+    store = _get_authorized_store(store_id, db, current_user)
+    if current_user.role.upper() == "VENDOR" and data.status is not None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Vendor cannot change store status",
@@ -91,9 +84,9 @@ def edit_assigned_store(
 def read_store(
     store_id: Annotated[int, Path(gt=0)],
     db: DbSession,
-    context: Annotated[tuple[str, int | None], Depends(_store_context)],
+    current_user: User = Depends(get_current_user),
 ):
-    return _get_authorized_store(store_id, db, context)
+    return _get_authorized_store(store_id, db, current_user)
 
 
 @router.patch("/{store_id}", response_model=StoreResponse)
@@ -102,10 +95,10 @@ def edit_store(
     store_id: Annotated[int, Path(gt=0)],
     data: StoreUpdate,
     db: DbSession,
-    context: Annotated[tuple[str, int | None], Depends(_store_context)],
+    current_user: User = Depends(get_current_user),
 ):
-    store = _get_authorized_store(store_id, db, context)
-    if context[0] == "VENDOR" and data.status is not None:
+    store = _get_authorized_store(store_id, db, current_user)
+    if current_user.role.upper() == "VENDOR" and data.status is not None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Vendor cannot change store status",

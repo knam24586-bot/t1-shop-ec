@@ -323,6 +323,14 @@
     const toastEl = document.getElementById("shopToast");
     const toastMsgEl = toastEl ? toastEl.querySelector(".shop-toast-msg") : null;
     let toastTimer = null;
+    let currentModalProduct = null;
+
+    function formatPrice(product) {
+      if (product?.isBackendProduct) {
+        return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(Number(product.price));
+      }
+      return `$${product?.price ?? 0}`;
+    }
 
     function showToast(message) {
       if (!toastEl || !toastMsgEl) return;
@@ -366,27 +374,25 @@
     // Thử kết nối API backend nếu server đang chạy (không chặn UI nếu offline)
     async function tryFetchBackendProducts() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/products", { method: "GET" });
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            allProducts = data.map((item, idx) => ({
+        const data = await window.T1Api.get("/products");
+        if (Array.isArray(data)) {
+          allProducts = data.map((item, idx) => ({
               id: item.id || idx + 1,
               name: item.name || "Sản phẩm",
               category: "electronics",
               price: Number(item.price) || 100,
-              oldPrice: item.old_price ? Number(item.old_price) : null,
-              discount: item.discount || null,
-              badge: item.status || null,
-              badgeType: "sale",
+              oldPrice: null,
+              discount: null,
+              badge: null,
+              badgeType: null,
               rating: item.rating ? Number(item.rating) : 5.0,
-              reviewsCount: 45,
+              reviewsCount: 0,
               image: item.image_url || `../assets/images/products/Frame 60${(idx % 6) + 5}.png`,
-              stock: "In Stock",
-              description: item.description || "Sản phẩm chất lượng cao chính hãng từ T1 Shop."
+              stock: Number(item.stock) || 0,
+              description: item.description || "Sản phẩm chất lượng cao chính hãng từ T1 Shop.",
+              isBackendProduct: true,
             }));
-            applyFilterAndSort();
-          }
+          applyFilterAndSort();
         }
       } catch (e) {
         // Backend không mở -> tự động dùng MOCK_PRODUCTS mượt mà
@@ -437,7 +443,7 @@
         ? `<span class="shop-card__badge ${product.badgeType === 'new' ? 'shop-card__badge--new' : 'shop-card__badge--sale'}">${product.badge}</span>`
         : "";
       const oldPriceHtml = product.oldPrice
-        ? `<span class="shop-card__old-price">$${product.oldPrice}</span>`
+        ? `<span class="shop-card__old-price">${formatPrice({ ...product, price: product.oldPrice })}</span>`
         : "";
 
       return `
@@ -461,7 +467,7 @@
           <div class="shop-card__details">
             <h3 class="shop-card__name" data-action="open-detail">${product.name}</h3>
             <div class="shop-card__pricing">
-              <span class="shop-card__price">$${product.price}</span>
+              <span class="shop-card__price">${formatPrice(product)}</span>
               ${oldPriceHtml}
             </div>
             <div class="shop-card__rating">
@@ -591,12 +597,13 @@
     function openProductDetails(product) {
       if (!detailModal || !product) return;
       const isVi = document.documentElement.lang === "vi";
+      currentModalProduct = product;
 
       modalTitle.textContent = product.name;
-      modalPrice.textContent = `$${product.price}`;
+      modalPrice.textContent = formatPrice(product);
 
       if (product.oldPrice) {
-        modalOldPrice.textContent = `$${product.oldPrice}`;
+        modalOldPrice.textContent = formatPrice({ ...product, price: product.oldPrice });
         modalOldPrice.style.display = "inline";
       } else {
         modalOldPrice.style.display = "none";
@@ -610,7 +617,10 @@
         modalBadge.style.display = "none";
       }
 
-      modalStock.textContent = isVi ? "Còn hàng" : "In Stock";
+      const hasStock = !product.isBackendProduct || Number(product.stock) > 0;
+      modalStock.textContent = hasStock
+        ? (isVi ? `Còn hàng (${product.stock})` : `In Stock (${product.stock})`)
+        : (isVi ? "Hết hàng" : "Out of stock");
       modalDesc.textContent = isVi
         ? `Sản phẩm ${product.name} chính hãng chất lượng cao, thiết kế đón đầu xu hướng với độ bền vượt trội. Được bảo hành chính hãng 12 tháng tại hệ thống T1 Shop.`
         : `Authentic ${product.name} designed with premium quality and performance. Backed by 100% genuine warranty from T1 Shop.`;
@@ -632,6 +642,36 @@
       detailModal.classList.remove("is-open");
       detailModal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
+    }
+
+    async function addToCart(product, quantity = 1) {
+      const isVi = document.documentElement.lang === "vi";
+      if (!product?.isBackendProduct) {
+        showToast(isVi ? "Sản phẩm mẫu chưa có trong cơ sở dữ liệu." : "This demo product is not in the database.");
+        return false;
+      }
+      if (!window.T1Api.getToken()) {
+        window.location.href = "./Login.html?next=Shop.html";
+        return false;
+      }
+      try {
+        const result = await window.T1Api.post("/cart/items", {
+          product_id: product.id,
+          quantity: Number(quantity),
+        });
+        const cartLink = document.querySelector('.icon-link[aria-label="Giỏ hàng"]');
+        if (cartLink) cartLink.title = `${result.cart.total_items} sản phẩm trong giỏ`;
+        showToast(isVi ? `Đã thêm "${product.name}" vào giỏ hàng.` : `Added "${product.name}" to cart.`);
+        return true;
+      } catch (error) {
+        if (error.status === 401) {
+          window.T1Api.clearToken();
+          window.location.href = "./Login.html?next=Shop.html";
+          return false;
+        }
+        showToast(error.message || (isVi ? "Không thể thêm sản phẩm vào giỏ." : "Could not add this item."));
+        return false;
+      }
     }
 
     // ========================================================
@@ -681,11 +721,18 @@
         if (wishBtn) {
           e.preventDefault();
           e.stopPropagation();
-          const active = wishBtn.classList.toggle("is-active");
-          const isVi = document.documentElement.lang === "vi";
-          showToast(active
-            ? (isVi ? `Đã thêm "${product.name}" vào danh sách yêu thích!` : `Added "${product.name}" to wishlist!`)
-            : (isVi ? `Đã bỏ lưu "${product.name}"!` : `Removed "${product.name}" from wishlist!`));
+          if (!window.T1Api.getToken()) {
+            window.location.href = "./Login.html?next=Shop.html";
+            return;
+          }
+          const active = wishBtn.classList.contains("is-active");
+          const action = active
+            ? window.T1Api.delete(`/wishlist/products/${product.id}`)
+            : window.T1Api.post("/wishlist", { product_id: product.id });
+          action.then(() => {
+            wishBtn.classList.toggle("is-active", !active);
+            showToast(active ? "Đã xóa khỏi danh sách yêu thích." : "Đã thêm vào danh sách yêu thích.");
+          }).catch((error) => showToast(error.message || "Không thể cập nhật danh sách yêu thích."));
           return;
         }
 
@@ -694,8 +741,7 @@
         if (addCartBtn) {
           e.preventDefault();
           e.stopPropagation();
-          const isVi = document.documentElement.lang === "vi";
-          showToast(isVi ? `Đã thêm "${product.name}" vào giỏ hàng!` : `Added "${product.name}" to cart!`);
+          void addToCart(product, 1);
           return;
         }
 
@@ -815,12 +861,10 @@
     }
 
     if (modalAddCartBtn) {
-      modalAddCartBtn.addEventListener("click", () => {
-        const title = modalTitle.textContent.trim();
+      modalAddCartBtn.addEventListener("click", async () => {
         const qty = modalQtyInput ? modalQtyInput.value : 1;
-        const isVi = document.documentElement.lang === "vi";
-        showToast(isVi ? `Đã thêm ${qty}x "${title}" vào giỏ hàng!` : `Added ${qty}x "${title}" to cart!`);
-        closeProductDetails();
+        const added = await addToCart(currentModalProduct, qty);
+        if (added) closeProductDetails();
       });
     }
 

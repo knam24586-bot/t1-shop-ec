@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.models.cart import Cart
 from app.models.cart_item import CartItem
+from app.models.product import Product
 from app.models.variant import ProductVariant
 from app.schemas.cart import CartItemResponse, CartResponse
 
@@ -87,7 +88,8 @@ def build_cart_response(cart: Cart) -> CartResponse:
 def add_item_to_cart(
     db: Session,
     user_id: int,
-    variant_id: int,
+    variant_id: int | None,
+    product_id: int | None,
     quantity: int,
 ) -> CartResponse:
     """Thêm sản phẩm vào giỏ hàng:
@@ -102,18 +104,49 @@ def add_item_to_cart(
             detail=f"Số lượng thêm vào giỏ hàng phải lớn hơn 0 (nhận được {quantity}).",
         )
 
-    # 1. Kiểm tra variant tồn tại
-    variant = db.get(ProductVariant, variant_id)
+    # 1. Resolve a variant from the requested product when the client has no variant picker.
+    if variant_id is None and product_id is not None:
+        variant_id = db.scalar(
+            select(ProductVariant.id)
+            .join(Product)
+            .where(
+                ProductVariant.product_id == product_id,
+                ProductVariant.stock > 0,
+                Product.status == "Published",
+            )
+            .order_by(ProductVariant.id)
+            .limit(1)
+        )
+        if variant_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Sản phẩm hiện không có biến thể còn hàng.",
+            )
+
+    # 2. Check the variant and its published parent product.
+    variant = db.scalar(
+        select(ProductVariant)
+        .join(Product)
+        .where(
+            ProductVariant.id == variant_id,
+            Product.status == "Published",
+        )
+    )
     if not variant:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Biến thể sản phẩm với ID={variant_id} không tồn tại.",
+            detail="Sản phẩm hoặc biến thể không tồn tại hoặc không được bán.",
+        )
+    if product_id is not None and variant.product_id != product_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Biến thể không thuộc sản phẩm đã chọn.",
         )
 
-    # 2. Lấy giỏ hàng của user hiện tại
+    # 3. Lấy giỏ hàng của user hiện tại
     cart = get_or_create_user_cart(db, user_id)
 
-    # 3. Kiểm tra mục đã có trong giỏ chưa và kiểm tra tồn kho
+    # 4. Kiểm tra mục đã có trong giỏ chưa và kiểm tra tồn kho
     existing_item = next((i for i in cart.items if i.variant_id == variant_id), None)
     current_qty = existing_item.quantity if existing_item else 0
     requested_total_qty = current_qty + quantity
@@ -128,7 +161,7 @@ def add_item_to_cart(
             ),
         )
 
-    # 4. Áp dụng quy tắc gộp giỏ
+    # 5. Áp dụng quy tắc gộp giỏ
     if existing_item:
         existing_item.quantity = requested_total_qty
     else:

@@ -2,7 +2,7 @@
 from decimal import Decimal
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, File, Header, HTTPException, Query, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -25,8 +25,10 @@ from app.crud.product_image import (
     save_product_image,
 )
 from app.core.config import settings
+from app.core.deps import get_current_user
 from app.db.session import get_db
 from app.models.category import Category
+from app.models.user import User
 from app.schemas.product import (
     PRODUCT_STATUSES,
     ProductCreate,
@@ -42,19 +44,19 @@ IMAGE_CHUNK_SIZE = 64 * 1024
 
 
 def _role_context(
-    role: Annotated[str | None, Header(alias="X-Role")] = None,
-    store_id: Annotated[int | None, Header(alias="X-Store-Id")] = None,
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> tuple[str, int | None]:
-    normalized_role = role.upper() if role else ""
+    normalized_role = current_user.role.upper()
     if normalized_role not in {"ADMIN", "VENDOR"}:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="X-Role must be ADMIN or VENDOR",
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin or vendor access is required.",
         )
+    store_id = current_user.store_id
     if normalized_role == "VENDOR" and store_id is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Vendor requests require X-Store-Id",
+            detail="Vendor account is not assigned to a store.",
         )
     return normalized_role, store_id
 
@@ -88,11 +90,16 @@ def list_products(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"status must be one of {sorted(PRODUCT_STATUSES)}",
         )
+    if product_status not in {None, "Published"}:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only published products are available through the public catalog.",
+        )
     return get_products(
         db,
         keyword=keyword,
         category_id=category_id,
-        status=product_status,
+        status=product_status or "Published",
         store_id=store_id,
     )
 

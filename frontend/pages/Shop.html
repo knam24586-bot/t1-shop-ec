@@ -56,7 +56,7 @@
       <div class="main-header__inner">
         <a class="brand" href="./E-CommerceHomePage.html" aria-label="Trang chủ T1 Shop">
           <img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="Logo T1 Shop"
-            onerror="this.onerror=null; this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png';">
+            onerror="this.onerror=null; this.src='../assets/images/Worlds_2026_Simulator-removebg-preview.png';">
         </a>
 
         <button class="menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false"
@@ -67,8 +67,8 @@
         <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
           <a class="navigation__link" href="./E-CommerceHomePage.html">Home</a>
           <a class="navigation__link navigation__link--active" href="./Shop.html">Shop</a>
-          <a class="navigation__link" href="#contact">Contact</a>
-          <a class="navigation__link" href="#about">About</a>
+          <a class="navigation__link" href="./contact.html">Contact</a>
+          <a class="navigation__link" href="./E-CommerceHomePage.html#about">About</a>
           <a class="navigation__link" href="./Sign-in.html">Sign Up</a>
         </nav>
 
@@ -90,7 +90,7 @@
             </svg>
           </a>
 
-          <a class="icon-link" href="#cart" aria-label="Giỏ hàng">
+          <a class="icon-link" href="./Cart.html" aria-label="Giỏ hàng">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
               <circle cx="9" cy="20" r="1.2"></circle>
@@ -390,9 +390,9 @@
       <nav class="footer-column" aria-labelledby="account-title">
         <h2 id="account-title">Account</h2>
         <ul class="footer-links">
-          <li><a href="./AccountDropdownWithAccount.html">My Account</a></li>
+          <li><a href="./Login.html">My Account</a></li>
           <li><a href="./Login.html">Login / Register</a></li>
-          <li><a href="#cart">Cart</a></li>
+          <li><a href="./Cart.html">Cart</a></li>
           <li><a href="./WishList.html">Wishlist</a></li>
           <li><a href="./Shop.html">Shop</a></li>
         </ul>
@@ -404,7 +404,7 @@
           <li><a href="#privacy">Privacy Policy</a></li>
           <li><a href="#terms">Terms Of Use</a></li>
           <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="./contact.html">Contact</a></li>
         </ul>
       </nav>
 
@@ -544,6 +544,7 @@
   </script>
 
   <!-- Script quản lý sản phẩm, phân trang, lọc, tìm kiếm, modal chi tiết -->
+  <script src="../js/api.js"></script>
   <script src="../js/shop.js"></script>
 </body>
 

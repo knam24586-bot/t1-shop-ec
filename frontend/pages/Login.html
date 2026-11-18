@@ -8,12 +8,13 @@
 
     <link rel="stylesheet" href="../css/login.css" />
 
-    <script src="../js/auth-layout.js" defer></script>
+    <script src="../js/api.js" defer></script>
+    <script src="../js/auth.js" defer></script>
    
   </head>
 
   <body class="auth-page">
-    <div id="site-header"></div>
+    <nav class="auth-quick-nav"><a href="./E-CommerceHomePage.html">T1 Shop</a><a href="./Shop.html">Shop</a><a href="./Cart.html">Cart</a></nav>
 
     <main class="auth-main">
       <div class="auth-layout">
@@ -35,9 +36,9 @@
           <form id="loginForm">
             <input
               class="auth-input"
-              type="text"
+              type="email"
               id="loginEmail"
-              placeholder="Email or Phone Number"
+              placeholder="Email Address"
               required
             />
 
@@ -52,20 +53,21 @@
             <div class="auth-login-actions">
               <button type="submit" class="auth-btn">Log In</button>
 
-              <a href="#" class="auth-forgot" id="forgotPassword">
+                <a href="mailto:t1shop@gmail.com" class="auth-forgot" id="forgotPassword">
                 Forget Password?
               </a>
             </div>
           </form>
 
+          <p id="authError" class="auth-error" role="alert" hidden></p>
+
           <p class="auth-switch">
             Don't have an account?
-            <a href="signup.html">Sign up</a>
+            <a href="./Sign-in.html">Sign up</a>
           </p>
         </div>
       </div>
     </main>
 
-    <div id="site-footer"></div>
   </body>
 </html>

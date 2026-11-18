@@ -25,7 +25,11 @@ class Product(Base):
         nullable=False,
         index=True,
     )
-    store_id: Mapped[int | None] = mapped_column(nullable=True, index=True)
+    store_id: Mapped[int | None] = mapped_column(
+        ForeignKey("stores.id", ondelete="SET NULL", onupdate="CASCADE"),
+        nullable=True,
+        index=True,
+    )
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     slug: Mapped[str] = mapped_column(
         String(255), nullable=False, unique=True, index=True

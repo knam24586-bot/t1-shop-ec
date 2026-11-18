@@ -10,3 +10,8 @@ from app.models.store import Store  # noqa: F401
 from app.models.user import User  # noqa: F401
 from app.models.cart import Cart  # noqa: F401
 from app.models.cart_item import CartItem  # noqa: F401
+from app.models.order import Order  # noqa: F401
+from app.models.order_item import OrderItem  # noqa: F401
+from app.models.payment import Payment  # noqa: F401
+from app.models.voucher import Voucher  # noqa: F401
+from app.models.wishlist import Wishlist  # noqa: F401
