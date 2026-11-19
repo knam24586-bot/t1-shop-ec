@@ -4,6 +4,7 @@ from decimal import Decimal
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
+from app.models.category import Category
 from app.models.product import Product
 from app.models.variant import ProductVariant
 from app.schemas.product import ProductCreate, ProductUpdate
@@ -33,6 +34,29 @@ def get_products(
     return list(db.scalars(query).unique())
 
 
+def get_public_products(
+    db: Session,
+    *,
+    keyword: str | None = None,
+    category_id: int | None = None,
+    store_id: int | None = None,
+) -> list[Product]:
+    query = (
+        select(Product)
+        .options(selectinload(Product.variants), selectinload(Product.images))
+        .join(Product.category)
+        .where(Product.status == "Published", Category.status == "Active")
+        .order_by(Product.id.desc())
+    )
+    if keyword:
+        query = query.where(Product.name.contains(keyword))
+    if category_id is not None:
+        query = query.where(Product.category_id == category_id)
+    if store_id is not None:
+        query = query.where(Product.store_id == store_id)
+    return list(db.scalars(query).unique())
+
+
 def get_product(db: Session, product_id: int) -> Product | None:
     query = (
         select(Product)
@@ -46,7 +70,12 @@ def get_public_product(db: Session, product_id: int) -> Product | None:
     query = (
         select(Product)
         .options(selectinload(Product.variants), selectinload(Product.images))
-        .where(Product.id == product_id, Product.status == "Published")
+        .join(Product.category)
+        .where(
+            Product.id == product_id,
+            Product.status == "Published",
+            Category.status == "Active",
+        )
     )
     return db.scalars(query).unique().first()
 
@@ -61,16 +90,21 @@ def search_public_products(
     pattern = f"%{keyword.lower()}%"
     filters = (
         Product.status == "Published",
+        Category.status == "Active",
         or_(
             func.lower(Product.name).like(pattern),
             func.lower(Product.slug).like(pattern),
             func.lower(Product.description).like(pattern),
         ),
     )
-    total = db.scalar(select(func.count(Product.id)).where(*filters)) or 0
+    total = (
+        db.scalar(select(func.count(Product.id)).join(Product.category).where(*filters))
+        or 0
+    )
     query = (
         select(Product)
         .options(selectinload(Product.variants), selectinload(Product.images))
+        .join(Product.category)
         .where(*filters)
         .order_by(Product.id.desc())
         .offset((page - 1) * page_size)
@@ -90,7 +124,7 @@ def filter_public_products(
     page: int,
     page_size: int,
 ) -> tuple[list[Product], int]:
-    filters = [Product.status == "Published"]
+    filters = [Product.status == "Published", Category.status == "Active"]
     if category_id is not None:
         filters.append(Product.category_id == category_id)
     if min_price is not None:
@@ -102,10 +136,14 @@ def filter_public_products(
     if max_rating is not None:
         filters.append(Product.rating <= max_rating)
 
-    total = db.scalar(select(func.count(Product.id)).where(*filters)) or 0
+    total = (
+        db.scalar(select(func.count(Product.id)).join(Product.category).where(*filters))
+        or 0
+    )
     query = (
         select(Product)
         .options(selectinload(Product.variants), selectinload(Product.images))
+        .join(Product.category)
         .where(*filters)
         .order_by(Product.id.desc())
         .offset((page - 1) * page_size)

@@ -22,6 +22,22 @@ Backend của dự án thương mại điện tử T1 Shop EC, xây dựng bằn
 
 Các model sản phẩm, biến thể, vendor và store đã được định nghĩa ở tầng dữ liệu. Router CRUD riêng cho các model này sẽ được bổ sung theo từng task.
 
+## Public Product API
+
+Các endpoint đọc sản phẩm không yêu cầu xác thực và chỉ trả sản phẩm có trạng
+thái `Published` thuộc danh mục `Active`. Kết quả tìm kiếm/lọc được phân trang
+với thứ tự ổn định theo ID giảm dần.
+
+| Method | URL | Mô tả |
+|---|---|---|
+| GET | `/api/products` | Danh sách sản phẩm công khai |
+| GET | `/api/products/{id}` | Chi tiết sản phẩm công khai |
+| GET | `/api/products/search?q=...` | Tìm kiếm có phân trang |
+| GET | `/api/products/filter` | Lọc theo danh mục, giá và đánh giá |
+
+`status` không phải là bộ lọc công khai; sản phẩm Draft/Archived luôn bị loại
+khỏi kết quả.
+
 ## Category API
 
 ## Vendor Store API

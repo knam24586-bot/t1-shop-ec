@@ -11,8 +11,8 @@ from app.crud.product import (
     delete_product,
     filter_public_products,
     get_product,
+    get_public_products,
     get_public_product,
-    get_products,
     search_public_products,
     update_product,
 )
@@ -28,7 +28,6 @@ from app.core.config import settings
 from app.db.session import get_db
 from app.models.category import Category
 from app.schemas.product import (
-    PRODUCT_STATUSES,
     ProductCreate,
     ProductImageResponse,
     ProductResponse,
@@ -80,19 +79,12 @@ def list_products(
     db: DbSession,
     keyword: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
     category_id: Annotated[int | None, Query(gt=0)] = None,
-    product_status: Annotated[str | None, Query(alias="status")] = None,
     store_id: Annotated[int | None, Query(gt=0)] = None,
 ):
-    if product_status is not None and product_status not in PRODUCT_STATUSES:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"status must be one of {sorted(PRODUCT_STATUSES)}",
-        )
-    return get_products(
+    return get_public_products(
         db,
         keyword=keyword,
         category_id=category_id,
-        status=product_status,
         store_id=store_id,
     )
 
