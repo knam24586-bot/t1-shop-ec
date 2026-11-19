@@ -154,6 +154,7 @@ Truy cập:
 
 ```powershell
 python -m compileall -q app
+python -m unittest discover -s tests -p "test_*.py"
 ```
 
 Khi thêm hoặc sửa model:
