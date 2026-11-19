@@ -117,6 +117,24 @@ CREATE TABLE product_images (
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE inventory_movements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    variant_id INT NOT NULL,
+    movement_type VARCHAR(30) NOT NULL,
+    quantity INT NOT NULL,
+    stock_before INT NOT NULL,
+    stock_after INT NOT NULL,
+    reason VARCHAR(255) DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX ix_inventory_movements_variant (variant_id),
+    CONSTRAINT ck_inventory_movement_stock_nonnegative CHECK (stock_before >= 0 AND stock_after >= 0),
+    CONSTRAINT fk_inventory_movement_variant
+        FOREIGN KEY (variant_id)
+        REFERENCES product_variants (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 CREATE TABLE carts (
     id INT AUTO_INCREMENT PRIMARY KEY,

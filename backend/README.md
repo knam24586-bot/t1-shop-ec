@@ -15,6 +15,8 @@ Backend của dự án thương mại điện tử T1 Shop EC, xây dựng bằn
   - `Store`
 - Vendor Store Management API: Vendor xem/cập nhật Store được gán qua `X-Role: VENDOR`
   và `X-Store-Id`; dữ liệu trả về không bao gồm thông tin Vendor nội bộ.
+- Inventory API: quản lý tồn kho theo biến thể, cập nhật nguyên tử và lưu lịch sử
+  mọi biến động; Vendor chỉ được thao tác trên Store được gán.
 - CORS để frontend gọi API
 - Swagger UI tự sinh tại `/docs`
 
@@ -53,6 +55,21 @@ X-Admin-Role: admin
 | PATCH | `/api/categories/{id}/disable` | Chuyển trạng thái sang `Inactive` |
 
 Body tạo/cập nhật hỗ trợ `name`, `slug`, `status` và `parent_id`. `slug` phải ở dạng chữ thường, số và dấu gạch ngang; `parent_id` phải trỏ tới danh mục tồn tại và không được trỏ tới chính danh mục đó.
+
+## Inventory API
+
+Các endpoint tồn kho nằm dưới `/api/inventory` và yêu cầu `X-Role: ADMIN` hoặc
+`X-Role: VENDOR` (Vendor phải gửi thêm `X-Store-Id`). Tồn kho được quản lý theo
+`variant_id`; mọi thay đổi đều tạo một bản ghi lịch sử.
+
+| Method | URL | Mô tả |
+|---|---|---|
+| GET | `/api/inventory` | Danh sách tồn kho |
+| GET | `/api/inventory/{variant_id}` | Kiểm tra tồn kho |
+| POST | `/api/inventory/{variant_id}/receive` | Nhập thêm hàng (`quantity > 0`) |
+| POST | `/api/inventory/{variant_id}/adjust` | Điều chỉnh tăng/giảm (`quantity != 0`) |
+| PUT | `/api/inventory/{variant_id}` | Đặt tồn kho tuyệt đối (`stock >= 0`) |
+| GET | `/api/inventory/{variant_id}/movements` | Lịch sử biến động |
 
 ## Cấu trúc
 

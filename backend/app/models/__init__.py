@@ -10,3 +10,4 @@ from app.models.store import Store  # noqa: F401
 from app.models.user import User  # noqa: F401
 from app.models.cart import Cart  # noqa: F401
 from app.models.cart_item import CartItem  # noqa: F401
+from app.models.inventory_movement import InventoryMovement  # noqa: F401
