@@ -34,6 +34,7 @@ from app.models.payment import Payment, PaymentMethod, PaymentStatus
 from app.models.voucher import Voucher  # noqa: F401
 from app.models.wishlist import Wishlist  # noqa: F401
 from app.routers.payment import router as payment_router
+from app.services.payment_gateway import build_vnpay_signature
 
 
 class TestOnlinePaymentAPIs(unittest.TestCase):
@@ -225,10 +226,14 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         txn_ref = res_init.json()["transaction_reference"]
 
         # 2. Gửi callback thành công (response_code="00")
+        vnp_params = {"vnp_Amount": "150000000", "vnp_ResponseCode": "00", "vnp_TxnRef": txn_ref}
+        sig = build_vnpay_signature(vnp_params)
         callback_payload = {
             "transaction_reference": txn_ref,
             "method": "VNPAY",
             "response_code": "00",
+            "secure_hash": sig,
+            "extra_params": vnp_params,
         }
         res_cb = self.client.post("/api/payments/callback", json=callback_payload)
         self.assertEqual(res_cb.status_code, 200)
@@ -252,10 +257,14 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         txn_ref = res_init.json()["transaction_reference"]
 
         # Gửi callback thất bại (mã lỗi '24': khách huỷ giao dịch)
+        vnp_params = {"vnp_Amount": "150000000", "vnp_ResponseCode": "24", "vnp_TxnRef": txn_ref}
+        sig = build_vnpay_signature(vnp_params)
         callback_payload = {
             "transaction_reference": txn_ref,
             "method": "VNPAY",
             "response_code": "24",
+            "secure_hash": sig,
+            "extra_params": vnp_params,
         }
         res_cb = self.client.post("/api/payments/callback", json=callback_payload)
         self.assertEqual(res_cb.status_code, 200)
