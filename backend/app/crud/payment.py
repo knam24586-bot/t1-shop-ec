@@ -1,19 +1,24 @@
-"""CRUD và nghiệp vụ khởi tạo thanh toán trực tuyến (Online Checkout).
-Đáp ứng các tiêu chí:
+"""CRUD và nghiệp vụ khởi tạo thanh toán trực tuyến (Online Checkout) và xác thực Callback an toàn.
+Đáp ứng đầy đủ:
 1. Online checkout tạo giao dịch và URL/token theo gateway cấu hình (VNPAY, MOMO, ZALOPAY...).
-2. KHÔNG ĐÁNH DẤU PAID TRƯỚC CALLBACK HỢP LỆ: Giao dịch và đơn hàng giữ nguyên PENDING khi vừa khởi tạo.
-3. Xử lý triệt để các lỗi khởi tạo: đơn không tồn tại, đơn đã thanh toán, đơn đã huỷ, sai user, cổng không hỗ trợ.
+2. Webhook xác thực chữ ký/nguồn theo gateway (HMAC-SHA512/SHA256).
+3. Xử lý IDEMPOTENT: Callback lặp lại KHÔNG tạo thanh toán/đơn trùng, giữ nguyên trạng thái an toàn.
+4. Lưu log kết quả xử lý webhook vào database (bảng payment_webhook_logs).
 """
 from __future__ import annotations
 
+import json
+import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any
 from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.order import Order, OrderStatus
 from app.models.payment import Payment, PaymentMethod, PaymentStatus
+from app.models.payment_log import PaymentWebhookLog
 from app.schemas.payment import (
     OnlineCheckoutResponse,
     PaymentCallbackResponse,
@@ -22,7 +27,10 @@ from app.services.payment_gateway import (
     SUPPORTED_ONLINE_GATEWAYS,
     build_gateway_payment_session,
     is_supported_online_gateway,
+    verify_gateway_signature,
 )
+
+logger = logging.getLogger("payment.webhook")
 
 
 def initiate_online_checkout(
@@ -34,7 +42,8 @@ def initiate_online_checkout(
     ip_address: str = "127.0.0.1",
 ) -> OnlineCheckoutResponse:
     """Khởi tạo yêu cầu thanh toán online cho đơn hàng:
-    - Kiểm tra tính hợp lệ của đơn hàng (thuộc về user, trạng thái cho phép thanh toán).
+    - Kiểm tra đơn hàng hợp lệ, thuộc quyền sở hữu của user (X-User-Id).
+    - Kiểm tra đơn chưa bị huỷ và chưa từng thanh toán thành công.
     - Kiểm tra cổng thanh toán online có hỗ trợ hay không.
     - Quản lý số lần thử (attempt_number tự tăng).
     - Sinh mã đối soát duy nhất (transaction_reference).
@@ -151,7 +160,7 @@ def initiate_online_checkout(
         order_code=order.order_code,
         method=payment.method,
         amount=payment.amount,
-        status=payment.status,  # Phải là PENDING
+        status=payment.status,  # Luôn là PENDING
         transaction_reference=payment.transaction_reference,
         attempt_number=payment.attempt_number,
         payment_url=payment_url,
@@ -162,49 +171,223 @@ def initiate_online_checkout(
     )
 
 
+def log_webhook_result(
+    db: Session,
+    transaction_reference: str,
+    gateway: str,
+    raw_payload: str,
+    is_valid_signature: bool,
+    response_code: str | None,
+    message: str,
+    ip_address: str | None = None,
+) -> PaymentWebhookLog:
+    """Lưu bản ghi log kết quả xử lý webhook vào DB."""
+    webhook_log = PaymentWebhookLog(
+        transaction_reference=transaction_reference,
+        gateway=gateway,
+        raw_payload=raw_payload,
+        is_valid_signature=is_valid_signature,
+        response_code=response_code,
+        message=message,
+        ip_address=ip_address,
+    )
+    db.add(webhook_log)
+    db.commit()
+    db.refresh(webhook_log)
+    logger.info(
+        f"Webhook Log saved: ref={transaction_reference}, gateway={gateway}, "
+        f"valid_sig={is_valid_signature}, msg={message}"
+    )
+    return webhook_log
+
+
 def process_payment_callback(
     db: Session,
     transaction_reference: str,
     method: str,
     response_code: str = "00",
     secure_hash: str | None = None,
+    extra_params: dict[str, Any] | None = None,
+    ip_address: str | None = None,
 ) -> PaymentCallbackResponse:
-    """Xử lý kết quả callback / IPN từ cổng thanh toán.
-    Chỉ khi nhận được callback hợp lệ và response_code='00' mới cập nhật trạng thái PAID / SUCCESS.
+    """Xử lý an toàn callback / IPN từ cổng thanh toán:
+    1. Xác thực chữ ký số theo gateway (VNPAY, MoMo, ZaloPay).
+    2. Xử lý Idempotent: Nếu giao dịch đã PAID/SUCCESS từ trước -> bỏ qua, không tạo đơn/thanh toán trùng.
+    3. Cập nhật trạng thái Payment và Order chỉ khi chữ ký hợp lệ và response_code='00'.
+    4. Lưu vết toàn bộ kết quả vào PaymentWebhookLog.
     """
+    clean_method = method.strip().upper()
+    params = dict(extra_params or {})
+    params.setdefault("transaction_reference", transaction_reference)
+    params.setdefault("response_code", response_code)
+    raw_payload_str = json.dumps(params, ensure_ascii=False)
+
+    # Fallback trích xuất secure_hash nếu được gửi trong extra_params
+    if not secure_hash and extra_params:
+        secure_hash = (
+            extra_params.get("vnp_SecureHash")
+            or extra_params.get("signature")
+            or extra_params.get("mac")
+            or extra_params.get("secure_hash")
+        )
+
+    # 1. Tìm bản ghi giao dịch thanh toán
     stmt = select(Payment).where(Payment.transaction_reference == transaction_reference)
     payment = db.scalar(stmt)
     if not payment:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Không tìm thấy giao dịch với mã tham chiếu '{transaction_reference}'.",
+        msg = f"Không tìm thấy giao dịch với mã tham chiếu '{transaction_reference}'."
+        log_webhook_result(
+            db=db,
+            transaction_reference=transaction_reference,
+            gateway=clean_method,
+            raw_payload=raw_payload_str,
+            is_valid_signature=False,
+            response_code=response_code,
+            message=msg,
+            ip_address=ip_address,
         )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=msg)
+
+    # 2. XÁC THỰC NGUỒN CỔNG THANH TOÁN (GATEWAY SOURCE)
+    if payment.method.upper() != clean_method:
+        msg = f"Cổng thanh toán '{clean_method}' không khớp với phương thức '{payment.method}' của giao dịch."
+        log_webhook_result(
+            db=db,
+            transaction_reference=transaction_reference,
+            gateway=clean_method,
+            raw_payload=raw_payload_str,
+            is_valid_signature=False,
+            response_code=response_code,
+            message=msg,
+            ip_address=ip_address,
+        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=msg)
 
     order = payment.order
+
+    # 3. XÁC THỰC CHỮ KÝ THEO GATEWAY
+    is_valid_sig = verify_gateway_signature(
+        gateway=clean_method,
+        params=params,
+        signature=secure_hash,
+    )
+    if not is_valid_sig:
+        msg = f"Chữ ký không hợp lệ từ cổng thanh toán {clean_method}."
+        log_webhook_result(
+            db=db,
+            transaction_reference=transaction_reference,
+            gateway=clean_method,
+            raw_payload=raw_payload_str,
+            is_valid_signature=False,
+            response_code=response_code,
+            message=msg,
+            ip_address=ip_address,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=msg,
+        )
+
+    # 4. XỬ LÝ IDEMPOTENT (Chống lặp lại callback)
+    # Nếu giao dịch đã ở trạng thái SUCCESS từ trước:
+    if payment.status == PaymentStatus.SUCCESS.value:
+        msg = "Giao dịch đã được xác nhận thanh toán thành công trước đó (Idempotent - Bỏ qua xử lý lặp)."
+        log_webhook_result(
+            db=db,
+            transaction_reference=transaction_reference,
+            gateway=clean_method,
+            raw_payload=raw_payload_str,
+            is_valid_signature=True,
+            response_code=response_code,
+            message=msg,
+            ip_address=ip_address,
+        )
+        # Trả về kết quả thành công mà KHÔNG tạo thanh toán hay đơn hàng mới
+        return PaymentCallbackResponse(
+            success=True,
+            is_idempotent=True,
+            message=msg,
+            order_code=order.order_code,
+            order_status=order.status,
+            payment_status=payment.status,
+            transaction_reference=transaction_reference,
+        )
+
+    # Nếu giao dịch đã ở trạng thái FAILED từ trước và nhận lại callback thất bại:
+    if payment.status == PaymentStatus.FAILED.value and response_code != "00":
+        msg = "Giao dịch đã được ghi nhận thất bại trước đó (Idempotent)."
+        log_webhook_result(
+            db=db,
+            transaction_reference=transaction_reference,
+            gateway=clean_method,
+            raw_payload=raw_payload_str,
+            is_valid_signature=True,
+            response_code=response_code,
+            message=msg,
+            ip_address=ip_address,
+        )
+        return PaymentCallbackResponse(
+            success=False,
+            is_idempotent=True,
+            message=msg,
+            order_code=order.order_code,
+            order_status=order.status,
+            payment_status=payment.status,
+            transaction_reference=transaction_reference,
+        )
+
+    # 4. CẬP NHẬT TRẠNG THÁI LẦN ĐẦU
     if response_code == "00":
         # Thanh toán thành công
         payment.mark_as_success(transaction_reference=transaction_reference)
         if order.status == OrderStatus.PENDING.value:
             order.transition_to(OrderStatus.CONFIRMED.value)
+
+        msg = "Xác nhận thanh toán thành công từ cổng thanh toán."
+        log_webhook_result(
+            db=db,
+            transaction_reference=transaction_reference,
+            gateway=clean_method,
+            raw_payload=raw_payload_str,
+            is_valid_signature=True,
+            response_code=response_code,
+            message=msg,
+            ip_address=ip_address,
+        )
         db.commit()
         db.refresh(payment)
         db.refresh(order)
+
         return PaymentCallbackResponse(
             success=True,
-            message="Xác nhận thanh toán thành công từ cổng thanh toán.",
+            is_idempotent=False,
+            message=msg,
             order_code=order.order_code,
             order_status=order.status,
             payment_status=payment.status,
             transaction_reference=transaction_reference,
         )
     else:
-        # Thanh toán thất bại
-        payment.mark_as_failed(reason=f"Gateway trả về mã lỗi {response_code}")
+        # Thanh toán thất bại từ cổng
+        payment.mark_as_failed(reason=f"Gateway {clean_method} trả về response_code={response_code}")
+        msg = f"Thanh toán thất bại từ cổng {clean_method} (Mã phản hồi: {response_code})."
+        log_webhook_result(
+            db=db,
+            transaction_reference=transaction_reference,
+            gateway=clean_method,
+            raw_payload=raw_payload_str,
+            is_valid_signature=True,
+            response_code=response_code,
+            message=msg,
+            ip_address=ip_address,
+        )
         db.commit()
         db.refresh(payment)
+
         return PaymentCallbackResponse(
             success=False,
-            message=f"Thanh toán thất bại từ cổng {method} (Mã lỗi: {response_code}).",
+            is_idempotent=False,
+            message=msg,
             order_code=order.order_code,
             order_status=order.status,
             payment_status=payment.status,
@@ -216,3 +399,11 @@ def get_payment_by_transaction_ref(db: Session, transaction_ref: str) -> Payment
     """Tìm bản ghi thanh toán theo transaction_reference."""
     return db.scalar(select(Payment).where(Payment.transaction_reference == transaction_ref))
 
+
+def get_webhook_logs(db: Session, transaction_ref: str | None = None) -> list[PaymentWebhookLog]:
+    """Lấy danh sách log webhook đã lưu."""
+    stmt = select(PaymentWebhookLog)
+    if transaction_ref:
+        stmt = stmt.where(PaymentWebhookLog.transaction_reference == transaction_ref)
+    stmt = stmt.order_by(PaymentWebhookLog.created_at.desc())
+    return list(db.scalars(stmt))

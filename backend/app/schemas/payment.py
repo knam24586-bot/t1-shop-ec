@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from decimal import Decimal
+from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -38,14 +39,28 @@ class PaymentCallbackRequest(BaseModel):
     method: str = Field(..., description="Cổng thanh toán gửi callback")
     response_code: str = Field("00", description="Mã phản hồi từ cổng ('00' là thành công)")
     secure_hash: str | None = Field(None, description="Chữ ký hash để xác thực tính toàn vẹn")
+    extra_params: dict[str, Any] | None = Field(None, description="Các tham số bổ sung từ cổng thanh toán")
 
 
 class PaymentCallbackResponse(BaseModel):
     """Kết quả xử lý callback thanh toán."""
     success: bool
+    is_idempotent: bool = False
     message: str
     order_code: str
     order_status: str
     payment_status: str
     transaction_reference: str
 
+
+class PaymentWebhookLogResponse(BaseModel):
+    """Chi tiết bản ghi log xử lý webhook."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    transaction_reference: str
+    gateway: str
+    is_valid_signature: bool
+    response_code: str | None = None
+    message: str
+    created_at: datetime
