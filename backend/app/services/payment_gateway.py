@@ -2,7 +2,7 @@
 Chịu trách nhiệm:
 1. Cấu hình các cổng thanh toán online.
 2. Khởi tạo URL thanh toán và token giao dịch (tạo chữ ký HMAC bảo mật).
-3. Xác thực tính hợp lệ của callback / IPN từ cổng thanh toán.
+3. Xác thực tính hợp lệ của callback / IPN từ cổng thanh toán (Xác thực chữ ký / nguồn theo gateway).
 4. Xử lý các lỗi khởi tạo (cổng không hỗ trợ, sai cấu hình, số tiền không hợp lệ).
 """
 from __future__ import annotations
@@ -34,6 +34,9 @@ class GatewayConfig:
     ZALOPAY_APP_ID = os.getenv("ZALOPAY_APP_ID", "2554")
     ZALOPAY_KEY1 = os.getenv("ZALOPAY_KEY1", "SECRETKEY_ZALOPAY_T1SHOP_2026")
     ZALOPAY_BASE_URL = os.getenv("ZALOPAY_BASE_URL", "https://sb-openapi.zalopay.vn/v2/create")
+
+    # Generic secret
+    GENERIC_SECRET = os.getenv("GENERIC_GATEWAY_SECRET", "GENERIC_GATEWAY_SECRET_2026")
 
     # Thời hạn hiệu lực của URL thanh toán (15 phút)
     PAYMENT_TIMEOUT_MINUTES = 15
@@ -72,6 +75,9 @@ def generate_hmac_sha256(secret_key: str, data: str) -> str:
     ).hexdigest()
 
 
+# ---------------------------------------------------------------------
+# 1. KHỞI TẠO URL VÀ TOKEN CHO CÁC CỔNG
+# ---------------------------------------------------------------------
 def create_vnpay_payment_url(
     order_id: int,
     order_code: str,
@@ -99,7 +105,6 @@ def create_vnpay_payment_url(
         "vnp_TxnRef": transaction_ref,
     }
 
-    # Sắp xếp params theo thứ tự bảng chữ cái để tạo chữ ký chuẩn VNPAY
     sorted_params = sorted(params.items())
     query_string = urllib.parse.urlencode(sorted_params)
     secure_hash = generate_hmac_sha512(GatewayConfig.VNPAY_HASH_SECRET, query_string)
@@ -214,12 +219,96 @@ def build_gateway_payment_session(
             return_url=cb_url,
         )
     else:
-        # Generic online gateway (BANK_TRANSFER / CREDIT_CARD)
         raw = f"order={transaction_ref}&amount={int(amount)}&date={datetime.now().isoformat()}"
-        sig = generate_hmac_sha256("GENERIC_GATEWAY_SECRET", raw)
+        sig = generate_hmac_sha256(GatewayConfig.GENERIC_SECRET, raw)
         pay_url = f"https://gateway.t1shop.vn/checkout?{urllib.parse.urlencode({'ref': transaction_ref, 'sig': sig})}"
         token = f"GATEWAY-TOKEN-{sig[:20].upper()}"
 
     expires_at = datetime.now() + timedelta(minutes=GatewayConfig.PAYMENT_TIMEOUT_MINUTES)
     return pay_url, token, expires_at
 
+
+# ---------------------------------------------------------------------
+# 2. XÁC THỰC CHỮ KÝ VÀ NGUỒN CỦA WEBHOOK / CALLBACK THEO GATEWAY
+# ---------------------------------------------------------------------
+def build_vnpay_signature(params: dict[str, Any]) -> str:
+    """Tạo chữ ký VNPAY từ tập tham số (loại trừ vnp_SecureHash và vnp_SecureHashType)."""
+    has_vnp_prefix = any(k.startswith("vnp_") for k in params.keys())
+    filtered = {
+        k: str(v)
+        for k, v in params.items()
+        if (not has_vnp_prefix or k.startswith("vnp_"))
+        and k not in ["vnp_SecureHash", "vnp_SecureHashType", "secure_hash"]
+        and v is not None and v != ""
+    }
+    sorted_items = sorted(filtered.items())
+    query_str = urllib.parse.urlencode(sorted_items)
+    return generate_hmac_sha512(GatewayConfig.VNPAY_HASH_SECRET, query_str)
+
+
+def verify_vnpay_signature(params: dict[str, Any], secure_hash: str | None) -> bool:
+    """Xác thực chữ ký callback từ cổng VNPAY."""
+    if not secure_hash:
+        return False
+    expected_hash = build_vnpay_signature(params)
+    return hmac.compare_digest(secure_hash.lower(), expected_hash.lower())
+
+
+def build_momo_signature(params: dict[str, Any]) -> str:
+    """Tạo chữ ký MoMo từ tập tham số."""
+    partner_code = params.get("partnerCode") or GatewayConfig.MOMO_PARTNER_CODE
+    order_id = params.get("orderId") or params.get("transaction_reference") or ""
+    amount = params.get("amount") or ""
+    order_info = params.get("orderInfo") or ""
+    response_code = params.get("resultCode") or params.get("response_code") or "00"
+
+    raw = f"partnerCode={partner_code}&orderId={order_id}&amount={amount}&orderInfo={order_info}&resultCode={response_code}"
+    return generate_hmac_sha256(GatewayConfig.MOMO_SECRET_KEY, raw)
+
+
+def verify_momo_signature(params: dict[str, Any], signature: str | None) -> bool:
+    """Xác thực chữ ký callback từ cổng MoMo."""
+    if not signature:
+        return False
+    expected_sig = build_momo_signature(params)
+    return hmac.compare_digest(signature.lower(), expected_sig.lower())
+
+
+def build_zalopay_signature(params: dict[str, Any]) -> str:
+    """Tạo chữ ký ZaloPay từ tập tham số."""
+    app_id = params.get("app_id") or GatewayConfig.ZALOPAY_APP_ID
+    app_trans_id = params.get("app_trans_id") or params.get("transaction_reference") or ""
+    amount = params.get("amount") or ""
+    raw = f"{app_id}|{app_trans_id}|{amount}"
+    return generate_hmac_sha256(GatewayConfig.ZALOPAY_KEY1, raw)
+
+
+def verify_zalopay_signature(params: dict[str, Any], mac: str | None) -> bool:
+    """Xác thực chữ ký callback từ cổng ZaloPay."""
+    if not mac:
+        return False
+    expected_mac = build_zalopay_signature(params)
+    return hmac.compare_digest(mac.lower(), expected_mac.lower())
+
+
+def verify_gateway_signature(
+    gateway: str,
+    params: dict[str, Any],
+    signature: str | None,
+) -> bool:
+    """Hàm điều phối xác thực chữ ký theo chuẩn từng cổng thanh toán."""
+    gateway_upper = gateway.strip().upper()
+    if not signature or not signature.strip():
+        return False
+
+    if gateway_upper == PaymentMethod.VNPAY.value:
+        return verify_vnpay_signature(params, signature)
+    elif gateway_upper == PaymentMethod.MOMO.value:
+        return verify_momo_signature(params, signature)
+    elif gateway_upper == PaymentMethod.ZALOPAY.value:
+        return verify_zalopay_signature(params, signature)
+    else:
+        # Generic online gateway
+        raw = f"{params.get('transaction_reference', '')}|{params.get('response_code', '00')}"
+        expected = generate_hmac_sha256(GatewayConfig.GENERIC_SECRET, raw)
+        return hmac.compare_digest(signature.lower(), expected.lower())

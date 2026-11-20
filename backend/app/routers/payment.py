@@ -1,29 +1,32 @@
-"""API Router cho Thanh toán Online (Online Payment & Checkout).
+"""API Router cho Thanh toán Online (Online Payment & Checkout) và Webhook.
 Cung cấp các API:
 - POST /payments/checkout hoặc /payments/online-checkout: Khởi tạo yêu cầu thanh toán online.
-- POST /payments/callback hoặc GET /payments/callback: Xử lý callback / IPN từ cổng thanh toán.
+- POST /payments/callback hoặc GET /payments/callback: Xử lý và xác thực callback / IPN từ cổng thanh toán.
 - GET /payments/transaction/{transaction_ref}: Xem trạng thái giao dịch.
+- GET /payments/logs/{transaction_ref}: Xem lịch sử audit log của webhook.
 - GET /payments/gateways: Danh sách các cổng thanh toán online được hỗ trợ.
 """
 from __future__ import annotations
 
+from typing import Any
 from fastapi import APIRouter, Depends, Query, Request, status
 from sqlalchemy.orm import Session
 
 from app.core.deps import get_current_user
 from app.crud.payment import (
     get_payment_by_transaction_ref,
+    get_webhook_logs,
     initiate_online_checkout,
     process_payment_callback,
 )
 from app.db.session import get_db
-from app.models.payment import PaymentMethod
 from app.models.user import User
 from app.schemas.payment import (
     OnlineCheckoutRequest,
     OnlineCheckoutResponse,
     PaymentCallbackRequest,
     PaymentCallbackResponse,
+    PaymentWebhookLogResponse,
 )
 from app.services.payment_gateway import SUPPORTED_ONLINE_GATEWAYS
 
@@ -48,7 +51,6 @@ def create_online_checkout(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> OnlineCheckoutResponse:
-    # Lấy IP client (nếu có)
     client_ip = "127.0.0.1"
     if request.client and request.client.host:
         client_ip = request.client.host
@@ -86,19 +88,26 @@ def create_online_checkout_alias(
 @router.post(
     "/callback",
     response_model=PaymentCallbackResponse,
-    summary="Xử lý callback / Webhook từ cổng thanh toán",
-    description="Nhận kết quả giao dịch từ cổng thanh toán. Cập nhật trạng thái PAID / SUCCESS và chuyển trạng thái đơn hàng.",
+    summary="Xử lý webhook / IPN callback từ cổng thanh toán an toàn",
+    description="Xác thực chữ ký số theo gateway, xử lý Idempotent chống lặp và lưu log audit.",
 )
 def handle_payment_callback_post(
     payload: PaymentCallbackRequest,
+    request: Request,
     db: Session = Depends(get_db),
 ) -> PaymentCallbackResponse:
+    client_ip = "127.0.0.1"
+    if request.client and request.client.host:
+        client_ip = request.client.host
+
     return process_payment_callback(
         db=db,
         transaction_reference=payload.transaction_reference,
         method=payload.method,
         response_code=payload.response_code,
         secure_hash=payload.secure_hash,
+        extra_params=payload.extra_params,
+        ip_address=client_ip,
     )
 
 
@@ -108,19 +117,48 @@ def handle_payment_callback_post(
     summary="Xử lý callback GET (Return URL từ trình duyệt)",
 )
 def handle_payment_callback_get(
+    request: Request,
     transaction_reference: str = Query(..., description="Mã tham chiếu đối soát"),
     method: str = Query(..., description="Cổng thanh toán"),
     response_code: str = Query("00", description="Mã phản hồi từ gateway"),
     secure_hash: str | None = Query(None, description="Chữ ký hash"),
     db: Session = Depends(get_db),
 ) -> PaymentCallbackResponse:
+    client_ip = "127.0.0.1"
+    if request.client and request.client.host:
+        client_ip = request.client.host
+
+    # Lấy toàn bộ query params làm extra_params để xác thực chữ ký nếu cần
+    params = dict(request.query_params)
+    if not secure_hash:
+        secure_hash = (
+            params.get("vnp_SecureHash")
+            or params.get("signature")
+            or params.get("mac")
+        )
+
     return process_payment_callback(
         db=db,
         transaction_reference=transaction_reference,
         method=method,
         response_code=response_code,
         secure_hash=secure_hash,
+        extra_params=params,
+        ip_address=client_ip,
     )
+
+
+@router.get(
+    "/logs/{transaction_ref}",
+    response_model=list[PaymentWebhookLogResponse],
+    summary="Xem lịch sử audit log của webhook theo transaction_reference",
+)
+def get_transaction_webhook_logs(
+    transaction_ref: str,
+    db: Session = Depends(get_db),
+) -> list[PaymentWebhookLogResponse]:
+    logs = get_webhook_logs(db=db, transaction_ref=transaction_ref)
+    return [PaymentWebhookLogResponse.model_validate(log) for log in logs]
 
 
 @router.get(
@@ -151,4 +189,3 @@ def get_transaction_status(
         "status": payment.status,
         "attempt_number": str(payment.attempt_number),
     }
-
