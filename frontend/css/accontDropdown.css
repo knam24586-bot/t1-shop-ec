@@ -41,32 +41,57 @@
     align-items: center;
 }
 
+/* Trạng thái mặc định khi KHÔNG nhấn vào: Màu đen trắng chuẩn Figma, nền trong suốt, không có màu cam/đỏ */
 .user-avatar-btn {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: var(--primary-red, #db4444);
-    color: #ffffff;
+    background-color: transparent;
+    color: #000000;
     border: none;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 6px rgba(219, 68, 68, 0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: none;
     outline: none;
 }
 
 .user-avatar-btn:hover {
-    background-color: #c43838;
-    transform: scale(1.06);
-    box-shadow: 0 3px 8px rgba(219, 68, 68, 0.4);
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000000;
 }
 
 .user-avatar-btn svg {
-    width: 19px;
-    height: 19px;
+    width: 21px;
+    height: 21px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    transition: stroke 0.2s ease;
+}
+
+/* Trạng thái KHI NHẤN VÀO (Dropdown đang mở / Active): Nền đỏ cam #DB4444 và icon trắng nổi bật chuẩn Figma */
+.user-avatar-btn[aria-expanded="true"],
+.user-avatar-btn.user-avatar-btn--active,
+.user-account-dropdown:has(.account-popup-menu--open) .user-avatar-btn {
+    background-color: var(--primary-red, #db4444);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(219, 68, 68, 0.35);
+}
+
+.user-avatar-btn[aria-expanded="true"]:hover,
+.user-avatar-btn.user-avatar-btn--active:hover,
+.user-account-dropdown:has(.account-popup-menu--open) .user-avatar-btn:hover {
+    background-color: #c43838;
+    color: #ffffff;
+}
+
+.user-avatar-btn[aria-expanded="true"] svg,
+.user-avatar-btn.user-avatar-btn--active svg,
+.user-account-dropdown:has(.account-popup-menu--open) .user-avatar-btn svg {
     stroke: #ffffff;
 }
 

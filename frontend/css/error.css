@@ -1,0 +1,159 @@
+/**
+ * T1 Shop - 404 Not Found Error Page Styles
+ * Khớp hoàn hảo với giao diện Figma Exclusive
+ */
+
+/* ========================================================
+   1. VARIABLES & BASE SETUP
+   ======================================================== */
+:root {
+  --primary-red: #db4444;
+  --primary-red-hover: #c43838;
+  --text-dark: #000000;
+  --text-secondary: #7d8184;
+  --text-muted: rgba(0, 0, 0, 0.5);
+  --font-poppins: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  font-family: var(--font-poppins);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+}
+
+/* ========================================================
+   2. BREADCRUMB
+   ======================================================== */
+.error-topbar {
+  width: min(100% - 48px, 1170px);
+  margin: 0 auto;
+  padding: 40px 0 45px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.error-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error-breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.error-breadcrumb a:hover {
+  color: var(--primary-red);
+}
+
+.error-breadcrumb .breadcrumb-separator {
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.error-breadcrumb .breadcrumb-current {
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+/* ========================================================
+   3. 404 CONTENT HERO SECTION
+   ======================================================== */
+.error-page-main {
+  flex: 1 0 auto;
+  width: min(100% - 48px, 1170px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.error-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px 140px;
+}
+
+.error-code-title {
+  font-family: var(--font-inter);
+  font-size: 110px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.error-message {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-dark);
+  margin: 30px 0 40px;
+}
+
+.btn-back-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-red);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 48px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(219, 68, 68, 0.25);
+}
+
+.btn-back-home:hover {
+  background-color: var(--primary-red-hover);
+  box-shadow: 0 6px 14px rgba(219, 68, 68, 0.35);
+}
+
+.btn-back-home:active {
+  transform: translateY(1px);
+}
+
+/* ========================================================
+   4. RESPONSIVE DESIGN
+   ======================================================== */
+@media (max-width: 768px) {
+  .error-topbar {
+    padding: 24px 0 24px;
+  }
+
+  .error-content-wrapper {
+    padding: 40px 16px 80px;
+  }
+
+  .error-code-title {
+    font-size: 64px;
+  }
+
+  .error-message {
+    font-size: 15px;
+    margin: 20px 0 30px;
+  }
+
+  .btn-back-home {
+    padding: 14px 32px;
+    font-size: 15px;
+  }
+}
