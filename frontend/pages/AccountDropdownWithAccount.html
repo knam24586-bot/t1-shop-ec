@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Stylesheet giao diện chính của website -->
     <link rel="stylesheet" href="/frontend/css/style1.css">
+    <link rel="stylesheet" href="../css/style1.css">
     <!-- CSS riêng cho User Avatar & Account Popup Dropdown -->
     <link rel="stylesheet" href="/frontend/css/accontDropdown.css">
+    <link rel="stylesheet" href="../css/accontDropdown.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -70,8 +72,8 @@
 
                 <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
                     <a class="navigation__link navigation__link--active" href="#home">Home</a>
-                    <a class="navigation__link" href="#contact">Contact</a>
-                    <a class="navigation__link" href="#about">About</a>
+                    <a class="navigation__link" href="./contact.html">Contact</a>
+                    <a class="navigation__link" href="/frontend/pages/About.html">About</a>
                     <a class="navigation__link" href="#signup">Sign Up</a>
                 </nav>
 
@@ -79,7 +81,11 @@
                     <form class="search" role="search" action="./Shop.html" method="get">
                         <input type="search" name="q" placeholder="What are you looking for?"
                             aria-label="Tìm kiếm sản phẩm" autocomplete="off">
-                        <button class="search-clear-btn" type="button" aria-label="Xóa từ khóa" style="display: none;"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                        <button class="search-clear-btn" type="button" aria-label="Xóa từ khóa"
+                            style="display: none;"><svg viewBox="0 0 24 24" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg></button>
                         <button type="submit" aria-label="Tìm kiếm">
                             <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <circle cx="10.8" cy="10.8" r="6.8"></circle>
@@ -105,21 +111,21 @@
                         <span class="cart-badge">2</span>
                     </a>
 
-                    <!-- User Account Icon & Dropdown Popup (Chỉ có tại trang AccountDropdownWithAccount.html) -->
+                    <!-- User Account Icon & Dropdown Popup -->
                     <div class="user-account-dropdown" id="userAccountDropdown">
                         <button class="user-avatar-btn" id="userAvatarBtn" type="button"
-                            aria-label="Tài khoản người dùng" aria-expanded="true" aria-haspopup="true">
+                            aria-label="Tài khoản người dùng" aria-expanded="false" aria-haspopup="true">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                         </button>
-                        <nav class="account-popup-menu account-popup-menu--open" id="accountPopupMenu"
+                        <nav class="account-popup-menu" id="accountPopupMenu"
                             aria-label="Menu tài khoản">
                             <ul class="account-popup-list">
                                 <li>
-                                    <a class="account-popup-item" href="#manage-account">
+                                    <a class="account-popup-item" href="./myAccount.html">
                                         <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                                             stroke-linejoin="round" aria-hidden="true">
@@ -130,7 +136,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="account-popup-item" href="#my-order">
+                                    <a class="account-popup-item" href="./myAccount.html#my-order">
                                         <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                                             stroke-linejoin="round" aria-hidden="true">
@@ -142,7 +148,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="account-popup-item" href="#my-cancellations">
+                                    <a class="account-popup-item" href="./myAccount.html#my-cancellations">
                                         <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                                             stroke-linejoin="round" aria-hidden="true">
@@ -165,7 +171,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="account-popup-item" href="#logout">
+                                    <a class="account-popup-item" href="./Login.html">
                                         <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                                             stroke-linejoin="round" aria-hidden="true">
@@ -3039,10 +3045,12 @@
                         var isOpen = typeof show === "boolean" ? show : !accountPopupMenu.classList.contains("account-popup-menu--open");
                         accountPopupMenu.classList.toggle("account-popup-menu--open", isOpen);
                         userAvatarBtn.setAttribute("aria-expanded", String(isOpen));
+                        userAvatarBtn.classList.toggle("user-avatar-btn--active", isOpen);
                     }
 
                     userAvatarBtn.addEventListener("click", function (e) {
                         e.stopPropagation();
+                        e.preventDefault();
                         toggleAccountPopup();
                     });
 
@@ -3228,70 +3236,74 @@
             }
         })();
     </script>
+    <!-- ========================================================
+         FOOTER
+         ======================================================== -->
+    <footer class="site-footer">
+        <div class="footer-container">
+
+            <!-- Cột 1: Exclusive & Subscribe -->
+            <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
+                <h2 id="newsletter-title">T1 Shop</h2>
+                <p class="column-subtitle">Subscribe</p>
+                <p class="newsletter-copy">Get 10% off your first order</p>
+                <form class="subscribe-form" action="#subscribe" method="post"
+                    onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+                    <label class="visually-hidden" for="subscriber-email">Enter your email</label>
+                    <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+                    <button type="submit" aria-label="Gửi đăng ký">
+                        <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                            stroke-linejoin="round" aria-hidden="true">
+                            <path d="m22 2-7 20-4-9-9-4Z" />
+                            <path d="M22 2 11 13" />
+                        </svg>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Cột 2: Support -->
+            <nav class="footer-column" aria-label="Support">
+                <h2>Support</h2>
+                <ul>
+                    <li><a href="#">PTIT</a></li>
+                    <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
+                    <li><a href="tel:+88015888889999">+88015-88888-9999</a></li>
+                </ul>
+            </nav>
+
+            <!-- Cột 3: Account -->
+            <nav class="footer-column" aria-label="Account">
+                <h2>Account</h2>
+                <ul>
+                    <li><a href="./myAccount.html">My Account</a></li>
+                    <li><a href="./Login.html">Login / Register</a></li>
+                    <li><a href="./Shop.html">Cart</a></li>
+                    <li><a href="./WishList.html">Wishlist</a></li>
+                    <li><a href="./Shop.html">Shop</a></li>
+                </ul>
+            </nav>
+
+            <!-- Cột 4: Quick Link -->
+            <nav class="footer-column" aria-label="Quick links">
+                <h2>Quick Link</h2>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Dòng bản quyền phía dưới -->
+        <div class="footer-bottom">
+            <p>© Copyright Rimel 2022. All right reserved</p>
+        </div>
+    </footer>
+
     <!-- Global Search Bar & Live Autocomplete -->
     <script src="../js/search-bar.js"></script>
 </body>
-<footer class="site-footer">
-    <div class="footer-container">
-
-        <!-- Cột 1: Exclusive & Subscribe -->
-        <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
-            <h2 id="newsletter-title">T1shop</h2>
-            <p class="column-subtitle">Subscribe</p>
-            <p class="newsletter-copy">Get 10% off your first order</p>
-            <form class="subscribe-form" action="#subscribe" method="post"
-                onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
-                <label class="visually-hidden" for="subscriber-email">Enter your email</label>
-                <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
-                <button type="submit" aria-label="Gửi đăng ký">
-                    <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round" aria-hidden="true">
-                        <path d="m22 2-7 20-4-9-9-4Z" />
-                        <path d="M22 2 11 13" />
-                    </svg>
-                </button>
-            </form>
-        </section>
-
-        <!-- Cột 2: Support -->
-        <nav class="footer-column" aria-label="Support">
-            <h2>Support</h2>
-            <ul>
-                <li><a href="#">PTIT</a></li>
-                <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
-                <li><a href="tel:+84015888889999">+84015-88888-9999</a></li>
-            </ul>
-        </nav>
-
-        <!-- Cột 3: Account -->
-        <nav class="footer-column" aria-label="Account">
-            <h2>Account</h2>
-            <ul>
-                <li><a href="#">My Account</a></li>
-                <li><a href="#">Login / Register</a></li>
-                <li><a href="#">Cart</a></li>
-                <li><a href="/frontend/pages/WishList.html">Wishlist</a></li>
-                <li><a href="#">Shop</a></li>
-            </ul>
-        </nav>
-
-        <!-- Cột 4: Quick Link -->
-        <nav class="footer-column" aria-label="Quick links">
-            <h2>Quick Link</h2>
-            <ul>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms Of Use</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </div>
-
-    <!-- Dòng bản quyền phía dưới -->
-    <div class="footer-bottom">
-        <p>© Copyright Rimel 2022. All right reserved</p>
-    </div>
-</footer>
 
 </html>
