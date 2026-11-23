@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Havic HV G-92 Gamepad - T1 Shop</title>
+
+    <!-- Google Fonts: Inter & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="/frontend/css/style1.css">
+    <link rel="stylesheet" href="../css/style1.css">
+    <link rel="stylesheet" href="/frontend/css/accontDropdown.css">
+    <link rel="stylesheet" href="../css/accontDropdown.css">
+    <link rel="stylesheet" href="/frontend/css/ProductDetailsPage.css">
+    <link rel="stylesheet" href="../css/ProductDetailsPage.css">
+</head>
+
+<body>
+    <!-- ========================================================
+       HEADER & NAVIGATION (Đồng bộ chuẩn 100% từ hệ thống T1 Shop)
+       ======================================================== -->
+    <header class="site-header">
+        <!-- Thanh thông báo khuyến mãi trên cùng -->
+        <div class="announcement">
+            <div class="announcement__inner">
+                <p>
+                    Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%!
+                    <a href="./Shop.html">ShopNow</a>
+                </p>
+
+                <!-- Bộ chuyển đổi ngôn ngữ (English / Tiếng Việt) -->
+                <div class="language-picker" id="languagePicker">
+                    <button class="language" id="languageBtn" type="button" aria-label="Chọn ngôn ngữ"
+                        aria-expanded="false" aria-haspopup="true">
+                        <span class="language-current-label" id="currentLangLabel">English</span>
+                        <svg viewBox="0 0 12 8" aria-hidden="true">
+                            <path d="m1 1.5 5 5 5-5" />
+                        </svg>
+                    </button>
+                    <ul class="language-dropdown" id="languageDropdown" role="menu" aria-label="Lựa chọn ngôn ngữ">
+                        <li role="none">
+                            <button class="language-item language-item--active" type="button" role="menuitem"
+                                data-lang="en">
+                                <span class="lang-text">English</span>
+                                <span class="lang-check" aria-hidden="true">✓</span>
+                            </button>
+                        </li>
+                        <li role="none">
+                            <button class="language-item" type="button" role="menuitem" data-lang="vi">
+                                <span class="lang-text">Tiếng Việt</span>
+                                <span class="lang-check" aria-hidden="true">✓</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header chính -->
+        <div class="main-header">
+            <div class="main-header__inner">
+                <a class="brand" href="./E-CommerceHomePage.html" aria-label="Trang chủ T1 Shop">
+                    <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png"
+                        onerror="this.onerror=null; this.src='../assets/images/Worlds_2026_Simulator-removebg-preview.png'"
+                        alt="Logo T1 Shop">
+                </a>
+
+                <button class="menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false"
+                    aria-controls="primary-navigation">
+                    <span></span><span></span><span></span>
+                </button>
+
+                <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
+                    <a class="navigation__link" href="./E-CommerceHomePage.html">Home</a>
+                    <a class="navigation__link" href="./contact.html">Contact</a>
+                    <a class="navigation__link" href="./About.html">About</a>
+                    <a class="navigation__link" href="./Sign-in.html">Sign Up</a>
+                </nav>
+
+                <div class="header-actions">
+                    <form class="search" role="search" action="./Shop.html" method="get">
+                        <input type="search" name="q" placeholder="What are you looking for?"
+                            aria-label="Tìm kiếm sản phẩm" autocomplete="off">
+                        <button class="search-clear-btn" type="button" aria-label="Xóa từ khóa" style="display: none;">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                        <button type="submit" aria-label="Tìm kiếm">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                                <path d="m16 16 5 5"></path>
+                            </svg>
+                        </button>
+                    </form>
+
+                    <a class="icon-link" href="./WishList.html" aria-label="Wishlist">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
+                            </path>
+                        </svg>
+                    </a>
+
+                    <a class="icon-link cart-link" href="./WishList.html#cart" aria-label="Giỏ hàng">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
+                            <circle cx="9" cy="20" r="1.2"></circle>
+                            <circle cx="18" cy="20" r="1.2"></circle>
+                        </svg>
+                        <span class="cart-badge">2</span>
+                    </a>
+
+                    <!-- User Avatar & Dropdown Popup -->
+                    <div class="user-account-dropdown" id="userAccountDropdown">
+                        <button class="user-avatar-btn" id="userAvatarBtn" type="button"
+                            aria-label="Tài khoản người dùng" aria-expanded="false" aria-haspopup="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </button>
+                        <nav class="account-popup-menu" id="accountPopupMenu" aria-label="Menu tài khoản">
+                            <ul class="account-popup-list">
+                                <li>
+                                    <a class="account-popup-item" href="./myAccount.html">
+                                        <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                            stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                            <circle cx="12" cy="7" r="4" />
+                                        </svg>
+                                        <span>Manage My Account</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="account-popup-item" href="#my-order">
+                                        <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                            stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                            <path d="M3 6h18" />
+                                            <path d="M16 10a4 4 0 0 1-8 0" />
+                                        </svg>
+                                        <span>My Order</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="account-popup-item" href="#my-cancellations">
+                                        <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                            stroke-linejoin="round" aria-hidden="true">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="m15 9-6 6" />
+                                            <path d="m9 9 6 6" />
+                                        </svg>
+                                        <span>My Cancellations</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="account-popup-item" href="#my-reviews">
+                                        <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                            stroke-linejoin="round" aria-hidden="true">
+                                            <polygon
+                                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                        </svg>
+                                        <span>My Reviews</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="account-popup-item" href="./Login.html">
+                                        <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                            stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                            <polyline points="16 17 21 12 16 7" />
+                                            <line x1="21" y1="12" x2="9" y2="12" />
+                                        </svg>
+                                        <span>Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================================
+       MAIN PRODUCT DETAILS CONTENT
+       ======================================================== -->
+    <main class="product-details-page">
+        <div class="details-container">
+
+            <!-- 1. Breadcrumb Navigation -->
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <ol class="breadcrumb-list">
+                    <li class="breadcrumb-item">
+                        <a href="./myAccount.html" class="bc-account-text">Account</a>
+                    </li>
+                    <li class="breadcrumb-sep" aria-hidden="true">/</li>
+                    <li class="breadcrumb-item">
+                        <a href="./Shop.html" class="bc-gaming-text">Gaming</a>
+                    </li>
+                    <li class="breadcrumb-sep" aria-hidden="true">/</li>
+                    <li class="breadcrumb-item is-active" aria-current="page">
+                        <span class="bc-product-name">Havic HV G-92 Gamepad</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- 2. Product Showcase Grid (Gallery + Details) -->
+            <section class="product-showcase-grid" aria-labelledby="productHeading">
+
+                <!-- Cột trái: Bộ sưu tập ảnh (4 Thumbnails + 1 Ảnh Lớn) -->
+                <div class="product-gallery">
+                    <!-- 4 Thumbnail nhỏ xếp dọc -->
+                    <div class="gallery-thumbs" role="tablist" aria-label="Ảnh chi tiết sản phẩm">
+                        <!-- Thumb 1: Trạm sạc tay cầm -->
+                        <button class="thumb-item is-active" type="button" role="tab" aria-selected="true"
+                            data-full-img="/frontend/assets/images/products/image 57.png">
+                            <img src="/frontend/assets/images/products/image 57.png"
+                                alt="Havic HV G-92 Charging Dock"
+                                onerror="this.onerror=null; this.src='/frontend/assets/images/products/GP11_PRD3 1.png';">
+                        </button>
+
+                        <!-- Thumb 2: Góc nhìn trực diện -->
+                        <button class="thumb-item" type="button" role="tab" aria-selected="false"
+                            data-full-img="/frontend/assets/images/products/image 58.png">
+                            <img src="/frontend/assets/images/products/image 58.png"
+                                alt="Havic HV G-92 Front View"
+                                onerror="this.onerror=null; this.src='/frontend/assets/images/products/Frame 611.png';">
+                        </button>
+
+                        <!-- Thumb 3: Góc nghiêng trên -->
+                        <button class="thumb-item" type="button" role="tab" aria-selected="false"
+                            data-full-img="/frontend/assets/images/products/image 61.png">
+                            <img src="/frontend/assets/images/products/image 61.png"
+                                alt="Havic HV G-92 Top Angle View"
+                                onerror="this.onerror=null; this.src='/frontend/assets/images/products/GP11_PRD3 1.png';">
+                        </button>
+
+                        <!-- Thumb 4: Góc nghiêng cạnh -->
+                        <button class="thumb-item" type="button" role="tab" aria-selected="false"
+                            data-full-img="/frontend/assets/images/products/image 59.png">
+                            <img src="/frontend/assets/images/products/image 59.png"
+                                alt="Havic HV G-92 Side View"
+                                onerror="this.onerror=null; this.src='/frontend/assets/images/products/Frame 611.png';">
+                        </button>
+                    </div>
+
+                    <!-- Ảnh lớn chính giữa -->
+                    <div class="gallery-main">
+                        <img id="mainProductImg" src="/frontend/assets/images/products/image 63.png"
+                            alt="Havic HV G-92 Gamepad Preview"
+                            onerror="this.onerror=null; this.src='/frontend/assets/images/products/GP11_PRD3 1.png';">
+                    </div>
+                </div>
+
+                <!-- Cột phải: Thông tin sản phẩm & Thao tác đặt mua -->
+                <div class="product-info-panel">
+                    <h1 class="product-title" id="productHeading">Havic HV G-92 Gamepad</h1>
+
+                    <!-- Đánh giá sao, số lượt nhận xét & Tình trạng kho -->
+                    <div class="product-meta-row">
+                        <div class="product-stars" aria-label="Đánh giá 4 trên 5 sao">
+                            <svg viewBox="0 0 24 24">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg>
+                            <svg viewBox="0 0 24 24">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg>
+                            <svg viewBox="0 0 24 24">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg>
+                            <svg viewBox="0 0 24 24">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg>
+                            <svg class="star-empty" viewBox="0 0 24 24">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg>
+                        </div>
+                        <span class="review-count">(150 Reviews)</span>
+                        <span class="meta-divider" aria-hidden="true">|</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+
+                    <!-- Giá bán -->
+                    <div class="product-price">$192.00</div>
+
+                    <!-- Mô tả tóm tắt -->
+                    <p class="product-desc">
+                        PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free
+                        install & mess free removal Pressure sensitive.
+                    </p>
+
+                    <div class="product-divider"></div>
+
+                    <!-- Tùy chọn Màu sắc (Colours) -->
+                    <div class="product-option-row">
+                        <span class="option-label label-colours">Colours:</span>
+                        <div class="colour-options" role="radiogroup" aria-label="Lựa chọn màu sắc">
+                            <button class="colour-btn colour-btn--blue is-active" type="button" role="radio"
+                                aria-checked="true" aria-label="Light Blue"></button>
+                            <button class="colour-btn colour-btn--red" type="button" role="radio" aria-checked="false"
+                                aria-label="Coral Red"></button>
+                        </div>
+                    </div>
+
+                    <!-- Tùy chọn Kích thước (Size) -->
+                    <div class="product-option-row">
+                        <span class="option-label label-size">Size:</span>
+                        <div class="size-options" role="radiogroup" aria-label="Lựa chọn kích cỡ">
+                            <button class="size-btn" type="button" role="radio" aria-checked="false">XS</button>
+                            <button class="size-btn" type="button" role="radio" aria-checked="false">S</button>
+                            <button class="size-btn is-active" type="button" role="radio" aria-checked="true">M</button>
+                            <button class="size-btn" type="button" role="radio" aria-checked="false">L</button>
+                            <button class="size-btn" type="button" role="radio" aria-checked="false">XL</button>
+                        </div>
+                    </div>
+
+                    <!-- Chọn Số lượng, Nút Mua Ngay & Thêm vào Yêu thích -->
+                    <div class="purchase-action-row">
+                        <div class="quantity-control" aria-label="Chọn số lượng">
+                            <button class="qty-btn qty-btn--minus" id="qtyMinus" type="button"
+                                aria-label="Giảm số lượng">−</button>
+                            <span class="qty-display" id="qtyValue">2</span>
+                            <button class="qty-btn qty-btn--plus" id="qtyPlus" type="button"
+                                aria-label="Tăng số lượng">+</button>
+                        </div>
+
+                        <button class="btn-buy-now" id="btnBuyNow" type="button">Buy Now</button>
+
+                        <button class="btn-details-wishlist" id="btnDetailsWishlist" type="button"
+                            aria-label="Thêm vào danh sách yêu thích">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Khung Cam kết Dịch vụ & Giao hàng (Delivery Box) -->
+                    <div class="delivery-trust-box">
+                        <!-- Mục 1: Free Delivery -->
+                        <div class="delivery-box-item">
+                            <div class="delivery-box-icon">
+                                <!-- Icon xe tải giao hàng outline SVG -->
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="1" y="3" width="15" height="13" />
+                                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                                    <circle cx="5.5" cy="18.5" r="2.5" />
+                                    <circle cx="18.5" cy="18.5" r="2.5" />
+                                </svg>
+                            </div>
+                            <div class="delivery-box-info">
+                                <h4 class="delivery-box-title title-free-delivery">Free Delivery</h4>
+                                <p class="delivery-box-desc">
+                                    <a href="#" class="link-delivery-avail">Enter your postal code for Delivery
+                                        Availability</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="delivery-box-divider"></div>
+
+                        <!-- Mục 2: Return Delivery -->
+                        <div class="delivery-box-item">
+                            <div class="delivery-box-icon">
+                                <!-- Icon đổi trả / hoàn tiền SVG -->
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                                    <path d="M21 3v5h-5" />
+                                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                                    <path d="M3 21v-5h5" />
+                                </svg>
+                            </div>
+                            <div class="delivery-box-info">
+                                <h4 class="delivery-box-title title-return-delivery">Return Delivery</h4>
+                                <p class="delivery-box-desc">
+                                    <span class="text-return-policy">Free 30 Days Delivery Returns.</span>
+                                    <a href="#" class="link-return-details">Details</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 3. Related Item Section (Sản phẩm liên quan) -->
+            <section class="related-items-section" aria-labelledby="relatedHeading">
+                <div class="section-tag-header">
+                    <div class="tag-red-pill" aria-hidden="true"></div>
+                    <span class="tag-label-text" id="relatedHeading">Related Item</span>
+                </div>
+
+                <div class="related-product-grid">
+
+                    <!-- Card 1: HAVIT HV-G92 Gamepad -->
+                    <article class="product-card">
+                        <div class="product-card__thumb">
+                            <span class="product-card__badge">-40%</span>
+                            <div class="product-card__actions">
+                                <button class="card-action-btn" type="button" aria-label="Yêu thích">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                                    </svg>
+                                </button>
+                                <button class="card-action-btn" type="button" aria-label="Xem nhanh">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <img src="/frontend/assets/images/products/Frame 611.png"
+                                onerror="this.onerror=null; this.src='../assets/images/products/Frame 611.png'"
+                                alt="HAVIT HV-G92 Gamepad">
+                        </div>
+                        <h3 class="product-card__name">HAVIT HV-G92 Gamepad</h3>
+                        <div class="product-card__prices">
+                            <span class="product-card__current-price">$120</span>
+                            <span class="product-card__old-price">$160</span>
+                        </div>
+                        <div class="product-card__ratings">
+                            <div class="product-stars">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                            </div>
+                            <span class="rating-count">(88)</span>
+                        </div>
+                    </article>
+
+                    <!-- Card 2: AK-900 Wired Keyboard -->
+                    <article class="product-card">
+                        <div class="product-card__thumb">
+                            <span class="product-card__badge">-35%</span>
+                            <div class="product-card__actions">
+                                <button class="card-action-btn" type="button" aria-label="Yêu thích">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                                    </svg>
+                                </button>
+                                <button class="card-action-btn" type="button" aria-label="Xem nhanh">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <img src="/frontend/assets/images/products/Frame 612.png"
+                                onerror="this.onerror=null; this.src='../assets/images/products/Frame 612.png'"
+                                alt="AK-900 Wired Keyboard">
+                            <button class="card-add-cart-bar" type="button">Add To Cart</button>
+                        </div>
+                        <h3 class="product-card__name">AK-900 Wired Keyboard</h3>
+                        <div class="product-card__prices">
+                            <span class="product-card__current-price">$960</span>
+                            <span class="product-card__old-price">$1160</span>
+                        </div>
+                        <div class="product-card__ratings">
+                            <div class="product-stars">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                            </div>
+                            <span class="rating-count">(75)</span>
+                        </div>
+                    </article>
+
+                    <!-- Card 3: IPS LCD Gaming Monitor -->
+                    <article class="product-card">
+                        <div class="product-card__thumb">
+                            <span class="product-card__badge">-30%</span>
+                            <div class="product-card__actions">
+                                <button class="card-action-btn" type="button" aria-label="Yêu thích">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                                    </svg>
+                                </button>
+                                <button class="card-action-btn" type="button" aria-label="Xem nhanh">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <img src="/frontend/assets/images/products/Frame 613.png"
+                                onerror="this.onerror=null; this.src='../assets/images/products/Frame 613.png'"
+                                alt="IPS LCD Gaming Monitor">
+                        </div>
+                        <h3 class="product-card__name">IPS LCD Gaming Monitor</h3>
+                        <div class="product-card__prices">
+                            <span class="product-card__current-price">$370</span>
+                            <span class="product-card__old-price">$400</span>
+                        </div>
+                        <div class="product-card__ratings">
+                            <div class="product-stars">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                            </div>
+                            <span class="rating-count">(99)</span>
+                        </div>
+                    </article>
+
+                    <!-- Card 4: RGB liquid CPU Cooler -->
+                    <article class="product-card">
+                        <div class="product-card__thumb">
+                            <div class="product-card__actions">
+                                <button class="card-action-btn" type="button" aria-label="Yêu thích">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                                    </svg>
+                                </button>
+                                <button class="card-action-btn" type="button" aria-label="Xem nhanh">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <img src="/frontend/assets/images/products/Frame 610.png"
+                                onerror="this.onerror=null; this.src='../assets/images/products/Frame 610.png'"
+                                alt="RGB liquid CPU Cooler">
+                        </div>
+                        <h3 class="product-card__name">RGB liquid CPU Cooler</h3>
+                        <div class="product-card__prices">
+                            <span class="product-card__current-price">$160</span>
+                            <span class="product-card__old-price">$170</span>
+                        </div>
+                        <div class="product-card__ratings">
+                            <div class="product-stars">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                                <svg class="star-empty" viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                            </div>
+                            <span class="rating-count">(65)</span>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ========================================================
+       FOOTER (Đồng bộ 100% từ hệ thống T1 Shop)
+       ======================================================== -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <!-- Cột 1: Exclusive & Subscribe -->
+            <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
+                <h2 id="newsletter-title">T1 Shop</h2>
+                <p class="column-subtitle">Subscribe</p>
+                <p class="newsletter-copy">Get 10% off your first order</p>
+                <form class="subscribe-form" action="#subscribe" method="post"
+                    onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+                    <label class="visually-hidden" for="subscriber-email"
+                        style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;">Enter
+                        your email</label>
+                    <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+                    <button type="submit" aria-label="Gửi đăng ký">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m22 2-7 20-4-9-9-4Z" />
+                            <path d="M22 2 11 13" />
+                        </svg>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Cột 2: Support -->
+            <nav class="footer-column" aria-label="Support">
+                <h2>Support</h2>
+                <ul>
+                    <li><a href="#">PTIT</a></li>
+                    <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
+                    <li><a href="tel:+84015888889999">+84015-88888-9999</a></li>
+                </ul>
+            </nav>
+
+            <!-- Cột 3: Account -->
+            <nav class="footer-column" aria-label="Account">
+                <h2>Account</h2>
+                <ul>
+                    <li><a href="./myAccount.html">My Account</a></li>
+                    <li><a href="./Login.html">Login / Register</a></li>
+                    <li><a href="./WishList.html#cart">Cart</a></li>
+                    <li><a href="./WishList.html">Wishlist</a></li>
+                    <li><a href="./Shop.html">Shop</a></li>
+                </ul>
+            </nav>
+
+            <!-- Cột 4: Quick Link -->
+            <nav class="footer-column" aria-label="Quick links">
+                <h2>Quick Link</h2>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Dòng bản quyền phía dưới -->
+        <div class="footer-bottom">
+            <p>© Copyright Rimel 2022. All right reserved</p>
+        </div>
+    </footer>
+
+    <!-- ========================================================
+       JAVASCRIPTS (Gallery, Options, Quantity, Multi-Language, Search)
+       ======================================================== -->
+    <script>
+        (function () {
+            "use strict";
+
+            /* 1. Mobile Menu Toggle */
+            var menuButton = document.querySelector(".menu-toggle");
+            var navigation = document.querySelector(".navigation");
+            if (menuButton && navigation) {
+                menuButton.addEventListener("click", function () {
+                    var isOpen = navigation.classList.toggle("navigation--open");
+                    menuButton.setAttribute("aria-expanded", String(isOpen));
+                    menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+                });
+            }
+
+            /* 2. Gallery Thumbnails Switching */
+            var thumbs = document.querySelectorAll(".thumb-item");
+            var mainImg = document.getElementById("mainProductImg");
+
+            thumbs.forEach(function (thumb) {
+                thumb.addEventListener("click", function () {
+                    thumbs.forEach(t => {
+                        t.classList.remove("is-active");
+                        t.setAttribute("aria-selected", "false");
+                    });
+                    thumb.classList.add("is-active");
+                    thumb.setAttribute("aria-selected", "true");
+
+                    var targetSrc = thumb.getAttribute("data-full-img");
+                    if (targetSrc && mainImg) {
+                        mainImg.style.opacity = "0.5";
+                        setTimeout(function () {
+                            mainImg.src = targetSrc;
+                            mainImg.style.opacity = "1";
+                        }, 120);
+                    }
+                });
+            });
+
+            /* 3. Colour Swatches Selector */
+            var colourBtns = document.querySelectorAll(".colour-btn");
+            colourBtns.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    colourBtns.forEach(b => {
+                        b.classList.remove("is-active");
+                        b.setAttribute("aria-checked", "false");
+                    });
+                    btn.classList.add("is-active");
+                    btn.setAttribute("aria-checked", "true");
+                });
+            });
+
+            /* 4. Size Buttons Selector */
+            var sizeBtns = document.querySelectorAll(".size-btn");
+            sizeBtns.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    sizeBtns.forEach(b => {
+                        b.classList.remove("is-active");
+                        b.setAttribute("aria-checked", "false");
+                    });
+                    btn.classList.add("is-active");
+                    btn.setAttribute("aria-checked", "true");
+                });
+            });
+
+            /* 5. Quantity Control */
+            var qtyMinus = document.getElementById("qtyMinus");
+            var qtyPlus = document.getElementById("qtyPlus");
+            var qtyValue = document.getElementById("qtyValue");
+            var currentQty = 2;
+
+            if (qtyMinus && qtyPlus && qtyValue) {
+                qtyMinus.addEventListener("click", function () {
+                    if (currentQty > 1) {
+                        currentQty--;
+                        qtyValue.textContent = currentQty;
+                    }
+                });
+
+                qtyPlus.addEventListener("click", function () {
+                    currentQty++;
+                    qtyValue.textContent = currentQty;
+                });
+            }
+
+            /* 6. Wishlist Heart Toggle */
+            var btnWishlist = document.getElementById("btnDetailsWishlist");
+            if (btnWishlist) {
+                btnWishlist.addEventListener("click", function () {
+                    btnWishlist.classList.toggle("is-active");
+                });
+            }
+
+            /* 7. Buy Now Button Click */
+            var btnBuy = document.getElementById("btnBuyNow");
+            if (btnBuy) {
+                btnBuy.addEventListener("click", function () {
+                    alert("Sản phẩm đã được thêm vào giỏ hàng! Đang chuyển hướng...");
+                    window.location.href = "./WishList.html#cart";
+                });
+            }
+
+            /* 8. User Avatar & Account Popup Dropdown */
+            var userAvatarBtn = document.getElementById("userAvatarBtn");
+            var accountPopupMenu = document.getElementById("accountPopupMenu");
+
+            if (userAvatarBtn && accountPopupMenu) {
+                function toggleAccountPopup(show) {
+                    var isOpen = typeof show === "boolean" ? show : !accountPopupMenu.classList.contains("account-popup-menu--open");
+                    accountPopupMenu.classList.toggle("account-popup-menu--open", isOpen);
+                    userAvatarBtn.setAttribute("aria-expanded", String(isOpen));
+                }
+
+                userAvatarBtn.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    toggleAccountPopup();
+                });
+
+                document.addEventListener("click", function (e) {
+                    if (!userAvatarBtn.contains(e.target) && !accountPopupMenu.contains(e.target)) {
+                        toggleAccountPopup(false);
+                    }
+                });
+
+                document.addEventListener("keydown", function (e) {
+                    if (e.key === "Escape") {
+                        toggleAccountPopup(false);
+                    }
+                });
+            }
+
+            /* 9. Language Switcher (English <-> Tiếng Việt) */
+            var langBtn = document.getElementById("languageBtn");
+            var langDropdown = document.getElementById("languageDropdown");
+            var langOptions = document.querySelectorAll(".language-item");
+            var currentLangLabel = document.getElementById("currentLangLabel");
+
+            function applyLanguage(lang) {
+                var isVi = lang === "vi";
+
+                if (currentLangLabel) {
+                    currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
+                }
+
+                langOptions.forEach(function (item) {
+                    var itemLang = item.getAttribute("data-lang");
+                    item.classList.toggle("language-item--active", itemLang === lang);
+                });
+
+                // Banner thông báo
+                var announceText = document.querySelector(".announcement__inner p");
+                if (announceText) {
+                    var shopLink = announceText.querySelector("a");
+                    var linkHref = shopLink ? shopLink.getAttribute("href") : "./Shop.html";
+                    announceText.innerHTML = isVi
+                        ? 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>'
+                        : 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
+                }
+
+                // Navigation links
+                var navLinks = document.querySelectorAll(".navigation .navigation__link");
+                if (navLinks.length >= 4) {
+                    navLinks[0].textContent = isVi ? "Trang Chủ" : "Home";
+                    navLinks[1].textContent = isVi ? "Liên Hệ" : "Contact";
+                    navLinks[2].textContent = isVi ? "Giới Thiệu" : "About";
+                    navLinks[3].textContent = isVi ? "Đăng Ký" : "Sign Up";
+                }
+
+                // Search input
+                var searchInput = document.querySelector(".search input");
+                if (searchInput) {
+                    searchInput.placeholder = isVi ? "Bạn đang tìm kiếm gì?" : "What are you looking for?";
+                }
+
+                // Breadcrumbs
+                var bcAccount = document.querySelector(".bc-account-text");
+                if (bcAccount) bcAccount.textContent = isVi ? "Tài khoản" : "Account";
+                var bcGaming = document.querySelector(".bc-gaming-text");
+                if (bcGaming) bcGaming.textContent = isVi ? "Trò chơi" : "Gaming";
+
+                // Labels
+                var stockEl = document.querySelector(".stock-status");
+                if (stockEl) stockEl.textContent = isVi ? "Còn Hàng" : "In Stock";
+                var reviewEl = document.querySelector(".review-count");
+                if (reviewEl) reviewEl.textContent = isVi ? "(150 Đánh giá)" : "(150 Reviews)";
+                var lblColours = document.querySelector(".label-colours");
+                if (lblColours) lblColours.textContent = isVi ? "Màu sắc:" : "Colours:";
+                var lblSize = document.querySelector(".label-size");
+                if (lblSize) lblSize.textContent = isVi ? "Kích cỡ:" : "Size:";
+
+                var buyBtn = document.getElementById("btnBuyNow");
+                if (buyBtn) buyBtn.textContent = isVi ? "Mua Ngay" : "Buy Now";
+
+                var freeDeliveryTitle = document.querySelector(".title-free-delivery");
+                if (freeDeliveryTitle) freeDeliveryTitle.textContent = isVi ? "Giao Hàng Miễn Phí" : "Free Delivery";
+                var linkAvail = document.querySelector(".link-delivery-avail");
+                if (linkAvail) linkAvail.textContent = isVi ? "Nhập mã bưu chính của bạn để kiểm tra giao hàng" : "Enter your postal code for Delivery Availability";
+
+                var returnDeliveryTitle = document.querySelector(".title-return-delivery");
+                if (returnDeliveryTitle) returnDeliveryTitle.textContent = isVi ? "Chính Sách Đổi Trả" : "Return Delivery";
+                var textReturnPolicy = document.querySelector(".text-return-policy");
+                if (textReturnPolicy) textReturnPolicy.textContent = isVi ? "Miễn phí đổi trả trong vòng 30 ngày." : "Free 30 Days Delivery Returns.";
+                var linkReturnDetails = document.querySelector(".link-return-details");
+                if (linkReturnDetails) linkReturnDetails.textContent = isVi ? "Chi tiết" : "Details";
+
+                var relatedHeading = document.getElementById("relatedHeading");
+                if (relatedHeading) relatedHeading.textContent = isVi ? "Sản phẩm liên quan" : "Related Item";
+
+                document.documentElement.lang = lang;
+
+                try {
+                    localStorage.setItem("t1shop_lang", lang);
+                } catch (e) { }
+            }
+
+            if (langBtn && langDropdown) {
+                langBtn.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    var isOpen = langDropdown.classList.toggle("language-dropdown--open");
+                    langBtn.setAttribute("aria-expanded", String(isOpen));
+                });
+
+                langOptions.forEach(function (item) {
+                    item.addEventListener("click", function (e) {
+                        e.stopPropagation();
+                        var targetLang = item.getAttribute("data-lang") || "en";
+                        applyLanguage(targetLang);
+                        langDropdown.classList.remove("language-dropdown--open");
+                        langBtn.setAttribute("aria-expanded", "false");
+                    });
+                });
+
+                document.addEventListener("click", function (e) {
+                    if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+                        langDropdown.classList.remove("language-dropdown--open");
+                        langBtn.setAttribute("aria-expanded", "false");
+                    }
+                });
+
+                document.addEventListener("keydown", function (e) {
+                    if (e.key === "Escape") {
+                        langDropdown.classList.remove("language-dropdown--open");
+                        langBtn.setAttribute("aria-expanded", "false");
+                    }
+                });
+
+                var savedLang = "en";
+                try {
+                    savedLang = localStorage.getItem("t1shop_lang") || "en";
+                } catch (e) { }
+                applyLanguage(savedLang);
+            }
+        })();
+    </script>
+
+    <!-- Global Search Bar & Live Autocomplete -->
+    <script src="../js/search-bar.js"></script>
+</body>
+
+</html>
