@@ -15,9 +15,9 @@ DbSession = Annotated[Session, Depends(get_db)]
 
 def _store_context(
     role: Annotated[str | None, Header(alias="X-Role")] = None,
-    assigned_store_id: Annotated[int | None, Header(alias="X-Store-Id")] = None,
+    assigned_store_id: Annotated[int | None, Header(alias="X-Store-Id", ge=1)] = None,
 ) -> tuple[str, int | None]:
-    normalized_role = role.upper() if role else ""
+    normalized_role = role.strip().upper() if role else ""
     if normalized_role not in {"ADMIN", "VENDOR"}:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

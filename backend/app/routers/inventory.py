@@ -21,9 +21,9 @@ DbSession = Annotated[Session, Depends(get_db)]
 
 def _role_context(
     role: Annotated[str | None, Header(alias="X-Role")] = None,
-    store_id: Annotated[int | None, Header(alias="X-Store-Id")] = None,
+    store_id: Annotated[int | None, Header(alias="X-Store-Id", ge=1)] = None,
 ) -> tuple[str, int | None]:
-    normalized = role.upper() if role else ""
+    normalized = role.strip().upper() if role else ""
     if normalized not in {"ADMIN", "VENDOR"}:
         raise HTTPException(status_code=401, detail="X-Role must be ADMIN or VENDOR")
     if normalized == "VENDOR" and store_id is None:
@@ -123,6 +123,9 @@ def set_inventory(
         return _response(variant)
     try:
         change_stock(db, variant, delta, "SET", data.reason)
+    except ValueError as exc:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     except RuntimeError as exc:
         db.rollback()
         raise HTTPException(status_code=409, detail=str(exc)) from exc
