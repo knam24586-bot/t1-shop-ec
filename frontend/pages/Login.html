@@ -1,29 +1,36 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wishlist - T1 Shop</title>
+  <title>Login - T1 Shop</title>
+  
+  <!-- Google Fonts: Inter & Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="/frontend/css/style1.css">
   <link rel="stylesheet" href="../css/style1.css">
-  <link rel="stylesheet" href="/frontend/css/wishlist.css">
-  <link rel="stylesheet" href="../css/wishlist.css">
+  <link rel="stylesheet" href="/frontend/css/accontDropdown.css">
+  <link rel="stylesheet" href="../css/accontDropdown.css">
+  <link rel="stylesheet" href="/frontend/css/login.css">
+  <link rel="stylesheet" href="../css/login.css">
 </head>
 
-<body>
+<body class="auth-page">
+  <!-- ========================================================
+       HEADER & NAVIGATION (Đồng bộ chuẩn từ hệ thống T1 Shop)
+       ======================================================== -->
   <header class="site-header">
     <!-- Thanh khuyến mãi phía trên -->
     <div class="announcement">
       <div class="announcement__inner">
         <p>
           Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%!
-          <a href="#shop">ShopNow</a>
+          <a href="./Shop.html">ShopNow</a>
         </p>
 
         <!-- Bộ chuyển đổi ngôn ngữ (English / Tiếng Việt) -->
@@ -56,8 +63,10 @@
     <!-- Header chính -->
     <div class="main-header">
       <div class="main-header__inner">
-        <a class="brand" href="#home" aria-label="Trang chủ">
-          <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="Logo thương hiệu">
+        <a class="brand" href="./E-CommerceHomePage.html" aria-label="Trang chủ T1 Shop">
+          <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png"
+            onerror="this.onerror=null; this.src='../assets/images/Worlds_2026_Simulator-removebg-preview.png'"
+            alt="Logo T1 Shop">
         </a>
 
         <button class="menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false"
@@ -66,15 +75,22 @@
         </button>
 
         <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
-          <a class="navigation__link navigation__link--active" href="#home">Home</a>
-          <a class="navigation__link" href="#contact">Contact</a>
-          <a class="navigation__link" href="#about">About</a>
-          <a class="navigation__link" href="#signup">Sign Up</a>
+          <a class="navigation__link" href="./E-CommerceHomePage.html">Home</a>
+          <a class="navigation__link" href="./contact.html">Contact</a>
+          <a class="navigation__link" href="./About.html">About</a>
+          <a class="navigation__link" href="./Sign-in.html">Sign Up</a>
         </nav>
 
         <div class="header-actions">
-          <form class="search" role="search" action="#search">
-            <input type="search" name="q" placeholder="What are you looking for?" aria-label="Tìm kiếm sản phẩm">
+          <form class="search" role="search" action="./Shop.html" method="get">
+            <input type="search" name="q" placeholder="What are you looking for?" aria-label="Tìm kiếm sản phẩm"
+              autocomplete="off">
+            <button class="search-clear-btn" type="button" aria-label="Xóa từ khóa" style="display: none;">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
             <button type="submit" aria-label="Tìm kiếm">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="10.8" cy="10.8" r="6.8"></circle>
@@ -83,615 +99,173 @@
             </button>
           </form>
 
-          <a class="icon-link" href="#wishlist" aria-label="Wishlist">
+          <a class="icon-link" href="./WishList.html" aria-label="Wishlist">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
+              <path
+                d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
               </path>
             </svg>
           </a>
 
-          <a class="icon-link" href="#cart" aria-label="Giỏ hàng">
+          <a class="icon-link cart-link" href="./WishList.html#cart" aria-label="Giỏ hàng">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
               <circle cx="9" cy="20" r="1.2"></circle>
               <circle cx="18" cy="20" r="1.2"></circle>
             </svg>
+            <span class="cart-badge">2</span>
           </a>
 
-          <a class="icon-link account-link" href="#account" aria-label="Tài khoản">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="8" r="3.5"></circle>
-              <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
-            </svg>
-          </a>
+          <!-- User Avatar & Dropdown Popup -->
+          <div class="user-account-dropdown" id="userAccountDropdown">
+            <button class="user-avatar-btn" id="userAvatarBtn" type="button"
+              aria-label="Tài khoản người dùng" aria-expanded="false" aria-haspopup="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            <nav class="account-popup-menu" id="accountPopupMenu" aria-label="Menu tài khoản">
+              <ul class="account-popup-list">
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <span>Manage My Account</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-order">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                      <path d="M3 6h18" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span>My Order</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-cancellations">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                    <span>My Cancellations</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-reviews">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span>My Reviews</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./Login.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Logout</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
   </header>
 
-  <main id="home" class="wishlist-page">
-    <div class="wishlist-container">
-
-      <!-- Section 1: Wishlist -->
-      <section class="wishlist-section" aria-labelledby="wishlistHeading">
-        <div class="wishlist-section-header">
-          <h1 class="wishlist-title" id="wishlistHeading">
-            <span class="wishlist-title-text">Wishlist</span> (<span id="wishlistCount">4</span>)
-          </h1>
-          <button class="wishlist-action-btn" id="moveAllBtn" type="button">
-            <span class="btn-text">Move All To Bag</span>
-          </button>
+  <!-- ========================================================
+       MAIN LOGIN CONTENT
+       ======================================================== -->
+  <main class="auth-main">
+    <div class="auth-layout">
+      <!-- Cột minh họa bên trái -->
+      <div class="auth-visual">
+        <div class="visual-circle"></div>
+        <div class="visual-content">
+          <div class="visual-icon">🛒</div>
+          <h2 class="auth-visual-title">Welcome Back!</h2>
+          <p class="auth-visual-desc">Discover amazing products at T1 Shop.</p>
         </div>
+      </div>
 
-        <!-- Trạng thái trống khi đã xóa hoặc di chuyển hết sản phẩm -->
-        <div class="wishlist-empty-state" id="wishlistEmptyState">
-          <svg viewBox="0 0 24 24">
-            <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
-          </svg>
-          <h3 class="empty-title">Your Wishlist is Empty</h3>
-          <p class="empty-desc">Explore more great products from T1 Shop and add them to your wishlist!</p>
-          <a href="/frontend/pages/E-CommerceHomePage.html" class="wishlist-action-btn empty-btn">
-            <span>Explore Products</span>
-          </a>
-        </div>
+      <!-- Khung biểu mẫu đăng nhập bên phải -->
+      <div class="auth-form">
+        <h1 class="auth-title">Log in to T1 Shop</h1>
+        <p class="auth-subtitle">Enter your details below</p>
 
-        <!-- Danh sách sản phẩm Wishlist (4 sản phẩm) -->
-        <div class="wishlist-grid" id="wishlistGrid">
+        <form id="loginForm" onsubmit="event.preventDefault(); alert('Login successful!'); window.location.href='./myAccount.html';">
+          <input
+            class="auth-input input-email"
+            type="text"
+            id="loginEmail"
+            placeholder="Email or Phone Number"
+            required
+            autocomplete="username"
+          />
 
-          <!-- Card 1: Gucci duffle bag -->
-          <article class="wishlist-card" data-product-id="wl-1" data-product-name="Gucci duffle bag">
-            <div class="wishlist-card__thumb">
-              <span class="wishlist-badge">-35%</span>
-              <button class="wishlist-icon-btn" type="button" aria-label="Xóa khỏi danh sách yêu thích"
-                data-action="remove-item">
-                <svg viewBox="0 0 24 24">
-                  <path d="M3 6h18" />
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                  <line x1="10" y1="11" x2="10" y2="17" />
-                  <line x1="14" y1="11" x2="14" y2="17" />
-                </svg>
-              </button>
-              <img src="/frontend/assets/images/products/Frame 606.png" alt="Gucci duffle bag" loading="lazy">
-              <button class="wishlist-add-cart-btn" type="button" data-action="add-to-cart">
-                <svg viewBox="0 0 24 24">
-                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
-                  <circle cx="9" cy="20" r="1.2" />
-                  <circle cx="18" cy="20" r="1.2" />
-                </svg>
-                <span class="add-cart-text">Add To Cart</span>
-              </button>
-            </div>
-            <div class="wishlist-card__info">
-              <h3 class="wishlist-card__name">Gucci duffle bag</h3>
-              <div class="wishlist-card__price-row">
-                <span class="wishlist-card__price">$960</span>
-                <span class="wishlist-card__old-price">$1160</span>
-              </div>
-            </div>
-          </article>
+          <input
+            class="auth-input input-pass"
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+            required
+            autocomplete="current-password"
+          />
 
-          <!-- Card 2: RGB liquid CPU Cooler -->
-          <article class="wishlist-card" data-product-id="wl-2" data-product-name="RGB liquid CPU Cooler">
-            <div class="wishlist-card__thumb">
-              <button class="wishlist-icon-btn" type="button" aria-label="Xóa khỏi danh sách yêu thích"
-                data-action="remove-item">
-                <svg viewBox="0 0 24 24">
-                  <path d="M3 6h18" />
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                  <line x1="10" y1="11" x2="10" y2="17" />
-                  <line x1="14" y1="11" x2="14" y2="17" />
-                </svg>
-              </button>
-              <img src="/frontend/assets/images/products/Frame 610.png" alt="RGB liquid CPU Cooler" loading="lazy">
-              <button class="wishlist-add-cart-btn" type="button" data-action="add-to-cart">
-                <svg viewBox="0 0 24 24">
-                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
-                  <circle cx="9" cy="20" r="1.2" />
-                  <circle cx="18" cy="20" r="1.2" />
-                </svg>
-                <span class="add-cart-text">Add To Cart</span>
-              </button>
-            </div>
-            <div class="wishlist-card__info">
-              <h3 class="wishlist-card__name">RGB liquid CPU Cooler</h3>
-              <div class="wishlist-card__price-row">
-                <span class="wishlist-card__price">$1960</span>
-              </div>
-            </div>
-          </article>
+          <div class="auth-login-actions">
+            <button type="submit" class="auth-btn btn-login-submit">Log In</button>
 
-          <!-- Card 3: GP11 Shooter USB Gamepad -->
-          <article class="wishlist-card" data-product-id="wl-3" data-product-name="GP11 Shooter USB Gamepad">
-            <div class="wishlist-card__thumb">
-              <button class="wishlist-icon-btn" type="button" aria-label="Xóa khỏi danh sách yêu thích"
-                data-action="remove-item">
-                <svg viewBox="0 0 24 24">
-                  <path d="M3 6h18" />
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                  <line x1="10" y1="11" x2="10" y2="17" />
-                  <line x1="14" y1="11" x2="14" y2="17" />
-                </svg>
-              </button>
-              <img src="/frontend/assets/images/products/GP11_PRD3 1.png" alt="GP11 Shooter USB Gamepad" loading="lazy">
-              <button class="wishlist-add-cart-btn" type="button" data-action="add-to-cart">
-                <svg viewBox="0 0 24 24">
-                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
-                  <circle cx="9" cy="20" r="1.2" />
-                  <circle cx="18" cy="20" r="1.2" />
-                </svg>
-                <span class="add-cart-text">Add To Cart</span>
-              </button>
-            </div>
-            <div class="wishlist-card__info">
-              <h3 class="wishlist-card__name">GP11 Shooter USB Gamepad</h3>
-              <div class="wishlist-card__price-row">
-                <span class="wishlist-card__price">$550</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 4: Quilted Satin Jacket -->
-          <article class="wishlist-card" data-product-id="wl-4" data-product-name="Quilted Satin Jacket">
-            <div class="wishlist-card__thumb">
-              <button class="wishlist-icon-btn" type="button" aria-label="Xóa khỏi danh sách yêu thích"
-                data-action="remove-item">
-                <svg viewBox="0 0 24 24">
-                  <path d="M3 6h18" />
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                  <line x1="10" y1="11" x2="10" y2="17" />
-                  <line x1="14" y1="11" x2="14" y2="17" />
-                </svg>
-              </button>
-              <img
-                src="/frontend/assets/images/products/698717_Z8A1X_3475_001_100_0000_Light-Reversible-quilted-satin-jacket 1.png"
-                alt="Quilted Satin Jacket" loading="lazy">
-              <button class="wishlist-add-cart-btn" type="button" data-action="add-to-cart">
-                <svg viewBox="0 0 24 24">
-                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
-                  <circle cx="9" cy="20" r="1.2" />
-                  <circle cx="18" cy="20" r="1.2" />
-                </svg>
-                <span class="add-cart-text">Add To Cart</span>
-              </button>
-            </div>
-            <div class="wishlist-card__info">
-              <h3 class="wishlist-card__name">Quilted Satin Jacket</h3>
-              <div class="wishlist-card__price-row">
-                <span class="wishlist-card__price">$750</span>
-              </div>
-            </div>
-          </article>
-
-        </div>
-      </section>
-
-      <!-- Section 2: Just For You -->
-      <section class="wishlist-section" aria-labelledby="justForYouHeading">
-        <div class="wishlist-section-header">
-          <div class="wishlist-title-group">
-            <div class="wishlist-title-pill" aria-hidden="true"></div>
-            <h2 class="wishlist-title-text" id="justForYouHeading">Just For You</h2>
+            <a href="#" class="auth-forgot" id="forgotPassword">
+              Forget Password?
+            </a>
           </div>
-          <button class="wishlist-action-btn" type="button" id="seeAllBtn">
-            <span class="btn-text">See All</span>
-          </button>
-        </div>
+        </form>
 
-        <div class="wishlist-grid">
-
-          <!-- Card 1: ASUS FHD Gaming Laptop -->
-          <article class="wishlist-card" data-product-id="jfy-1" data-product-name="ASUS FHD Gaming Laptop">
-            <div class="wishlist-card__thumb">
-              <span class="wishlist-badge">-35%</span>
-              <button class="wishlist-icon-btn" type="button" aria-label="Xem nhanh" data-action="quick-view">
-                <svg viewBox="0 0 24 24">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </button>
-              <img src="/frontend/assets/images/products/ideapad-gaming-3i-01-500x500 1.png"
-                alt="ASUS FHD Gaming Laptop" loading="lazy">
-              <button class="wishlist-add-cart-btn" type="button" data-action="add-to-cart">
-                <svg viewBox="0 0 24 24">
-                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
-                  <circle cx="9" cy="20" r="1.2" />
-                  <circle cx="18" cy="20" r="1.2" />
-                </svg>
-                <span class="add-cart-text">Add To Cart</span>
-              </button>
-            </div>
-            <div class="wishlist-card__info">
-              <h3 class="wishlist-card__name">ASUS FHD Gaming Laptop</h3>
-              <div class="wishlist-card__price-row">
-                <span class="wishlist-card__price">$960</span>
-                <span class="wishlist-card__old-price">$1160</span>
-              </div>
-              <div class="wishlist-card__rating">
-                <div class="wishlist-stars" aria-label="5 trên 5 sao">
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                </div>
-                <span class="wishlist-reviews-count">(65)</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 2: IPS LCD Gaming Monitor -->
-          <article class="wishlist-card" data-product-id="jfy-2" data-product-name="IPS LCD Gaming Monitor">
-            <div class="wishlist-card__thumb">
-              <button class="wishlist-icon-btn" type="button" aria-label="Xem nhanh" data-action="quick-view">
-                <svg viewBox="0 0 24 24">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </button>
-              <img src="/frontend/assets/images/products/Frame 613.png" alt="IPS LCD Gaming Monitor" loading="lazy">
-              <button class="wishlist-add-cart-btn" type="button" data-action="add-to-cart">
-                <svg viewBox="0 0 24 24">
-                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
-                  <circle cx="9" cy="20" r="1.2" />
-                  <circle cx="18" cy="20" r="1.2" />
-                </svg>
-                <span class="add-cart-text">Add To Cart</span>
-              </button>
-            </div>
-            <div class="wishlist-card__info">
-              <h3 class="wishlist-card__name">IPS LCD Gaming Monitor</h3>
-              <div class="wishlist-card__price-row">
-                <span class="wishlist-card__price">$1160</span>
-              </div>
-              <div class="wishlist-card__rating">
-                <div class="wishlist-stars" aria-label="5 trên 5 sao">
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                </div>
-                <span class="wishlist-reviews-count">(65)</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 3: HAVIT HV-G92 Gamepad -->
-          <article class="wishlist-card" data-product-id="jfy-3" data-product-name="HAVIT HV-G92 Gamepad">
-            <div class="wishlist-card__thumb">
-              <span class="wishlist-badge wishlist-badge--new">NEW</span>
-              <button class="wishlist-icon-btn" type="button" aria-label="Xem nhanh" data-action="quick-view">
-                <svg viewBox="0 0 24 24">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </button>
-              <img src="/frontend/assets/images/products/Frame 611.png" alt="HAVIT HV-G92 Gamepad" loading="lazy">
-              <button class="wishlist-add-cart-btn" type="button" data-action="add-to-cart">
-                <svg viewBox="0 0 24 24">
-                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
-                  <circle cx="9" cy="20" r="1.2" />
-                  <circle cx="18" cy="20" r="1.2" />
-                </svg>
-                <span class="add-cart-text">Add To Cart</span>
-              </button>
-            </div>
-            <div class="wishlist-card__info">
-              <h3 class="wishlist-card__name">HAVIT HV-G92 Gamepad</h3>
-              <div class="wishlist-card__price-row">
-                <span class="wishlist-card__price">$560</span>
-              </div>
-              <div class="wishlist-card__rating">
-                <div class="wishlist-stars" aria-label="5 trên 5 sao">
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                </div>
-                <span class="wishlist-reviews-count">(65)</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 4: AK-900 Wired Keyboard -->
-          <article class="wishlist-card" data-product-id="jfy-4" data-product-name="AK-900 Wired Keyboard">
-            <div class="wishlist-card__thumb">
-              <button class="wishlist-icon-btn" type="button" aria-label="Xem nhanh" data-action="quick-view">
-                <svg viewBox="0 0 24 24">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </button>
-              <img src="/frontend/assets/images/products/Frame 612.png" alt="AK-900 Wired Keyboard" loading="lazy">
-              <button class="wishlist-add-cart-btn" type="button" data-action="add-to-cart">
-                <svg viewBox="0 0 24 24">
-                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
-                  <circle cx="9" cy="20" r="1.2" />
-                  <circle cx="18" cy="20" r="1.2" />
-                </svg>
-                <span class="add-cart-text">Add To Cart</span>
-              </button>
-            </div>
-            <div class="wishlist-card__info">
-              <h3 class="wishlist-card__name">AK-900 Wired Keyboard</h3>
-              <div class="wishlist-card__price-row">
-                <span class="wishlist-card__price">$200</span>
-              </div>
-              <div class="wishlist-card__rating">
-                <div class="wishlist-stars" aria-label="5 trên 5 sao">
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                  <svg viewBox="0 0 24 24">
-                    <polygon
-                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                </div>
-                <span class="wishlist-reviews-count">(65)</span>
-              </div>
-            </div>
-          </article>
-
-        </div>
-      </section>
-
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="wishlist-toast" id="wishlistToast" role="status" aria-live="polite">
-      <span class="wishlist-toast-msg">Đã thêm vào giỏ hàng!</span>
+        <p class="auth-switch">
+          <span class="auth-switch-text">Don't have an account?</span>
+          <a href="./Sign-in.html" class="auth-switch-link">Sign up</a>
+        </p>
+      </div>
     </div>
   </main>
 
-  <script>
-    // Logic tương tác trang Wishlist
-    (function () {
-      const wishlistCountEl = document.getElementById("wishlistCount");
-      const wishlistGrid = document.getElementById("wishlistGrid");
-      const emptyStateEl = document.getElementById("wishlistEmptyState");
-      const moveAllBtn = document.getElementById("moveAllBtn");
-      const seeAllBtn = document.getElementById("seeAllBtn");
-      const toastEl = document.getElementById("wishlistToast");
-      const toastMsgEl = toastEl ? toastEl.querySelector(".wishlist-toast-msg") : null;
-      let toastTimer = null;
-
-      function showToast(message) {
-        if (!toastEl || !toastMsgEl) return;
-        toastMsgEl.textContent = message;
-        toastEl.classList.add("is-show");
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(function () {
-          toastEl.classList.remove("is-show");
-        }, 2400);
-      }
-
-      function updateWishlistCount() {
-        if (!wishlistGrid || !wishlistCountEl) return;
-        const remaining = wishlistGrid.querySelectorAll(".wishlist-card").length;
-        wishlistCountEl.textContent = remaining;
-        if (remaining === 0) {
-          wishlistGrid.style.display = "none";
-          if (emptyStateEl) emptyStateEl.classList.add("is-visible");
-        } else {
-          wishlistGrid.style.display = "grid";
-          if (emptyStateEl) emptyStateEl.classList.remove("is-visible");
-        }
-      }
-
-      // Bắt sự kiện click trên toàn trang Wishlist
-      document.addEventListener("click", function (e) {
-        // Xóa sản phẩm khỏi wishlist (icon thùng rác)
-        const removeBtn = e.target.closest('[data-action="remove-item"]');
-        if (removeBtn) {
-          e.preventDefault();
-          const card = removeBtn.closest(".wishlist-card");
-          if (card) {
-            const productName = card.getAttribute("data-product-name") || "Sản phẩm";
-            card.classList.add("is-removing");
-            setTimeout(function () {
-              card.remove();
-              updateWishlistCount();
-              const isVi = document.documentElement.lang === "vi";
-              showToast(isVi ? `Đã xóa "${productName}" khỏi danh sách yêu thích` : `Removed "${productName}" from wishlist`);
-            }, 250);
-          }
-          return;
-        }
-
-        // Bấm Add To Cart
-        const addCartBtn = e.target.closest('[data-action="add-to-cart"]');
-        if (addCartBtn) {
-          e.preventDefault();
-          const card = addCartBtn.closest(".wishlist-card");
-          const productName = card ? card.getAttribute("data-product-name") : "Sản phẩm";
-          const isVi = document.documentElement.lang === "vi";
-          showToast(isVi ? `Đã thêm "${productName}" vào giỏ hàng!` : `Added "${productName}" to bag!`);
-          return;
-        }
-
-        // Bấm Xem nhanh (Quick view)
-        const quickViewBtn = e.target.closest('[data-action="quick-view"]');
-        if (quickViewBtn) {
-          e.preventDefault();
-          const card = quickViewBtn.closest(".wishlist-card");
-          const productName = card ? card.getAttribute("data-product-name") : "Sản phẩm";
-          const isVi = document.documentElement.lang === "vi";
-          showToast(isVi ? `Đang xem thông tin "${productName}"` : `Quick preview of "${productName}"`);
-          return;
-        }
-      });
-
-      // Move All To Bag
-      if (moveAllBtn) {
-        moveAllBtn.addEventListener("click", function () {
-          const cards = wishlistGrid ? wishlistGrid.querySelectorAll(".wishlist-card") : [];
-          if (cards.length === 0) {
-            const isVi = document.documentElement.lang === "vi";
-            showToast(isVi ? "Danh sách yêu thích đã trống!" : "Wishlist is already empty!");
-            return;
-          }
-          cards.forEach(function (card) {
-            card.classList.add("is-removing");
-          });
-          setTimeout(function () {
-            cards.forEach(function (card) { card.remove(); });
-            updateWishlistCount();
-            const isVi = document.documentElement.lang === "vi";
-            showToast(isVi ? "Đã chuyển tất cả sản phẩm vào giỏ hàng!" : "All items moved to bag!");
-          }, 300);
-        });
-      }
-
-      // See All
-      if (seeAllBtn) {
-        seeAllBtn.addEventListener("click", function () {
-          window.location.href = "/frontend/pages/E-CommerceHomePage.html";
-        });
-      }
-
-      // Tự động fallback đường dẫn ảnh nếu mở file trực tiếp
-      document.querySelectorAll(".wishlist-card img").forEach(function (img) {
-        img.addEventListener("error", function () {
-          if (this.src.includes("/frontend/assets/")) {
-            this.src = this.src.replace(/.*\/frontend\/assets\//, "../assets/");
-          }
-        });
-      });
-
-      // Tự động đồng bộ ngôn ngữ với switcher trên header
-      function applyWishlistLanguage(lang) {
-        const isVi = lang === "vi";
-        const titleLabel = document.querySelector(".wishlist-title-text");
-        if (titleLabel) titleLabel.textContent = isVi ? "Danh sách yêu thích" : "Wishlist";
-
-        const moveBtn = document.getElementById("moveAllBtn");
-        if (moveBtn) {
-          const span = moveBtn.querySelector(".btn-text");
-          if (span) span.textContent = isVi ? "Chuyển tất cả vào giỏ" : "Move All To Bag";
-        }
-
-        const justTitle = document.getElementById("justForYouHeading");
-        if (justTitle) justTitle.textContent = isVi ? "Dành riêng cho bạn" : "Just For You";
-
-        const seeBtn = document.getElementById("seeAllBtn");
-        if (seeBtn) {
-          const span = seeBtn.querySelector(".btn-text");
-          if (span) span.textContent = isVi ? "Xem tất cả" : "See All";
-        }
-
-        document.querySelectorAll(".add-cart-text").forEach(function (el) {
-          el.textContent = isVi ? "Thêm vào giỏ" : "Add To Cart";
-        });
-
-        const emptyTitle = document.querySelector(".empty-title");
-        if (emptyTitle) emptyTitle.textContent = isVi ? "Danh sách yêu thích của bạn đang trống" : "Your Wishlist is Empty";
-
-        const emptyDesc = document.querySelector(".empty-desc");
-        if (emptyDesc) emptyDesc.textContent = isVi ? "Hãy khám phá thêm các sản phẩm tuyệt vời của T1 Shop!" : "Explore more great products from T1 Shop and add them to your wishlist!";
-
-        const emptyBtnSpan = document.querySelector(".empty-btn span");
-        if (emptyBtnSpan) emptyBtnSpan.textContent = isVi ? "Khám phá sản phẩm" : "Explore Products";
-      }
-
-      // Lắng nghe thay đổi lang trên thẻ <html>
-      const observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (m) {
-          if (m.type === "attributes" && m.attributeName === "lang") {
-            applyWishlistLanguage(document.documentElement.lang);
-          }
-        });
-      });
-      observer.observe(document.documentElement, { attributes: true });
-
-      var currentLang = document.documentElement.lang || localStorage.getItem("t1_selected_lang") || "en";
-      applyWishlistLanguage(currentLang);
-    })();
-  </script>
-
-  <script>
-    const menuButton = document.querySelector(".menu-toggle");
-    const navigation = document.querySelector(".navigation");
-
-    menuButton.addEventListener("click", function () {
-      const isOpen = navigation.classList.toggle("navigation--open");
-      menuButton.setAttribute("aria-expanded", isOpen);
-      menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
-    });
-  </script>
-
+  <!-- ========================================================
+       FOOTER (Đồng bộ 100% từ hệ thống T1 Shop)
+       ======================================================== -->
   <footer class="site-footer">
     <div class="footer-container">
-
       <!-- Cột 1: Exclusive & Subscribe -->
       <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
-        <h2 id="newsletter-title">T1shop</h2>
+        <h2 id="newsletter-title">T1 Shop</h2>
         <p class="column-subtitle">Subscribe</p>
         <p class="newsletter-copy">Get 10% off your first order</p>
         <form class="subscribe-form" action="#subscribe" method="post"
           onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
-          <label class="visually-hidden" for="subscriber-email">Enter your email</label>
+          <label class="visually-hidden" for="subscriber-email"
+            style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;">Enter your email</label>
           <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
           <button type="submit" aria-label="Gửi đăng ký">
-            <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
               stroke-linejoin="round" aria-hidden="true">
               <path d="m22 2-7 20-4-9-9-4Z" />
@@ -715,11 +289,11 @@
       <nav class="footer-column" aria-label="Account">
         <h2>Account</h2>
         <ul>
-          <li><a href="#">My Account</a></li>
-          <li><a href="#">Login / Register</a></li>
-          <li><a href="#">Cart</a></li>
-          <li><a href="/frontend/pages/WishList.html">Wishlist</a></li>
-          <li><a href="#">Shop</a></li>
+          <li><a href="./myAccount.html">My Account</a></li>
+          <li><a href="./Login.html">Login / Register</a></li>
+          <li><a href="./WishList.html#cart">Cart</a></li>
+          <li><a href="./WishList.html">Wishlist</a></li>
+          <li><a href="./Shop.html">Shop</a></li>
         </ul>
       </nav>
 
@@ -730,7 +304,7 @@
           <li><a href="#">Privacy Policy</a></li>
           <li><a href="#">Terms Of Use</a></li>
           <li><a href="#">FAQ</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="./contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -741,8 +315,25 @@
     </div>
   </footer>
 
+  <!-- ========================================================
+       JAVASCRIPTS (Header, Language Switcher, User Dropdown & Search)
+       ======================================================== -->
   <script>
     (function () {
+      "use strict";
+
+      /* 1. Mobile Menu Toggle */
+      var menuButton = document.querySelector(".menu-toggle");
+      var navigation = document.querySelector(".navigation");
+      if (menuButton && navigation) {
+        menuButton.addEventListener("click", function () {
+          var isOpen = navigation.classList.toggle("navigation--open");
+          menuButton.setAttribute("aria-expanded", String(isOpen));
+          menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+        });
+      }
+
+      /* 2. Language Switcher (English <-> Tiếng Việt) */
       var langBtn = document.getElementById("languageBtn");
       var langDropdown = document.getElementById("languageDropdown");
       var langOptions = document.querySelectorAll(".language-item");
@@ -750,20 +341,29 @@
 
       function applyLanguage(lang) {
         var isVi = lang === "vi";
+
         if (currentLangLabel) {
           currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
         }
+
         langOptions.forEach(function (item) {
-          item.classList.toggle("language-item--active", item.getAttribute("data-lang") === lang);
+          var itemLang = item.getAttribute("data-lang");
+          item.classList.toggle("language-item--active", itemLang === lang);
         });
+
+        // Banner thông báo
         var announceText = document.querySelector(".announcement__inner p");
         if (announceText) {
           var shopLink = announceText.querySelector("a");
-          var linkHref = shopLink ? shopLink.getAttribute("href") : "#shop";
-          announceText.innerHTML = isVi
-            ? 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>'
-            : 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
+          var linkHref = shopLink ? shopLink.getAttribute("href") : "./Shop.html";
+          if (isVi) {
+            announceText.innerHTML = 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>';
+          } else {
+            announceText.innerHTML = 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
+          }
         }
+
+        // Menu chính
         var navLinks = document.querySelectorAll(".navigation .navigation__link");
         if (navLinks.length >= 4) {
           navLinks[0].textContent = isVi ? "Trang Chủ" : "Home";
@@ -771,46 +371,118 @@
           navLinks[2].textContent = isVi ? "Giới Thiệu" : "About";
           navLinks[3].textContent = isVi ? "Đăng Ký" : "Sign Up";
         }
+
+        // Search Placeholder
         var searchInput = document.querySelector(".search input");
         if (searchInput) {
           searchInput.placeholder = isVi ? "Bạn đang tìm kiếm gì?" : "What are you looking for?";
         }
+
+        // Login Form Translation
+        var visualTitle = document.querySelector(".auth-visual-title");
+        if (visualTitle) visualTitle.textContent = isVi ? "Chào mừng trở lại!" : "Welcome Back!";
+        var visualDesc = document.querySelector(".auth-visual-desc");
+        if (visualDesc) visualDesc.textContent = isVi ? "Khám phá hàng ngàn sản phẩm tuyệt vời tại T1 Shop." : "Discover amazing products at T1 Shop.";
+
+        var authTitle = document.querySelector(".auth-title");
+        if (authTitle) authTitle.textContent = isVi ? "Đăng nhập vào T1 Shop" : "Log in to T1 Shop";
+        var authSubtitle = document.querySelector(".auth-subtitle");
+        if (authSubtitle) authSubtitle.textContent = isVi ? "Nhập thông tin chi tiết của bạn dưới đây" : "Enter your details below";
+
+        var inputEmail = document.querySelector(".input-email");
+        if (inputEmail) inputEmail.placeholder = isVi ? "Email hoặc Số điện thoại" : "Email or Phone Number";
+        var inputPass = document.querySelector(".input-pass");
+        if (inputPass) inputPass.placeholder = isVi ? "Mật khẩu" : "Password";
+
+        var btnLogin = document.querySelector(".btn-login-submit");
+        if (btnLogin) btnLogin.textContent = isVi ? "Đăng Nhập" : "Log In";
+        var forgotLink = document.getElementById("forgotPassword");
+        if (forgotLink) forgotLink.textContent = isVi ? "Quên mật khẩu?" : "Forget Password?";
+
+        var switchText = document.querySelector(".auth-switch-text");
+        if (switchText) switchText.textContent = isVi ? "Chưa có tài khoản?" : "Don't have an account?";
+        var switchLink = document.querySelector(".auth-switch-link");
+        if (switchLink) switchLink.textContent = isVi ? "Đăng ký ngay" : "Sign up";
+
         document.documentElement.lang = lang;
+
+        try {
+          localStorage.setItem("t1shop_lang", lang);
+        } catch (e) { }
       }
 
       if (langBtn && langDropdown) {
-        function toggleDropdown(show) {
-          var isOpen = typeof show === "boolean" ? show : !langDropdown.classList.contains("language-dropdown--open");
-          langDropdown.classList.toggle("language-dropdown--open", isOpen);
-          langBtn.setAttribute("aria-expanded", String(isOpen));
-        }
         langBtn.addEventListener("click", function (e) {
           e.stopPropagation();
-          toggleDropdown();
+          var isOpen = langDropdown.classList.toggle("language-dropdown--open");
+          langBtn.setAttribute("aria-expanded", String(isOpen));
         });
-        langOptions.forEach(function (opt) {
-          opt.addEventListener("click", function (e) {
+
+        langOptions.forEach(function (item) {
+          item.addEventListener("click", function (e) {
             e.stopPropagation();
-            var selectedLang = opt.getAttribute("data-lang");
-            if (selectedLang) {
-              applyLanguage(selectedLang);
-              try { localStorage.setItem("t1_selected_lang", selectedLang); } catch (err) { }
-            }
-            toggleDropdown(false);
+            var targetLang = item.getAttribute("data-lang") || "en";
+            applyLanguage(targetLang);
+            langDropdown.classList.remove("language-dropdown--open");
+            langBtn.setAttribute("aria-expanded", "false");
           });
         });
+
         document.addEventListener("click", function (e) {
-          if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) toggleDropdown(false);
+          if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+            langDropdown.classList.remove("language-dropdown--open");
+            langBtn.setAttribute("aria-expanded", "false");
+          }
         });
+
         document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape") toggleDropdown(false);
+          if (e.key === "Escape") {
+            langDropdown.classList.remove("language-dropdown--open");
+            langBtn.setAttribute("aria-expanded", "false");
+          }
         });
+
         var savedLang = "en";
-        try { savedLang = localStorage.getItem("t1_selected_lang") || "en"; } catch (err) { }
+        try {
+          savedLang = localStorage.getItem("t1shop_lang") || "en";
+        } catch (e) { }
         applyLanguage(savedLang);
+      }
+
+      /* 3. User Avatar Button & Account Dropdown Popup */
+      var userAvatarBtn = document.getElementById("userAvatarBtn");
+      var accountPopupMenu = document.getElementById("accountPopupMenu");
+
+      if (userAvatarBtn && accountPopupMenu) {
+        function toggleAccountPopup(show) {
+          var isOpen = typeof show === "boolean" ? show : !accountPopupMenu.classList.contains("account-popup-menu--open");
+          accountPopupMenu.classList.toggle("account-popup-menu--open", isOpen);
+          userAvatarBtn.setAttribute("aria-expanded", String(isOpen));
+        }
+
+        userAvatarBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleAccountPopup();
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!userAvatarBtn.contains(e.target) && !accountPopupMenu.contains(e.target)) {
+            toggleAccountPopup(false);
+          }
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            toggleAccountPopup(false);
+          }
+        });
       }
     })();
   </script>
+
+  <!-- Global Search Bar & Live Autocomplete -->
+  <script src="../js/search-bar.js"></script>
 </body>
 
 </html>
