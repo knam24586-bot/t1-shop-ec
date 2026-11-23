@@ -1,0 +1,392 @@
+/**
+ * T1 Shop - My Account Page Styles
+ * Khớp hoàn hảo với giao diện Figma Exclusive
+ */
+
+/* ========================================================
+   1. VARIABLES & BASE SETUP
+   ======================================================== */
+:root {
+  --primary-red: #db4444;
+  --primary-red-hover: #c43838;
+  --text-dark: #000000;
+  --text-secondary: #7d8184;
+  --text-muted: rgba(0, 0, 0, 0.5);
+  --bg-input: #f5f5f5;
+  --card-bg: #ffffff;
+  --border-subtle: #e5e5e5;
+  --font-poppins: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  font-family: var(--font-poppins);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+}
+
+/* ========================================================
+   2. BREADCRUMB & WELCOME BAR
+   ======================================================== */
+.account-topbar {
+  width: min(100% - 48px, 1170px);
+  margin: 0 auto;
+  padding: 40px 0 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.account-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.account-breadcrumb a:hover {
+  color: var(--primary-red);
+}
+
+.account-breadcrumb .breadcrumb-separator {
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.account-breadcrumb .breadcrumb-current {
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.account-welcome {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.account-welcome .welcome-name {
+  color: var(--primary-red);
+  font-weight: 500;
+}
+
+/* ========================================================
+   3. ACCOUNT MAIN LAYOUT (SIDEBAR & PROFILE CARD)
+   ======================================================== */
+.account-page-main {
+  flex: 1 0 auto;
+  width: min(100% - 48px, 1170px);
+  margin: 0 auto;
+  padding-bottom: 120px;
+}
+
+.account-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 70px;
+  align-items: start;
+}
+
+/* Sidebar Điều hướng tài khoản */
+.account-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.account-nav-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-nav-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 14px;
+  line-height: 1.4;
+}
+
+.account-nav-title a {
+  color: var(--text-dark);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.account-nav-title a:hover {
+  color: var(--primary-red);
+}
+
+.account-nav-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.account-nav-item a {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: inline-block;
+}
+
+.account-nav-item a:hover {
+  color: var(--primary-red);
+}
+
+.account-nav-item a.active {
+  color: var(--primary-red);
+  font-weight: 500;
+}
+
+/* ========================================================
+   4. EDIT PROFILE CARD & FORM
+   ======================================================== */
+.profile-card {
+  background: var(--card-bg);
+  border-radius: 4px;
+  box-shadow: 0 1px 13px rgba(0, 0, 0, 0.05);
+  padding: 40px 80px 45px;
+}
+
+.profile-card-title {
+  color: var(--primary-red);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 24px;
+  line-height: 1.2;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 16px;
+  color: var(--text-dark);
+  font-weight: 400;
+}
+
+.form-group input {
+  height: 50px;
+  background-color: var(--bg-input);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.form-group input:focus {
+  border-color: var(--primary-red);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(219, 68, 68, 0.1);
+}
+
+/* Nhóm đổi mật khẩu */
+.password-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.password-section-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin: 0 0 2px;
+}
+
+.password-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.password-inputs input {
+  height: 50px;
+  background-color: var(--bg-input);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.password-inputs input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.password-inputs input:focus {
+  border-color: var(--primary-red);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(219, 68, 68, 0.1);
+}
+
+/* Nút hành động cuối form */
+.profile-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 32px;
+  margin-top: 14px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-cancel:hover {
+  color: var(--primary-red);
+}
+
+.btn-save {
+  background-color: var(--primary-red);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 16px 48px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(219, 68, 68, 0.25);
+}
+
+.btn-save:hover {
+  background-color: var(--primary-red-hover);
+  box-shadow: 0 6px 14px rgba(219, 68, 68, 0.35);
+}
+
+.btn-save:active {
+  transform: translateY(1px);
+}
+
+/* Thông báo lưu thành công Toast */
+.toast-notice {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: #10b981;
+  color: #ffffff;
+  padding: 14px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-notice.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ========================================================
+   5. RESPONSIVE DESIGN
+   ======================================================== */
+@media (max-width: 992px) {
+  .account-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .profile-card {
+    padding: 30px 40px;
+  }
+
+  .form-row-2col {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .account-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px 0 24px;
+  }
+
+  .profile-card {
+    padding: 24px 18px;
+  }
+
+  .form-row-2col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .profile-actions {
+    justify-content: stretch;
+    gap: 16px;
+  }
+
+  .btn-cancel,
+  .btn-save {
+    flex: 1;
+    text-align: center;
+    padding: 14px 16px;
+  }
+}
