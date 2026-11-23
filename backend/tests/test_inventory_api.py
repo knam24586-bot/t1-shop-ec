@@ -102,6 +102,15 @@ class TestInventoryAPI(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    def test_set_inventory_and_normalize_role_header(self):
+        response = self.client.put(
+            f"/api/inventory/{self.variant.id}",
+            json={"stock": 12, "reason": "Kiểm kho"},
+            headers={"X-Role": " vendor ", "X-Store-Id": "1"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["stock"], 12)
+
 
 if __name__ == "__main__":
     unittest.main()
