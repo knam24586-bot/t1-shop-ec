@@ -1,0 +1,478 @@
+/**
+ * T1 Shop - About Page Styles
+ * Thiết kế chuẩn Figma Exclusive Website
+ */
+
+:root {
+  --color-primary: #db4444;
+  --color-primary-hover: #b83232;
+  --color-text-dark: #000000;
+  --color-text-muted: #7d8184;
+  --color-border: rgba(0, 0, 0, 0.2);
+  --color-bg-light: #f5f5f5;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+}
+
+/* Container chính của trang About */
+.about-page {
+  width: 100%;
+  overflow-x: hidden;
+  background: #ffffff;
+  padding-bottom: 80px;
+}
+
+.about-container {
+  width: min(100% - 48px, 1170px);
+  margin: 0 auto;
+}
+
+/* ========================================================
+   1. BREADCRUMB
+   ======================================================== */
+.breadcrumb-nav {
+  padding: 40px 0 42px;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-poppins);
+  font-size: 14px;
+}
+
+.breadcrumb-item a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-item a:hover {
+  color: var(--color-primary);
+}
+
+.breadcrumb-sep {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.breadcrumb-item.is-active {
+  color: var(--color-text-dark);
+  font-weight: 500;
+}
+
+/* ========================================================
+   2. OUR STORY SECTION
+   ======================================================== */
+.about-story-section {
+  margin-bottom: 120px;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.story-content {
+  padding-right: 20px;
+}
+
+.story-title {
+  font-family: var(--font-inter);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  color: var(--color-text-dark);
+  margin: 0 0 40px;
+}
+
+.story-text {
+  font-family: var(--font-poppins);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-text-dark);
+  margin: 0 0 24px;
+}
+
+.story-text:last-of-type {
+  margin-bottom: 0;
+}
+
+.story-image-wrap {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fdf2f4;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.story-img {
+  width: 100%;
+  height: 540px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.story-image-wrap:hover .story-img {
+  transform: scale(1.03);
+}
+
+/* ========================================================
+   3. STATS / ACHIEVEMENTS CARDS
+   ======================================================== */
+.about-stats-section {
+  margin-bottom: 140px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.stat-card {
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 30px 20px;
+  text-align: center;
+  background: #ffffff;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Vòng tròn lồng nhau (Concentric circles) */
+.concentric-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #c1c0c1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.concentric-circle__inner {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.concentric-circle svg {
+  width: 32px;
+  height: 32px;
+  color: #ffffff;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  transition: color 0.3s ease;
+}
+
+.stat-number {
+  font-family: var(--font-inter);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text-dark);
+  margin: 0 0 12px;
+  transition: color 0.3s ease;
+}
+
+.stat-label {
+  font-family: var(--font-poppins);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-dark);
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+/* Trạng thái Active & Hover cho Stat Card */
+.stat-card--active,
+.stat-card:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 12px 28px rgba(219, 68, 68, 0.28);
+  transform: translateY(-4px);
+}
+
+.stat-card--active .concentric-circle,
+.stat-card:hover .concentric-circle {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.stat-card--active .concentric-circle__inner,
+.stat-card:hover .concentric-circle__inner {
+  background: #ffffff;
+}
+
+.stat-card--active .concentric-circle svg,
+.stat-card:hover .concentric-circle svg {
+  color: #000000;
+}
+
+.stat-card--active .stat-number,
+.stat-card:hover .stat-number,
+.stat-card--active .stat-label,
+.stat-card:hover .stat-label {
+  color: #ffffff;
+}
+
+/* ========================================================
+   4. TEAM MEMBERS SECTION
+   ======================================================== */
+.about-team-section {
+  margin-bottom: 140px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-card__image-box {
+  width: 100%;
+  height: 430px;
+  background: var(--color-bg-light);
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.team-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.team-card:hover .team-card__img {
+  transform: scale(1.05);
+}
+
+.team-card__name {
+  font-family: var(--font-inter);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  color: var(--color-text-dark);
+  margin: 0 0 8px;
+}
+
+.team-card__role {
+  font-family: var(--font-poppins);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-dark);
+  margin: 0 0 16px;
+  opacity: 0.85;
+}
+
+.team-card__socials {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.team-card__social-link {
+  width: 24px;
+  height: 24px;
+  color: var(--color-text-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.team-card__social-link svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.team-card__social-link:hover {
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+/* Dots điều hướng Team Slider */
+.team-slider-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.team-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #b3b3b3;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.team-dot:hover {
+  background: #777;
+}
+
+.team-dot.is-active {
+  background: var(--color-primary);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--color-primary);
+}
+
+/* ========================================================
+   5. SERVICES / TRUST BADGES
+   ======================================================== */
+.about-services-section {
+  margin-bottom: 100px;
+}
+
+.services-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px;
+}
+
+.service-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 280px;
+}
+
+.service-feature .concentric-circle {
+  margin-bottom: 24px;
+}
+
+.service-title {
+  font-family: var(--font-poppins);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text-dark);
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.service-desc {
+  font-family: var(--font-poppins);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-dark);
+  margin: 0;
+  opacity: 0.85;
+}
+
+/* ========================================================
+   RESPONSIVE CHO TABLET & MOBILE
+   ======================================================== */
+@media (max-width: 992px) {
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .story-content {
+    padding-right: 0;
+  }
+
+  .story-title {
+    font-size: 40px;
+    margin-bottom: 24px;
+  }
+
+  .story-img {
+    height: 400px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .team-card__image-box {
+    height: 380px;
+  }
+
+  .services-row {
+    flex-wrap: wrap;
+    gap: 48px;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-container {
+    width: min(100% - 32px, 1170px);
+  }
+
+  .story-title {
+    font-size: 32px;
+  }
+
+  .story-img {
+    height: 300px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .team-card__image-box {
+    height: 340px;
+  }
+
+  .services-row {
+    flex-direction: column;
+    gap: 36px;
+  }
+}

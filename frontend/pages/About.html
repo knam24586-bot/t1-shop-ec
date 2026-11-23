@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - T1 Shop</title>
+  <!-- Google Fonts: Inter & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/style1.css">
+  <link rel="stylesheet" href="../css/style1.css">
+  <link rel="stylesheet" href="/frontend/css/wishlist.css">
+  <link rel="stylesheet" href="../css/wishlist.css">
+  <link rel="stylesheet" href="/frontend/css/about.css">
+  <link rel="stylesheet" href="../css/about.css">
+  <link rel="stylesheet" href="/frontend/css/accontDropdown.css">
+  <link rel="stylesheet" href="../css/accontDropdown.css">
+</head>
+
+<body>
+  <!-- ========================================================
+       HEADER & NAVIGATION (Đồng bộ 100% từ WishList.html)
+       ======================================================== -->
+  <header class="site-header">
+    <!-- Thanh thông báo khuyến mãi phía trên -->
+    <div class="announcement">
+      <div class="announcement__inner">
+        <p>
+          Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%!
+          <a href="./Shop.html">ShopNow</a>
+        </p>
+
+        <!-- Bộ chuyển đổi ngôn ngữ (English / Tiếng Việt) -->
+        <div class="language-picker" id="languagePicker">
+          <button class="language" id="languageBtn" type="button" aria-label="Chọn ngôn ngữ" aria-expanded="false"
+            aria-haspopup="true">
+            <span class="language-current-label" id="currentLangLabel">English</span>
+            <svg viewBox="0 0 12 8" aria-hidden="true">
+              <path d="m1 1.5 5 5 5-5" />
+            </svg>
+          </button>
+          <ul class="language-dropdown" id="languageDropdown" role="menu" aria-label="Lựa chọn ngôn ngữ">
+            <li role="none">
+              <button class="language-item language-item--active" type="button" role="menuitem" data-lang="en">
+                <span class="lang-text">English</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+            <li role="none">
+              <button class="language-item" type="button" role="menuitem" data-lang="vi">
+                <span class="lang-text">Tiếng Việt</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header chính -->
+    <div class="main-header">
+      <div class="main-header__inner">
+        <a class="brand" href="./E-CommerceHomePage.html" aria-label="Trang chủ T1 Shop">
+          <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png"
+            onerror="this.onerror=null; this.src='../assets/images/Worlds_2026_Simulator-removebg-preview.png'"
+            alt="T1 Shop Logo">
+        </a>
+
+        <button class="menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false"
+          aria-controls="primary-navigation">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
+          <a class="navigation__link" href="./E-CommerceHomePage.html">Home</a>
+          <a class="navigation__link" href="./contact.html">Contact</a>
+          <a class="navigation__link navigation__link--active" href="./About.html">About</a>
+          <a class="navigation__link" href="./Sign-in.html">Sign Up</a>
+        </nav>
+
+        <div class="header-actions">
+          <form class="search" role="search" action="./Shop.html" method="get">
+            <input type="search" name="q" placeholder="What are you looking for?" aria-label="Tìm kiếm sản phẩm"
+              autocomplete="off">
+            <button class="search-clear-btn" type="button" aria-label="Xóa từ khóa" style="display: none;">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            <button type="submit" aria-label="Tìm kiếm">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                <path d="m16 16 5 5"></path>
+              </svg>
+            </button>
+          </form>
+
+          <a class="icon-link" href="./WishList.html" aria-label="Wishlist">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
+              </path>
+            </svg>
+          </a>
+
+          <a class="icon-link" href="./WishList.html#cart" aria-label="Giỏ hàng">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
+              <circle cx="9" cy="20" r="1.2"></circle>
+              <circle cx="18" cy="20" r="1.2"></circle>
+            </svg>
+          </a>
+
+          <!-- User Account Icon & Dropdown Popup -->
+          <div class="user-account-dropdown" id="userAccountDropdown">
+            <button class="user-avatar-btn" id="userAvatarBtn" type="button" aria-label="Tài khoản người dùng"
+              aria-expanded="false" aria-haspopup="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            <nav class="account-popup-menu" id="accountPopupMenu" aria-label="Menu tài khoản">
+              <ul class="account-popup-list">
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <span>Manage My Account</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html#my-order">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                      <path d="M3 6h18" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span>My Order</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html#my-cancellations">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                    <span>My Cancellations</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html#my-reviews">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span>My Reviews</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./Login.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Logout</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       MAIN ABOUT US CONTENT
+       ======================================================== -->
+  <main class="about-page">
+    <div class="about-container">
+
+      <!-- 1. Breadcrumb Navigation -->
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="./E-CommerceHomePage.html" class="bc-home-text">Home</a></li>
+          <li class="breadcrumb-sep" aria-hidden="true">/</li>
+          <li class="breadcrumb-item is-active" aria-current="page"><span class="bc-about-text">About</span></li>
+        </ol>
+      </nav>
+
+      <!-- 2. Our Story Section -->
+      <section class="about-story-section" aria-labelledby="storyHeading">
+        <div class="story-grid">
+          <div class="story-content">
+            <h1 class="story-title" id="storyHeading">Our Story</h1>
+            <p class="story-text story-desc-1">
+              Launced in 2015, Exclusive is South Asia’s premier online shopping maketplace with an active presense in
+              Bangladesh. Supported by wide range of tailored marketing, data and service solutions, Exclusive has
+              10,500 sallers and 300 brands and serves 3 millions customers across the region.
+            </p>
+            <p class="story-text story-desc-2">
+              Exclusive has more than 1 Million products to offer, growing at a very fast. Exclusive offers a diverse
+              assotment in categories ranging from consumer.
+            </p>
+          </div>
+          <div class="story-image-wrap">
+            <img class="story-img"
+              src="https://images.unsplash.com/photo-1573855619003-97b4799dcd8b?auto=format&fit=crop&w=1000&q=80"
+              alt="Two happy women holding colorful shopping bags"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=80';">
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Statistics / Achievements Section -->
+      <section class="about-stats-section" aria-label="Site Statistics">
+        <div class="stats-grid">
+
+          <!-- Card 1: 10.5k Sellers -->
+          <article class="stat-card" tabindex="0">
+            <div class="concentric-circle" aria-hidden="true">
+              <div class="concentric-circle__inner">
+                <!-- Storefront Icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M3 9l1 10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2l1-10" />
+                  <path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4" />
+                  <line x1="2" y1="9" x2="22" y2="9" />
+                  <path d="M10 13a2 2 0 0 0 4 0" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-number">10.5k</div>
+            <p class="stat-label stat-label-1">Sallers active our site</p>
+          </article>
+
+          <!-- Card 2: 33k Monthly Sale (ACTIVE RED CARD) -->
+          <article class="stat-card stat-card--active" tabindex="0">
+            <div class="concentric-circle" aria-hidden="true">
+              <div class="concentric-circle__inner">
+                <!-- Dollar Currency Icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M14.8 9A2 2 0 0 0 13 8h-2a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4h-2a2 2 0 0 1-1.8-1.1" />
+                  <path d="M12 6v2m0 8v2" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-number">33k</div>
+            <p class="stat-label stat-label-2">Mopnthly Produdt Sale</p>
+          </article>
+
+          <!-- Card 3: 45.5k Customer -->
+          <article class="stat-card" tabindex="0">
+            <div class="concentric-circle" aria-hidden="true">
+              <div class="concentric-circle__inner">
+                <!-- Shopping Bag Icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                  <path d="M3 6h18" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-number">45.5k</div>
+            <p class="stat-label stat-label-3">Customer active in our site</p>
+          </article>
+
+          <!-- Card 4: 25k Gross Sale -->
+          <article class="stat-card" tabindex="0">
+            <div class="concentric-circle" aria-hidden="true">
+              <div class="concentric-circle__inner">
+                <!-- Money Sack / Gross Sales Icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path
+                    d="M19 12a7 7 0 1 1-14 0c0-3.5 2.5-6.5 4.5-8.5C10.5 4.5 11 5 12 5s1.5-.5 2.5-1.5c2 2 4.5 5 4.5 8.5Z" />
+                  <path d="M12 10v6" />
+                  <path d="M10 11.5a2 2 0 0 1 2-1.5h.5a1.5 1.5 0 0 1 0 3h-1a1.5 1.5 0 0 0 0 3h1.5a2 2 0 0 0 2-1.5" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-number">25k</div>
+            <p class="stat-label stat-label-4">Anual gross sale in our site</p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- 4. Team Members Section -->
+      <section class="about-team-section" aria-labelledby="teamHeading">
+        <h2 id="teamHeading" class="visually-hidden"
+          style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;">
+          Our Leadership Team</h2>
+
+        <div class="team-grid">
+
+          <!-- Team Member 1: Tom Cruise -->
+          <article class="team-card">
+            <div class="team-card__image-box">
+              <img class="team-card__img" src="/frontend/assets/images/products/image 46.png"
+                alt="Tom Cruise - Founder & Chairman" onerror="this.onerror=null">
+            </div>
+            <h3 class="team-card__name">Tom Cruise</h3>
+            <p class="team-card__role team-role-1">Founder & Chairman</p>
+            <div class="team-card__socials">
+              <!-- Twitter / X -->
+              <a href="#twitter" class="team-card__social-link" aria-label="Twitter của Tom Cruise">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                </svg>
+              </a>
+              <!-- Instagram -->
+              <a href="#instagram" class="team-card__social-link" aria-label="Instagram của Tom Cruise">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </a>
+              <!-- LinkedIn -->
+              <a href="#linkedin" class="team-card__social-link" aria-label="LinkedIn của Tom Cruise">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Team Member 2: Emma Watson -->
+          <article class="team-card">
+            <div class="team-card__image-box">
+              <img class="team-card__img"
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80"
+                alt="Emma Watson - Managing Director"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80';">
+            </div>
+            <h3 class="team-card__name">Emma Watson</h3>
+            <p class="team-card__role team-role-2">Managing Director</p>
+            <div class="team-card__socials">
+              <!-- Twitter / X -->
+              <a href="#twitter" class="team-card__social-link" aria-label="Twitter của Emma Watson">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                </svg>
+              </a>
+              <!-- Instagram -->
+              <a href="#instagram" class="team-card__social-link" aria-label="Instagram của Emma Watson">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </a>
+              <!-- LinkedIn -->
+              <a href="#linkedin" class="team-card__social-link" aria-label="LinkedIn của Emma Watson">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Team Member 3: Will Smith -->
+          <article class="team-card">
+            <div class="team-card__image-box">
+              <img class="team-card__img"
+                src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80"
+                alt="Will Smith - Product Designer"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80';">
+            </div>
+            <h3 class="team-card__name">Will Smith</h3>
+            <p class="team-card__role team-role-3">Product Designer</p>
+            <div class="team-card__socials">
+              <!-- Twitter / X -->
+              <a href="#twitter" class="team-card__social-link" aria-label="Twitter của Will Smith">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                </svg>
+              </a>
+              <!-- Instagram -->
+              <a href="#instagram" class="team-card__social-link" aria-label="Instagram của Will Smith">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </a>
+              <!-- LinkedIn -->
+              <a href="#linkedin" class="team-card__social-link" aria-label="LinkedIn của Will Smith">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- 5 Carousel Pagination Dots (Dot 3 Active chuẩn Figma) -->
+        <div class="team-slider-dots" role="tablist" aria-label="Team slider navigation">
+          <button class="team-dot" type="button" role="tab" aria-selected="false" aria-label="Slide 1"></button>
+          <button class="team-dot" type="button" role="tab" aria-selected="false" aria-label="Slide 2"></button>
+          <button class="team-dot is-active" type="button" role="tab" aria-selected="true"
+            aria-label="Slide 3 (Active)"></button>
+          <button class="team-dot" type="button" role="tab" aria-selected="false" aria-label="Slide 4"></button>
+          <button class="team-dot" type="button" role="tab" aria-selected="false" aria-label="Slide 5"></button>
+        </div>
+      </section>
+
+      <!-- 5. Services & Trust Guarantees Section -->
+      <section class="about-services-section" aria-label="Dịch vụ và Cam kết">
+        <div class="services-row">
+
+          <!-- Dịch vụ 1: Fast Delivery -->
+          <div class="service-feature">
+            <div class="concentric-circle" aria-hidden="true">
+              <div class="concentric-circle__inner">
+                <svg viewBox="0 0 24 24">
+                  <rect x="1" y="3" width="15" height="13" />
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                  <circle cx="5.5" cy="18.5" r="2.5" />
+                  <circle cx="18.5" cy="18.5" r="2.5" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="service-title service-title-1">FREE AND FAST DELIVERY</h3>
+            <p class="service-desc service-desc-1">Free delivery for all orders over $140</p>
+          </div>
+
+          <!-- Dịch vụ 2: Customer Service -->
+          <div class="service-feature">
+            <div class="concentric-circle" aria-hidden="true">
+              <div class="concentric-circle__inner">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                  <path
+                    d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="service-title service-title-2">24/7 CUSTOMER SERVICE</h3>
+            <p class="service-desc service-desc-2">Friendly 24/7 customer support</p>
+          </div>
+
+          <!-- Dịch vụ 3: Money Back Guarantee -->
+          <div class="service-feature">
+            <div class="concentric-circle" aria-hidden="true">
+              <div class="concentric-circle__inner">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="service-title service-title-3">MONEY BACK GUARANTEE</h3>
+            <p class="service-desc service-desc-3">We return money within 30 days</p>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========================================================
+       FOOTER (Đồng bộ 100% từ WishList.html)
+       ======================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+
+      <!-- Cột 1: Exclusive & Subscribe -->
+      <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
+        <h2 id="newsletter-title">T1 Shop</h2>
+        <p class="column-subtitle">Subscribe</p>
+        <p class="newsletter-copy">Get 10% off your first order</p>
+        <form class="subscribe-form" action="#subscribe" method="post"
+          onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+          <label class="visually-hidden" for="subscriber-email"
+            style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;">Enter
+            your email</label>
+          <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+          <button type="submit" aria-label="Gửi đăng ký">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- Cột 2: Support -->
+      <nav class="footer-column" aria-label="Support">
+        <h2>Support</h2>
+        <ul>
+          <li><a href="#">PTIT</a></li>
+          <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
+          <li><a href="tel:+84015888889999">+84015-88888-9999</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 3: Account -->
+      <nav class="footer-column" aria-label="Account">
+        <h2>Account</h2>
+        <ul>
+          <li><a href="./AccountDropdownWithAccount.html">My Account</a></li>
+          <li><a href="./Login.html">Login / Register</a></li>
+          <li><a href="./WishList.html#cart">Cart</a></li>
+          <li><a href="./WishList.html">Wishlist</a></li>
+          <li><a href="./Shop.html">Shop</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 4: Quick Link -->
+      <nav class="footer-column" aria-label="Quick links">
+        <h2>Quick Link</h2>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="./E-CommerceHomePage.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Dòng bản quyền phía dưới -->
+    <div class="footer-bottom">
+      <p>© Copyright Rimel 2022. All right reserved</p>
+    </div>
+  </footer>
+
+  <!-- ========================================================
+       JAVASCRIPT SCRIPTS
+       ======================================================== -->
+  <!-- Header Language Switcher & Responsive Menu -->
+  <script>
+    (function () {
+      var langBtn = document.getElementById("languageBtn");
+      var langDropdown = document.getElementById("languageDropdown");
+      var langOptions = document.querySelectorAll(".language-item");
+      var currentLangLabel = document.getElementById("currentLangLabel");
+
+      function applyLanguage(lang) {
+        var isVi = lang === "vi";
+        if (currentLangLabel) {
+          currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
+        }
+        langOptions.forEach(function (item) {
+          item.classList.toggle("language-item--active", item.getAttribute("data-lang") === lang);
+        });
+
+        // Thanh thông báo
+        var announceText = document.querySelector(".announcement__inner p");
+        if (announceText) {
+          var shopLink = announceText.querySelector("a");
+          var linkHref = shopLink ? shopLink.getAttribute("href") : "./Shop.html";
+          announceText.innerHTML = isVi
+            ? 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>'
+            : 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
+        }
+
+        // Navigation links
+        var navLinks = document.querySelectorAll(".navigation .navigation__link");
+        if (navLinks.length >= 4) {
+          navLinks[0].textContent = isVi ? "Trang Chủ" : "Home";
+          navLinks[1].textContent = isVi ? "Liên Hệ" : "Contact";
+          navLinks[2].textContent = isVi ? "Giới Thiệu" : "About";
+          navLinks[3].textContent = isVi ? "Đăng Ký" : "Sign Up";
+        }
+
+        // Search input placeholder
+        var searchInput = document.querySelector(".search input");
+        if (searchInput) {
+          searchInput.placeholder = isVi ? "Bạn đang tìm kiếm gì?" : "What are you looking for?";
+        }
+
+        // Breadcrumb
+        var bcHome = document.querySelector(".bc-home-text");
+        if (bcHome) bcHome.textContent = isVi ? "Trang Chủ" : "Home";
+        var bcAbout = document.querySelector(".bc-about-text");
+        if (bcAbout) bcAbout.textContent = isVi ? "Giới Thiệu" : "About";
+
+        // Our Story
+        var storyHeading = document.getElementById("storyHeading");
+        if (storyHeading) storyHeading.textContent = isVi ? "Câu Chuyện Của Chúng Tôi" : "Our Story";
+
+        var storyDesc1 = document.querySelector(".story-desc-1");
+        if (storyDesc1) {
+          storyDesc1.textContent = isVi
+            ? "Ra mắt vào năm 2015, T1 Shop là sàn thương mại điện tử hàng đầu khu vực với sự hiện diện mạnh mẽ. Được hỗ trợ bởi các giải pháp tiếp thị số, dữ liệu và dịch vụ chuyên nghiệp, T1 Shop hiện có hơn 10.500 nhà bán hàng, 300 thương hiệu và phục vụ hơn 3 triệu khách hàng."
+            : "Launced in 2015, Exclusive is South Asia’s premier online shopping maketplace with an active presense in Bangladesh. Supported by wide range of tailored marketing, data and service solutions, Exclusive has 10,500 sallers and 300 brands and serves 3 millions customers across the region.";
+        }
+
+        var storyDesc2 = document.querySelector(".story-desc-2");
+        if (storyDesc2) {
+          storyDesc2.textContent = isVi
+            ? "T1 Shop cung cấp hơn 1 triệu sản phẩm phong phú và phát triển với tốc độ nhanh chóng, đáp ứng toàn diện mọi danh mục mua sắm cho người tiêu dùng."
+            : "Exclusive has more than 1 Million products to offer, growing at a very fast. Exclusive offers a diverse assotment in categories ranging from consumer.";
+        }
+
+        // Stat labels
+        var l1 = document.querySelector(".stat-label-1");
+        if (l1) l1.textContent = isVi ? "Người bán hàng trên trang" : "Sallers active our site";
+        var l2 = document.querySelector(".stat-label-2");
+        if (l2) l2.textContent = isVi ? "Sản phẩm bán mỗi tháng" : "Mopnthly Produdt Sale";
+        var l3 = document.querySelector(".stat-label-3");
+        if (l3) l3.textContent = isVi ? "Khách hàng thường xuyên" : "Customer active in our site";
+        var l4 = document.querySelector(".stat-label-4");
+        if (l4) l4.textContent = isVi ? "Doanh thu gộp hàng năm" : "Anual gross sale in our site";
+
+        // Team roles
+        var r1 = document.querySelector(".team-role-1");
+        if (r1) r1.textContent = isVi ? "Nhà Sáng Lập & Chủ Tịch" : "Founder & Chairman";
+        var r2 = document.querySelector(".team-role-2");
+        if (r2) r2.textContent = isVi ? "Giám Đốc Điều Hành" : "Managing Director";
+        var r3 = document.querySelector(".team-role-3");
+        if (r3) r3.textContent = isVi ? "Thiết Kế Sản Phẩm" : "Product Designer";
+
+        // Services
+        var s1Title = document.querySelector(".service-title-1");
+        if (s1Title) s1Title.textContent = isVi ? "GIAO HÀNG NHANH & MIỄN PHÍ" : "FREE AND FAST DELIVERY";
+        var s1Desc = document.querySelector(".service-desc-1");
+        if (s1Desc) s1Desc.textContent = isVi ? "Miễn phí giao hàng cho đơn trên $140" : "Free delivery for all orders over $140";
+
+        var s2Title = document.querySelector(".service-title-2");
+        if (s2Title) s2Title.textContent = isVi ? "HỖ TRỢ KHÁCH HÀNG 24/7" : "24/7 CUSTOMER SERVICE";
+        var s2Desc = document.querySelector(".service-desc-2");
+        if (s2Desc) s2Desc.textContent = isVi ? "Đội ngũ hỗ trợ thân thiện 24/7" : "Friendly 24/7 customer support";
+
+        var s3Title = document.querySelector(".service-title-3");
+        if (s3Title) s3Title.textContent = isVi ? "HOÀN TIỀN ĐẢM BẢO" : "MONEY BACK GUARANTEE";
+        var s3Desc = document.querySelector(".service-desc-3");
+        if (s3Desc) s3Desc.textContent = isVi ? "Cam kết hoàn tiền trong 30 ngày" : "We return money within 30 days";
+
+        document.documentElement.lang = lang;
+      }
+
+      if (langBtn && langDropdown) {
+        function toggleDropdown(show) {
+          var isOpen = typeof show === "boolean" ? show : !langDropdown.classList.contains("language-dropdown--open");
+          langDropdown.classList.toggle("language-dropdown--open", isOpen);
+          langBtn.setAttribute("aria-expanded", String(isOpen));
+        }
+        langBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          toggleDropdown();
+        });
+        langOptions.forEach(function (opt) {
+          opt.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var selectedLang = opt.getAttribute("data-lang");
+            if (selectedLang) {
+              applyLanguage(selectedLang);
+              try { localStorage.setItem("t1_selected_lang", selectedLang); } catch (err) { }
+            }
+            toggleDropdown(false);
+          });
+        });
+        document.addEventListener("click", function (e) {
+          if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) toggleDropdown(false);
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") toggleDropdown(false);
+        });
+        var savedLang = "en";
+        try { savedLang = localStorage.getItem("t1_selected_lang") || "en"; } catch (err) { }
+        applyLanguage(savedLang);
+      }
+      // User Avatar Button & Account Dropdown Popup
+      const userAvatarBtn = document.getElementById("userAvatarBtn");
+      const accountPopupMenu = document.getElementById("accountPopupMenu");
+
+      if (userAvatarBtn && accountPopupMenu) {
+        function toggleAccountPopup(show) {
+          const isOpen = typeof show === "boolean" ? show : !accountPopupMenu.classList.contains("account-popup-menu--open");
+          accountPopupMenu.classList.toggle("account-popup-menu--open", isOpen);
+          userAvatarBtn.setAttribute("aria-expanded", String(isOpen));
+          userAvatarBtn.classList.toggle("user-avatar-btn--active", isOpen);
+        }
+
+        userAvatarBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleAccountPopup();
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!userAvatarBtn.contains(e.target) && !accountPopupMenu.contains(e.target)) {
+            toggleAccountPopup(false);
+          }
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            toggleAccountPopup(false);
+          }
+        });
+      }
+    })();
+  </script>
+
+  <!-- Mobile Menu Toggle -->
+  <script>
+    (function () {
+      const menuButton = document.querySelector(".menu-toggle");
+      const navigation = document.querySelector(".navigation");
+      if (menuButton && navigation) {
+        menuButton.addEventListener("click", function () {
+          const isOpen = navigation.classList.toggle("navigation--open");
+          menuButton.setAttribute("aria-expanded", isOpen);
+          menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+        });
+      }
+    })();
+  </script>
+
+  <!-- Interactive Stat Cards click to activate -->
+  <script>
+    (function () {
+      const statCards = document.querySelectorAll(".stat-card");
+      statCards.forEach(function (card) {
+        card.addEventListener("click", function () {
+          statCards.forEach(c => c.classList.remove("stat-card--active"));
+          card.classList.add("stat-card--active");
+        });
+      });
+
+      // Carousel dots interactive
+      const dots = document.querySelectorAll(".team-dot");
+      dots.forEach(function (dot, idx) {
+        dot.addEventListener("click", function () {
+          dots.forEach(d => {
+            d.classList.remove("is-active");
+            d.setAttribute("aria-selected", "false");
+          });
+          dot.classList.add("is-active");
+          dot.setAttribute("aria-selected", "true");
+        });
+      });
+    })();
+  </script>
+
+  <!-- Global Search Bar & Live Autocomplete -->
+  <script src="../js/search-bar.js"></script>
+</body>
+
+</html>
