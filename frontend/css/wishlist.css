@@ -716,35 +716,87 @@ input[type="search"]::-ms-reveal,
     display: none;
 }
 
-/* Header Tablet (< 900px) */
-@media (max-width: 900px) {
+/* Tablet & Mobile Navigation (< 850px) */
+@media (max-width: 850px) {
     .main-header__inner {
-        gap: 16px;
+        gap: 14px;
+    }
+
+    .menu-toggle {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        order: 0;
+        padding: 3px;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .menu-toggle span {
+        width: 20px;
+        height: 2px;
+        display: block;
+        background: #111;
+        border-radius: 2px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .brand {
+        order: 1;
+        flex-basis: auto;
     }
 
     .navigation {
-        gap: 22px;
+        position: absolute;
+        z-index: 1500;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        margin: 0;
+        padding: 8px 24px 16px;
+        border-bottom: 1px solid #e5e5e5;
+        background: #fff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .navigation--open {
+        display: flex;
+    }
+
+    .navigation__link {
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+    }
+
+    .navigation__link--active::after {
+        display: none;
     }
 
     .header-actions {
+        order: 2;
+        margin-left: auto;
         gap: 12px;
     }
 
     .search {
-        width: 165px;
+        width: 140px;
+        height: 36px;
     }
 }
 
-@media (max-width: 380px) {
-    .brand img {
-        width: 45px;
-    }
-}
-
-/* Header Mobile (< 650px) */
+/* Mobile Screens (< 650px) */
 @media (max-width: 650px) {
     .brand img {
-        width: 49px;
+        width: 48px;
     }
 
     .announcement {
@@ -753,13 +805,13 @@ input[type="search"]::-ms-reveal,
     }
 
     .announcement__inner {
-        width: calc(100% - 28px);
+        width: calc(100% - 24px);
         min-height: 37px;
-        padding: 6px 65px 6px 0;
+        padding: 6px 70px 6px 0;
     }
 
     .announcement p {
-        font-size: 9px;
+        font-size: 10px;
         line-height: 1.4;
         text-align: left;
     }
@@ -783,78 +835,16 @@ input[type="search"]::-ms-reveal,
     }
 
     .main-header__inner {
-        width: calc(100% - 28px);
-        gap: 13px;
+        width: calc(100% - 24px);
+        gap: 10px;
     }
 
     .brand {
-        flex-basis: 55px;
-    }
-
-    .brand svg {
-        width: 49px;
-    }
-
-    .menu-toggle {
-        width: 25px;
-        height: 28px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 5px;
-        order: 0;
-        padding: 3px;
-        border: 0;
-        background: transparent;
-        cursor: pointer;
-    }
-
-    .menu-toggle span {
-        width: 19px;
-        height: 1.5px;
-        display: block;
-        background: #111;
-    }
-
-    .brand {
-        order: 1;
-    }
-
-    .navigation {
-        position: absolute;
-        z-index: 10;
-        top: 103px;
-        left: 0;
-        right: 0;
-        display: none;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        margin: 0;
-        padding: 8px 22px 14px;
-        border-bottom: 1px solid #e5e5e5;
-        background: #fff;
-        box-shadow: 0 8px 14px rgba(0, 0, 0, 0.06);
-    }
-
-    .navigation--open {
-        display: flex;
-    }
-
-    .navigation__link {
-        padding: 12px 0;
-        border-bottom: 1px solid #f0f0f0;
-        font-size: 13px;
-    }
-
-    .navigation__link--active::after {
-        display: none;
+        flex-basis: 50px;
     }
 
     .header-actions {
-        order: 2;
-        margin-left: auto;
-        gap: 11px;
+        gap: 10px;
     }
 
     .search {
@@ -880,8 +870,8 @@ input[type="search"]::-ms-reveal,
     }
 
     .search button svg {
-        width: 20px;
-        height: 20px;
+        width: 19px;
+        height: 19px;
     }
 
     .icon-link {

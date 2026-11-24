@@ -3,6 +3,8 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.config import settings
 from app.routers import categories
@@ -11,6 +13,15 @@ from app.routers.stores import router as stores_router
 from app.routers.inventory import router as inventory_router
 
 app = FastAPI(title=settings.APP_NAME)
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request, exc):
+    if exc.status_code == 404:
+        if not request.url.path.startswith("/api"):
+            error_page = Path(__file__).resolve().parent.parent.parent / "frontend" / "pages" / "error.html"
+            if error_page.exists():
+                return FileResponse(str(error_page), status_code=404)
+    return {"detail": exc.detail}
 
 app.add_middleware(
     CORSMiddleware,
