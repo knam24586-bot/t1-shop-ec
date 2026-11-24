@@ -108,13 +108,12 @@
             </svg>
           </a>
 
-          <a class="icon-link cart-link" href="./cart.html" aria-label="Giỏ hàng">
+          <a class="icon-link cart-link" href="./Shop.html" aria-label="Giỏ hàng">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
               <circle cx="9" cy="20" r="1.2"></circle>
               <circle cx="18" cy="20" r="1.2"></circle>
             </svg>
-            <span class="cart-badge" style="display: none;"></span>
           </a>
 
           <!-- User Account Icon & Dropdown Popup -->
@@ -207,7 +206,7 @@
     <div class="error-content-wrapper">
       <h1 class="error-code-title">404 Not Found</h1>
       <p class="error-message">Your visited page not found. You may go home page.</p>
-      <a href="./E-CommerceHomePage.html" class="btn-back-home" id="btnBackHome">Back to home page</a>
+      <a href="./E-CommerceHomePage.html" class="btn-back-home">Back to home page</a>
     </div>
   </main>
 
@@ -251,7 +250,7 @@
         <ul>
           <li><a href="./myAccount.html">My Account</a></li>
           <li><a href="./Login.html">Login / Register</a></li>
-          <li><a href="./cart.html">Cart</a></li>
+          <li><a href="./Shop.html">Cart</a></li>
           <li><a href="./WishList.html">Wishlist</a></li>
           <li><a href="./Shop.html">Shop</a></li>
         </ul>
@@ -418,16 +417,6 @@
         });
       }
 
-      // Điều hướng thông minh cho nút "Back to home page" và breadcrumb "Home"
-      try {
-        var isLoggedIn = localStorage.getItem("t1_user_logged_in") === "true";
-        var homeTarget = isLoggedIn ? "./AccountDropdownWithAccount.html" : "./E-CommerceHomePage.html";
-        var btnBackHome = document.getElementById("btnBackHome");
-        var bcHome = document.querySelector(".bc-home");
-        if (btnBackHome) btnBackHome.setAttribute("href", homeTarget);
-        if (bcHome) bcHome.setAttribute("href", homeTarget);
-      } catch (e) { }
-
       // Khôi phục cài đặt ngôn ngữ
       try {
         var savedLang = localStorage.getItem("t1shop_lang") || "en";
@@ -440,8 +429,6 @@
 
   <!-- Global Search Bar & Live Autocomplete -->
   <script src="../js/search-bar.js"></script>
-  <!-- Global Cart & Authentication Manager -->
-  <script src="../js/cart-auth.js"></script>
 </body>
 
 </html>

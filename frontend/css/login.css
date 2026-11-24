@@ -386,79 +386,76 @@
 /* RESPONSIVE */
 
 @media (max-width: 850px) {
-    .auth-main {
-        margin: 30px auto 60px;
+    .auth-header {
+        padding: 0 4%;
+    }
+
+    .auth-nav {
+        gap: 15px;
     }
 
     .auth-layout {
-        grid-template-columns: 1fr;
-        gap: 36px;
-    }
-
-    .auth-visual {
-        min-height: 260px;
+        gap: 30px;
     }
 
     .account-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: 190px 1fr;
         gap: 25px;
     }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 650px) {
+    .auth-header {
+        height: auto;
+        padding: 15px 5%;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .auth-nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .auth-header-right {
+        gap: 10px;
+    }
+
     .auth-main {
-        margin: 20px auto 40px;
-        padding: 0 16px;
+        margin: 25px auto 45px;
+    }
+
+    .auth-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
     }
 
     .auth-visual {
-        min-height: 180px;
-    }
-
-    .visual-circle {
-        width: 160px;
-        height: 160px;
+        min-height: 250px;
     }
 
     .visual-icon {
-        font-size: 54px;
-        margin-bottom: 8px;
-    }
-
-    .visual-content h2 {
-        font-size: 20px;
-    }
-
-    .visual-content p {
-        font-size: 13px;
-    }
-
-    .auth-form {
-        max-width: 100%;
+        font-size: 75px;
     }
 
     .auth-form h1 {
-        font-size: 24px;
+        font-size: 25px;
     }
 
-    .auth-login-actions {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 16px;
-        text-align: center;
-    }
-
-    .btn-login-submit {
-        width: 100%;
-    }
-
-    .auth-forgot {
-        text-align: center;
+    .auth-footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
     }
 
     .account-heading {
         flex-direction: column;
         gap: 10px;
+    }
+
+    .account-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
     }
 
     .account-fields {

@@ -5,14 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - T1 Shop</title>
-
+  
   <!-- Google Fonts: Inter & Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="/frontend/css/style1.css">
   <link rel="stylesheet" href="../css/style1.css">
@@ -100,6 +98,97 @@
               </svg>
             </button>
           </form>
+
+          <a class="icon-link" href="./WishList.html" aria-label="Wishlist">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
+              </path>
+            </svg>
+          </a>
+
+          <a class="icon-link cart-link" href="./WishList.html#cart" aria-label="Giỏ hàng">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
+              <circle cx="9" cy="20" r="1.2"></circle>
+              <circle cx="18" cy="20" r="1.2"></circle>
+            </svg>
+            <span class="cart-badge">2</span>
+          </a>
+
+          <!-- User Avatar & Dropdown Popup -->
+          <div class="user-account-dropdown" id="userAccountDropdown">
+            <button class="user-avatar-btn" id="userAvatarBtn" type="button"
+              aria-label="Tài khoản người dùng" aria-expanded="false" aria-haspopup="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            <nav class="account-popup-menu" id="accountPopupMenu" aria-label="Menu tài khoản">
+              <ul class="account-popup-list">
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <span>Manage My Account</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-order">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                      <path d="M3 6h18" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span>My Order</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-cancellations">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                    <span>My Cancellations</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-reviews">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span>My Reviews</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./Login.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Logout</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
@@ -125,13 +214,24 @@
         <h1 class="auth-title">Log in to T1 Shop</h1>
         <p class="auth-subtitle">Enter your details below</p>
 
-        <form id="loginForm"
-          onsubmit="event.preventDefault(); if (window.T1Auth) window.T1Auth.login({ email: document.getElementById('loginEmail').value }); alert(document.documentElement.lang === 'vi' ? 'Đăng nhập thành công!' : 'Login successful!'); window.location.href='./AccountDropdownWithAccount.html';">
-          <input class="auth-input input-email" type="text" id="loginEmail" placeholder="Email or Phone Number" required
-            autocomplete="username" />
+        <form id="loginForm" onsubmit="event.preventDefault(); alert('Login successful!'); window.location.href='./myAccount.html';">
+          <input
+            class="auth-input input-email"
+            type="text"
+            id="loginEmail"
+            placeholder="Email or Phone Number"
+            required
+            autocomplete="username"
+          />
 
-          <input class="auth-input input-pass" type="password" id="loginPassword" placeholder="Password" required
-            autocomplete="current-password" />
+          <input
+            class="auth-input input-pass"
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+            required
+            autocomplete="current-password"
+          />
 
           <div class="auth-login-actions">
             <button type="submit" class="auth-btn btn-login-submit">Log In</button>
@@ -163,8 +263,7 @@
         <form class="subscribe-form" action="#subscribe" method="post"
           onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
           <label class="visually-hidden" for="subscriber-email"
-            style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;">Enter
-            your email</label>
+            style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;">Enter your email</label>
           <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
           <button type="submit" aria-label="Gửi đăng ký">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
@@ -192,7 +291,7 @@
         <ul>
           <li><a href="./myAccount.html">My Account</a></li>
           <li><a href="./Login.html">Login / Register</a></li>
-          <li><a href="./cart.html">Cart</a></li>
+          <li><a href="./WishList.html#cart">Cart</a></li>
           <li><a href="./WishList.html">Wishlist</a></li>
           <li><a href="./Shop.html">Shop</a></li>
         </ul>
@@ -349,13 +448,41 @@
         } catch (e) { }
         applyLanguage(savedLang);
       }
+
+      /* 3. User Avatar Button & Account Dropdown Popup */
+      var userAvatarBtn = document.getElementById("userAvatarBtn");
+      var accountPopupMenu = document.getElementById("accountPopupMenu");
+
+      if (userAvatarBtn && accountPopupMenu) {
+        function toggleAccountPopup(show) {
+          var isOpen = typeof show === "boolean" ? show : !accountPopupMenu.classList.contains("account-popup-menu--open");
+          accountPopupMenu.classList.toggle("account-popup-menu--open", isOpen);
+          userAvatarBtn.setAttribute("aria-expanded", String(isOpen));
+        }
+
+        userAvatarBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleAccountPopup();
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!userAvatarBtn.contains(e.target) && !accountPopupMenu.contains(e.target)) {
+            toggleAccountPopup(false);
+          }
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            toggleAccountPopup(false);
+          }
+        });
+      }
     })();
   </script>
 
   <!-- Global Search Bar & Live Autocomplete -->
   <script src="../js/search-bar.js"></script>
-  <!-- Global Cart & Authentication Manager -->
-  <script src="../js/cart-auth.js"></script>
 </body>
 
 </html>
