@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - T1 Shop</title>
+  <link rel="stylesheet" href="../css/style1.css">
+  <style>
+    .checkout-page { max-width: 1170px; margin: 40px auto 80px; padding: 0 24px; display: grid; grid-template-columns: 1.25fr .75fr; gap: 48px; }
+    .checkout-form { display: grid; gap: 14px; }.checkout-form label { display: grid; gap: 7px; font-weight: 500; }.checkout-form input { height: 42px; border: 1px solid #ddd; background: #f5f5f5; padding: 0 12px; }
+    .order-summary { border: 1px solid #eee; padding: 24px; height: fit-content; }.summary-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; }
+    .place-order { width: 100%; height: 44px; border: 0; border-radius: 4px; background:#db4444; color:#fff; cursor:pointer; margin-top:20px; }
+    @media (max-width: 760px) {.checkout-page { grid-template-columns:1fr; }}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="main-header"><div class="main-header__inner">
+      <a class="brand" href="./E-CommerceHomePage.html"><img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="T1 Shop"></a>
+      <nav class="navigation"><a class="navigation__link" href="./E-CommerceHomePage.html">Home</a><a class="navigation__link" href="./Shop.html">Shop</a><a class="navigation__link" href="./contact.html">Contact</a><a class="navigation__link" href="./About.html">About</a></nav>
+    </div></div>
+  </header>
+  <main class="checkout-page">
+    <section><nav class="shop-breadcrumb"><a href="./E-CommerceHomePage.html">Home</a><span>/</span><a href="./Cart.html">Cart</a><span>/</span><span>Checkout</span></nav><h1>Billing Details</h1>
+      <form class="checkout-form" id="checkoutForm">
+        <label>First Name *<input name="firstName" required></label>
+        <label>Company Name<input name="company"></label>
+        <label>Street Address *<input name="street" required></label>
+        <label>Apartment, floor, etc. (optional)<input name="apartment"></label>
+        <label>Town/City *<input name="city" required></label>
+        <label>Phone Number *<input name="phone" required></label>
+        <label>Email Address *<input type="email" name="email" required></label>
+        <label><input type="checkbox" name="save" style="height:auto"> Save this information for next time</label>
+      </form>
+    </section>
+    <aside class="order-summary"><h2>Order Summary</h2><div id="checkoutItems"></div><button class="place-order" id="placeOrder" type="button">Place Order</button></aside>
+  </main>
+  <script src="../js/navigation.js"></script>
+  <script>
+    const items = (() => { try { return JSON.parse(localStorage.getItem("t1shop-cart") || "[]"); } catch (_) { return []; } })();
+    const checkoutItems = document.getElementById("checkoutItems");
+    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    checkoutItems.innerHTML = (items.map(item => `<div class="summary-row"><span>${item.name} × ${item.quantity}</span><strong>$${item.price * item.quantity}</strong></div>`).join("") || '<div class="summary-row"><span>Cart is empty</span></div>') +
+      `<div class="summary-row"><span>Shipping</span><strong>Free</strong></div><div class="summary-row"><strong>Total</strong><strong>$${subtotal}</strong></div>` +
+      '<label style="display:flex;gap:8px;margin-top:16px"><input type="radio" name="payment" checked> COD</label><label style="display:flex;gap:8px;margin-top:8px"><input type="radio" name="payment"> Bank</label>';
+    document.getElementById("placeOrder").addEventListener("click", () => {
+      const form = document.getElementById("checkoutForm");
+      if (!form.reportValidity()) return;
+      if (!items.length) { alert("Your cart is empty."); window.location.href="./Cart.html"; return; }
+      alert("Order placed successfully!");
+      localStorage.removeItem("t1shop-cart");
+      window.location.href="./myAccount.html#my-order";
+    });
+  </script>
+</body>
+</html>
