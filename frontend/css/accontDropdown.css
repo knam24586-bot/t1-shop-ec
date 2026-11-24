@@ -35,13 +35,6 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-.cart-badge:empty,
-.cart-badge--hidden,
-.cart-badge[data-count="0"],
-.cart-badge[data-count=""] {
-    display: none !important;
-}
-
 .user-account-dropdown {
     position: relative;
     display: inline-flex;
@@ -108,7 +101,6 @@
     top: calc(100% + 14px);
     right: 0;
     min-width: 230px;
-    max-width: calc(100vw - 24px);
     /* Gradient mờ ảo góc trên ánh tím khói sang đen sâu sang trọng chuẩn ảnh mẫu */
     background: linear-gradient(135deg, rgba(82, 53, 76, 0.94) 0%, rgba(45, 42, 48, 0.96) 45%, rgba(25, 25, 28, 0.98) 100%);
     backdrop-filter: blur(25px);
