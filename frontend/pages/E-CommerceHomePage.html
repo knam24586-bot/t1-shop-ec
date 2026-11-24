@@ -15,14 +15,6 @@
     rel="stylesheet">
   <!-- CSS Footer (Hỗ trợ Sticky Footer và Responsive cả Desk lẫn Mobile) -->
   <link rel="stylesheet" href="../css/footer.css">
-  <script>
-    // Nếu người dùng đã đăng nhập, tự động chuyển vào trang chủ có tài khoản (AccountDropdownWithAccount.html)
-    try {
-      if (localStorage.getItem("t1_user_logged_in") === "true") {
-        window.location.replace("./AccountDropdownWithAccount.html");
-      }
-    } catch (e) { }
-  </script>
 </head>
 
 <body>
@@ -99,14 +91,82 @@
             </svg>
           </a>
 
-          <a class="icon-link cart-link" href="./cart.html" aria-label="Giỏ hàng">
+          <a class="icon-link" href="./Shop.html" aria-label="Giỏ hàng">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
               <circle cx="9" cy="20" r="1.2"></circle>
               <circle cx="18" cy="20" r="1.2"></circle>
             </svg>
-            <span class="cart-badge" style="display: none;"></span>
           </a>
+
+          <!-- User Account Icon & Dropdown Popup -->
+          <div class="user-account-dropdown" id="userAccountDropdown">
+            <button class="user-avatar-btn" id="userAvatarBtn" type="button" aria-label="Tài khoản người dùng"
+              aria-expanded="false" aria-haspopup="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            <nav class="account-popup-menu" id="accountPopupMenu" aria-label="Menu tài khoản">
+              <ul class="account-popup-list">
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <span>Manage My Account</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html#my-order">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                      <path d="M3 6h18" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span>My Order</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html#my-cancellations">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                    <span>My Cancellations</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html#my-reviews">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span>My Reviews</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./Login.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Logout</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
@@ -175,7 +235,7 @@
                   </div>
                   <div class="hero-slide__visual">
                     <img
-                      src="/frontend/assets/images/hero_endframe__cvklg0xk3w6e_large 2.png"
+                      src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=700&q=80"
                       alt="iPhone 14 Series Voucher"
                       onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
                   </div>
@@ -682,7 +742,7 @@
         </div>
 
         <div class="section-center-action">
-          <a class="btn-primary-red" href="/frontend/pages/Shop.html">View All Products</a>
+          <a class="btn-primary-red" href="#all-products">View All Products</a>
         </div>
 
         <hr class="section-divider">
@@ -2013,7 +2073,7 @@
         </div>
 
         <div class="section-center-action">
-          <a class="btn-primary-red" href="/frontend/pages/Shop.html">View All Products</a>
+          <a class="btn-primary-red" href="#all-explore">View All Products</a>
         </div>
 
         <hr class="section-divider">
@@ -2754,6 +2814,39 @@
           });
         }
 
+        /* User Avatar Button & Account Dropdown Popup */
+        var userAvatarBtn = document.getElementById("userAvatarBtn");
+        var accountPopupMenu = document.getElementById("accountPopupMenu");
+
+        if (userAvatarBtn && accountPopupMenu) {
+          function toggleAccountPopup(show) {
+            var isOpen = typeof show === "boolean" ? show : !accountPopupMenu.classList.contains("account-popup-menu--open");
+            accountPopupMenu.classList.toggle("account-popup-menu--open", isOpen);
+            userAvatarBtn.setAttribute("aria-expanded", String(isOpen));
+            userAvatarBtn.classList.toggle("user-avatar-btn--active", isOpen);
+          }
+
+          userAvatarBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            toggleAccountPopup();
+          });
+
+          // Đóng khi nhấp chuột ra ngoài
+          document.addEventListener("click", function (e) {
+            if (!userAvatarBtn.contains(e.target) && !accountPopupMenu.contains(e.target)) {
+              toggleAccountPopup(false);
+            }
+          });
+
+          // Đóng khi nhấn phím Escape
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+              toggleAccountPopup(false);
+            }
+          });
+        }
+
         /* 8. Category Filter & Active State */
         var currentActiveCategory = null;
         var categoryCards = document.querySelectorAll(".category-card");
@@ -2962,7 +3055,7 @@
         <ul>
           <li><a href="./myAccount.html">My Account</a></li>
           <li><a href="./Login.html">Login / Register</a></li>
-          <li><a href="./cart.html">Cart</a></li>
+          <li><a href="./Shop.html">Cart</a></li>
           <li><a href="./WishList.html">Wishlist</a></li>
           <li><a href="./Shop.html">Shop</a></li>
         </ul>
@@ -2988,8 +3081,7 @@
 
   <!-- Global Search Bar & Live Autocomplete -->
   <script src="../js/search-bar.js"></script>
-  <!-- Global Cart & Authentication Manager -->
-  <script src="../js/cart-auth.js"></script>
+  <script src="../js/navigation.js"></script>
 </body>
 
 </html>
