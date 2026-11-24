@@ -102,13 +102,13 @@
                         </svg>
                     </a>
 
-                    <a class="icon-link cart-link" href="#cart" aria-label="Giỏ hàng">
+                    <a class="icon-link cart-link" href="./cart.html" aria-label="Giỏ hàng">
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
                             <circle cx="9" cy="20" r="1.2"></circle>
                             <circle cx="18" cy="20" r="1.2"></circle>
                         </svg>
-                        <span class="cart-badge">2</span>
+                        <span class="cart-badge" style="display: none;"></span>
                     </a>
 
                     <!-- User Account Icon & Dropdown Popup -->
@@ -121,8 +121,7 @@
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                         </button>
-                        <nav class="account-popup-menu" id="accountPopupMenu"
-                            aria-label="Menu tài khoản">
+                        <nav class="account-popup-menu" id="accountPopupMenu" aria-label="Menu tài khoản">
                             <ul class="account-popup-list">
                                 <li>
                                     <a class="account-popup-item" href="./myAccount.html">
@@ -259,7 +258,7 @@
                                         </a>
                                     </div>
                                     <div class="hero-slide__visual">
-                                        <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=700&q=80"
+                                        <img src="/frontend/assets/images/hero_endframe__cvklg0xk3w6e_large 2.png"
                                             alt="iPhone 14 Series Voucher"
                                             onerror="this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png'">
                                     </div>
@@ -3253,8 +3252,8 @@
                     <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
                     <button type="submit" aria-label="Gửi đăng ký">
                         <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                            stroke-linejoin="round" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="m22 2-7 20-4-9-9-4Z" />
                             <path d="M22 2 11 13" />
                         </svg>
@@ -3304,6 +3303,8 @@
 
     <!-- Global Search Bar & Live Autocomplete -->
     <script src="../js/search-bar.js"></script>
+    <!-- Global Cart & Authentication Manager -->
+    <script src="../js/cart-auth.js"></script>
 </body>
 
 </html>
