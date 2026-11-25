@@ -1,12 +1,14 @@
 """HTTP endpoints xem và cập nhật cửa hàng của Vendor."""
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Path, status
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.crud.store import get_store, update_store
+from app.core.deps import get_current_user
 from app.db.session import get_db
+from app.models.user import User
 from app.schemas.store import StoreResponse, StoreUpdate
 
 router = APIRouter(prefix="/api/stores", tags=["stores"])
@@ -14,21 +16,20 @@ DbSession = Annotated[Session, Depends(get_db)]
 
 
 def _store_context(
-    role: Annotated[str | None, Header(alias="X-Role")] = None,
-    assigned_store_id: Annotated[int | None, Header(alias="X-Store-Id", ge=1)] = None,
+    current_user: User = Depends(get_current_user),
 ) -> tuple[str, int | None]:
-    normalized_role = role.strip().upper() if role else ""
+    normalized_role = current_user.role.strip().upper()
     if normalized_role not in {"ADMIN", "VENDOR"}:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="X-Role must be ADMIN or VENDOR",
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Chỉ quản trị viên hoặc vendor mới được quản lý cửa hàng.",
         )
-    if normalized_role == "VENDOR" and assigned_store_id is None:
+    if normalized_role == "VENDOR" and current_user.store_id is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Store requests require X-Store-Id",
+            detail="Tài khoản vendor chưa được gán cửa hàng.",
         )
-    return normalized_role, assigned_store_id
+    return normalized_role, current_user.store_id
 
 
 def _get_authorized_store(
@@ -54,7 +55,7 @@ def read_assigned_store(
     if context[1] is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="X-Store-Id is required for this endpoint",
+            detail="Tài khoản chưa được gán cửa hàng.",
         )
     return _get_authorized_store(context[1], db, context)
 
@@ -69,7 +70,7 @@ def edit_assigned_store(
     if context[1] is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="X-Store-Id is required for this endpoint",
+            detail="Tài khoản chưa được gán cửa hàng.",
         )
     store = _get_authorized_store(context[1], db, context)
     if context[0] == "VENDOR" and data.status is not None:

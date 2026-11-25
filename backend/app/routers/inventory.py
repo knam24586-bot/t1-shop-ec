@@ -1,12 +1,14 @@
 """API nhập, điều chỉnh, kiểm tra và tra cứu lịch sử tồn kho."""
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Path, status
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 from sqlalchemy.orm import Session
 
 from app.crud.inventory import change_stock, get_movements, get_variant, list_variants
+from app.core.deps import get_current_user
 from app.db.session import get_db
 from app.models.variant import ProductVariant
+from app.models.user import User
 from app.schemas.inventory import (
     InventoryAdjust,
     InventoryMovementResponse,
@@ -20,15 +22,17 @@ DbSession = Annotated[Session, Depends(get_db)]
 
 
 def _role_context(
-    role: Annotated[str | None, Header(alias="X-Role")] = None,
-    store_id: Annotated[int | None, Header(alias="X-Store-Id", ge=1)] = None,
+    current_user: User = Depends(get_current_user),
 ) -> tuple[str, int | None]:
-    normalized = role.strip().upper() if role else ""
+    normalized = current_user.role.strip().upper()
     if normalized not in {"ADMIN", "VENDOR"}:
-        raise HTTPException(status_code=401, detail="X-Role must be ADMIN or VENDOR")
-    if normalized == "VENDOR" and store_id is None:
-        raise HTTPException(status_code=403, detail="Vendor requests require X-Store-Id")
-    return normalized, store_id
+        raise HTTPException(
+            status_code=403,
+            detail="Chỉ quản trị viên hoặc vendor mới được quản lý tồn kho.",
+        )
+    if normalized == "VENDOR" and current_user.store_id is None:
+        raise HTTPException(status_code=403, detail="Tài khoản vendor chưa được gán cửa hàng.")
+    return normalized, current_user.store_id if normalized == "VENDOR" else None
 
 
 def _authorized_variant(

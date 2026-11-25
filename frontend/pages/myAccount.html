@@ -538,11 +538,6 @@
       if (cancelBtn && profileForm) {
         cancelBtn.addEventListener("click", function () {
           profileForm.reset();
-          document.getElementById("firstName").value = "Md";
-          document.getElementById("lastName").value = "Rimel";
-          document.getElementById("email").value = "rimel1111@gmail.com";
-          document.getElementById("address").value = "Kingston, 5236, United State";
-          if (welcomeUserDisplay) welcomeUserDisplay.textContent = "Md Rimel";
           showToast("Form has been reset.");
         });
       }
@@ -560,6 +555,40 @@
   <!-- Global Search Bar & Live Autocomplete -->
   <script src="../js/search-bar.js"></script>
   <script src="../js/navigation.js"></script>
+  <script>
+    (async function () {
+      "use strict";
+      if (!window.T1ShopAuth || typeof window.T1ShopAuth.requireAuth !== "function") return;
+      var session = await window.T1ShopAuth.requireAuth();
+      if (!session || !session.user) return;
+
+      var user = session.user;
+      var fullName = String(user.full_name || "").trim();
+      var parts = fullName ? fullName.split(/\s+/) : [];
+      var firstName = parts.length > 1 ? parts.slice(0, -1).join(" ") : (parts[0] || "");
+      var lastName = parts.length > 1 ? parts[parts.length - 1] : "";
+
+      var welcomeEl = document.getElementById("welcomeUserDisplay");
+      var firstEl = document.getElementById("firstName");
+      var lastEl = document.getElementById("lastName");
+      var emailEl = document.getElementById("email");
+
+      if (welcomeEl && fullName) welcomeEl.textContent = fullName + " (" + (user.role || "CUSTOMER") + ")";
+      if (firstEl) firstEl.value = firstName;
+      if (lastEl) lastEl.value = lastName;
+      if (emailEl && user.email) emailEl.value = user.email;
+
+      var cancelBtn = document.getElementById("cancelBtn");
+      if (cancelBtn) {
+        cancelBtn.addEventListener("click", function () {
+          if (firstEl) firstEl.value = firstName;
+          if (lastEl) lastEl.value = lastName;
+          if (emailEl && user.email) emailEl.value = user.email;
+          if (welcomeEl && fullName) welcomeEl.textContent = fullName + " (" + (user.role || "CUSTOMER") + ")";
+        });
+      }
+    })();
+  </script>
 </body>
 
 </html>

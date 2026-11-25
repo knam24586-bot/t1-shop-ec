@@ -91,7 +91,7 @@ def _handle_get_order_detail(
     response_model=CustomerOrderPaginationResponse,
     summary="Xem danh sách đơn hàng của khách hàng hiện tại (có phân trang)",
     description=(
-        "Chỉ hiển thị các đơn hàng thuộc về chính khách hàng đang đăng nhập (X-User-Id). "
+        "Chỉ hiển thị các đơn hàng thuộc về chính khách hàng đang đăng nhập. "
         "Hỗ trợ phân trang bằng `page` và `limit` (hoặc `page_size`), lọc theo trạng thái `status`. "
         "Dữ liệu trả về không chứa thông tin nội bộ hệ thống."
     ),

@@ -18,6 +18,8 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, configure_mappers
 from sqlalchemy.pool import StaticPool
 
+from app.core.config import settings
+from app.core.tokens import create_access_token
 from app.db.session import Base, get_db
 from app.models.category import Category
 from app.models.product import Product
@@ -39,6 +41,8 @@ class TestCODOrderAPIs(unittest.TestCase):
         configure_mappers()
 
     def setUp(self):
+        self._orig_secret = settings.JWT_SECRET_KEY
+        settings.JWT_SECRET_KEY = "test-jwt-secret-key-at-least-32-characters-long"
         # Database SQLite in-memory dùng StaticPool
         self.engine = create_engine(
             "sqlite:///:memory:",
@@ -134,10 +138,15 @@ class TestCODOrderAPIs(unittest.TestCase):
         self.app.dependency_overrides[get_db] = override_get_db
         self.client = TestClient(self.app)
 
+    def _auth_headers(self, user: User) -> dict[str, str]:
+        token, _ = create_access_token(user)
+        return {"Authorization": f"Bearer {token}"}
+
     def tearDown(self):
         self.db.close()
         Base.metadata.drop_all(self.engine)
         self.engine.dispose()
+        settings.JWT_SECRET_KEY = self._orig_secret
 
     # -------------------------------------------------------------
     # 1. TIÊU CHÍ: COD tạo đơn khi cart hợp lệ
@@ -158,7 +167,7 @@ class TestCODOrderAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/orders/cod",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 201)
         data = response.json()
@@ -203,7 +212,7 @@ class TestCODOrderAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/orders/cod",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 400)
         self.assertIn("giỏ hàng trống", response.json()["detail"].lower())
@@ -219,7 +228,7 @@ class TestCODOrderAPIs(unittest.TestCase):
         res_empty = self.client.post(
             "/api/orders/cod",
             json={"shipping_address": "   "},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertIn(res_empty.status_code, [400, 422])
 
@@ -227,7 +236,7 @@ class TestCODOrderAPIs(unittest.TestCase):
         res_short = self.client.post(
             "/api/orders/cod",
             json={"shipping_address": "HN"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertIn(res_short.status_code, [400, 422])
 
@@ -247,7 +256,7 @@ class TestCODOrderAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/orders/cod",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 400)
         self.assertIn("không đủ số lượng tồn kho", response.json()["detail"].lower())
@@ -279,7 +288,7 @@ class TestCODOrderAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/orders/cod",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 201)
         data = response.json()["order"]
@@ -307,7 +316,7 @@ class TestCODOrderAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/orders/cod",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 400)
 
@@ -339,7 +348,7 @@ class TestCODOrderAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/orders/cod",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 201)
         data = response.json()["order"]
@@ -366,23 +375,23 @@ class TestCODOrderAPIs(unittest.TestCase):
         res_create = self.client.post(
             "/api/orders/cod",
             json={"shipping_address": "Địa chỉ User A tại Hà Nội"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_create.status_code, 201)
         order_code = res_create.json()["order"]["order_code"]
 
         # User A xem danh sách -> có 1 đơn
-        res_list_a = self.client.get("/api/orders", headers={"X-User-Id": str(self.user_a.id)})
+        res_list_a = self.client.get("/api/orders", headers=self._auth_headers(self.user_a))
         self.assertEqual(len(res_list_a.json()), 1)
 
         # User B xem danh sách -> trống (0 đơn)
-        res_list_b = self.client.get("/api/orders", headers={"X-User-Id": str(self.user_b.id)})
+        res_list_b = self.client.get("/api/orders", headers=self._auth_headers(self.user_b))
         self.assertEqual(len(res_list_b.json()), 0)
 
         # User B cố tình truy cập chi tiết đơn của User A -> 404 Not Found
         res_detail_b = self.client.get(
             f"/api/orders/{order_code}",
-            headers={"X-User-Id": str(self.user_b.id)},
+            headers=self._auth_headers(self.user_b),
         )
         self.assertEqual(res_detail_b.status_code, 404)
 

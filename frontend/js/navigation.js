@@ -17,6 +17,107 @@
     management: "./Management.html"
   };
 
+  const apiBase = window.T1_API_BASE || "http://127.0.0.1:8000/api";
+  const tokenKey = "t1shop-access-token";
+  const userKey = "t1shop-auth-user";
+
+  function clearSession() {
+    try {
+      sessionStorage.removeItem(tokenKey);
+      sessionStorage.removeItem(userKey);
+    } catch (_) { }
+  }
+
+  function getStoredUser() {
+    try { return JSON.parse(sessionStorage.getItem(userKey) || "null"); }
+    catch (_) { return null; }
+  }
+
+  function getAccessToken() {
+    try {
+      const token = sessionStorage.getItem(tokenKey);
+      if (!token) return null;
+      const payload = token.split(".")[1];
+      if (!payload) {
+        clearSession();
+        return null;
+      }
+      const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+      const claims = JSON.parse(atob(base64.padEnd(Math.ceil(base64.length / 4) * 4, "=")));
+      if (!claims.exp || Date.now() >= Number(claims.exp) * 1000) {
+        clearSession();
+        return null;
+      }
+      return token;
+    } catch (_) {
+      clearSession();
+      return null;
+    }
+  }
+
+  async function apiFetch(path, options) {
+    const requestOptions = Object.assign({}, options || {});
+    const headers = new Headers(requestOptions.headers || {});
+    const token = getAccessToken();
+    if (token) headers.set("Authorization", "Bearer " + token);
+    requestOptions.headers = headers;
+    const url = /^https?:\/\//i.test(path) ? path : apiBase + (path.startsWith("/") ? path : "/" + path);
+    const response = await fetch(url, requestOptions);
+    if (response.status === 401 && !/\/auth\/(login|register)$/.test(path)) {
+      clearSession();
+      window.dispatchEvent(new CustomEvent("t1shop:session-expired"));
+    }
+    return response;
+  }
+
+  async function requireAuth(options) {
+    const opts = options || {};
+    const hadSession = Boolean(sessionStorage.getItem(tokenKey) || sessionStorage.getItem(userKey));
+    const token = getAccessToken();
+    if (!token) {
+      clearSession();
+      window.location.assign(pages.login + (hadSession ? "?expired=1" : "?auth=required"));
+      return null;
+    }
+
+    try {
+      const response = await apiFetch("/auth/me");
+      if (!response.ok) {
+        clearSession();
+        window.location.assign(pages.login + "?expired=1");
+        return null;
+      }
+      const user = await response.json();
+      sessionStorage.setItem(userKey, JSON.stringify(user));
+
+      if (Array.isArray(opts.allowedRoles) && opts.allowedRoles.length) {
+        const userRole = String(user.role || "").trim().toUpperCase();
+        const allowed = opts.allowedRoles.map(function (r) { return String(r).trim().toUpperCase(); });
+        if (!allowed.includes(userRole)) {
+          return { authorized: false, user: user };
+        }
+      }
+      return { authorized: true, user: user };
+    } catch (_) {
+      const cached = getStoredUser();
+      if (cached) return { authorized: true, user: cached, offline: true };
+      return null;
+    }
+  }
+
+  window.T1ShopAuth = {
+    apiBase: apiBase,
+    getAccessToken: getAccessToken,
+    getUser: getStoredUser,
+    saveSession: function (token, user) {
+      sessionStorage.setItem(tokenKey, token);
+      sessionStorage.setItem(userKey, JSON.stringify(user));
+    },
+    clearSession: clearSession,
+    fetch: apiFetch,
+    requireAuth: requireAuth
+  };
+
   function resolveRoute(href) {
     if (!href) return null;
     const value = href.trim();
@@ -43,6 +144,22 @@
       else if (text === "contact") link.setAttribute("href", pages.contact);
       else if (text === "about") link.setAttribute("href", pages.about);
     }
+  });
+
+  document.querySelectorAll("a").forEach(function (link) {
+    const label = (link.textContent || "").trim().toLowerCase();
+    if (label !== "logout" && label !== "log out" && label !== "đăng xuất") return;
+    link.addEventListener("click", async function (event) {
+      event.preventDefault();
+      const token = getAccessToken();
+      if (token) {
+        try {
+          await apiFetch("/auth/logout", { method: "POST" });
+        } catch (_) { }
+      }
+      clearSession();
+      window.location.assign(pages.login + "?logged_out=1");
+    });
   });
 
   function getCart() {

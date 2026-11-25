@@ -214,13 +214,15 @@
         <h1 class="auth-title">Create an account</h1>
         <p class="auth-subtitle">Enter your details below</p>
 
-        <form id="signupForm" onsubmit="event.preventDefault(); alert('Account created successfully!'); window.location.href='./Login.html';">
+        <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+        <form id="signupForm">
           <input
             class="auth-input input-name"
             type="text"
             id="signupName"
             placeholder="Full Name"
             required
+            maxlength="150"
             autocomplete="name"
           />
 
@@ -230,6 +232,7 @@
             id="signupEmail"
             placeholder="Email Address"
             required
+            maxlength="255"
             autocomplete="email"
           />
 
@@ -239,6 +242,7 @@
             id="signupPhone"
             placeholder="Phone Number"
             required
+            maxlength="30"
             autocomplete="tel"
           />
 
@@ -247,7 +251,8 @@
             type="password"
             id="signupPassword"
             placeholder="Password"
-            minlength="6"
+            minlength="8"
+            maxlength="128"
             required
             autocomplete="new-password"
           />
@@ -257,7 +262,8 @@
             type="password"
             id="confirmPassword"
             placeholder="Confirm Password"
-            minlength="6"
+            minlength="8"
+            maxlength="128"
             required
             autocomplete="new-password"
           />
@@ -266,10 +272,6 @@
             Create Account
           </button>
 
-          <button type="button" class="auth-google-btn" id="googleSignup">
-            <span class="google-letter">G</span>
-            <span class="google-btn-text">Sign up with Google</span>
-          </button>
         </form>
 
         <p class="auth-switch">
@@ -520,6 +522,7 @@
   <!-- Global Search Bar & Live Autocomplete -->
   <script src="../js/search-bar.js"></script>
   <script src="../js/navigation.js"></script>
+  <script src="../js/auth.js"></script>
 </body>
 
 </html>

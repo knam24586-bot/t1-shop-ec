@@ -34,7 +34,7 @@ router = APIRouter(prefix="/wishlist", tags=["Wishlist"])
 @router.get(
     "",
     summary="Xem danh sách sản phẩm yêu thích của người dùng hiện tại",
-    description="Chỉ trả về các sản phẩm trong wishlist của chính user đang đăng nhập (X-User-Id). Mặc định trả về list, hỗ trợ ?format=summary để lấy tổng số lượng.",
+    description="Chỉ trả về các sản phẩm trong wishlist của chính user đang đăng nhập. Mặc định trả về list, hỗ trợ ?format=summary để lấy tổng số lượng.",
 )
 def get_wishlist(
     format: str = Query("list", description="Định dạng: 'list' (mặc định) hoặc 'summary'"),

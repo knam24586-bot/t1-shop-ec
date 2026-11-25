@@ -7,10 +7,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, configure_mappers
 from sqlalchemy.pool import StaticPool
 
+from app.core.config import settings
+from app.core.tokens import create_access_token
 from app.db.session import Base, get_db
 from app.models.category import Category
 from app.models.product import Product
+from app.models.store import Store
+from app.models.user import User
 from app.models.variant import ProductVariant
+from app.models.vendor import Vendor
 from app.routers.inventory import router as inventory_router
 
 
@@ -20,6 +25,8 @@ class TestInventoryAPI(unittest.TestCase):
         configure_mappers()
 
     def setUp(self):
+        self._orig_secret = settings.JWT_SECRET_KEY
+        settings.JWT_SECRET_KEY = "test-jwt-secret-key-at-least-32-characters-long"
         self.engine = create_engine(
             "sqlite:///:memory:",
             connect_args={"check_same_thread": False},
@@ -27,6 +34,23 @@ class TestInventoryAPI(unittest.TestCase):
         )
         Base.metadata.create_all(self.engine)
         self.db = Session(self.engine)
+        vendor = Vendor(name="Vendor", email="inv-vendor@example.com")
+        self.db.add(vendor)
+        self.db.flush()
+        store = Store(vendor_id=vendor.id, name="Store 1", email="s1@example.com", status="Active")
+        self.db.add(store)
+        self.db.flush()
+
+        self.vendor_user = User(
+            full_name="Inventory Vendor",
+            email="vendor-inv@example.com",
+            password_hash="hash",
+            role="VENDOR",
+            status="Active",
+            store_id=store.id,
+        )
+        self.db.add(self.vendor_user)
+
         category = Category(name="Test", slug="test")
         self.db.add(category)
         self.db.flush()
@@ -36,7 +60,7 @@ class TestInventoryAPI(unittest.TestCase):
             slug="product",
             price=Decimal("10.00"),
             stock=10,
-            store_id=1,
+            store_id=store.id,
         )
         self.db.add(product)
         self.db.flush()
@@ -58,12 +82,14 @@ class TestInventoryAPI(unittest.TestCase):
 
         app.dependency_overrides[get_db] = override_get_db
         self.client = TestClient(app)
-        self.headers = {"X-Role": "VENDOR", "X-Store-Id": "1"}
+        token, _ = create_access_token(self.vendor_user)
+        self.headers = {"Authorization": f"Bearer {token}"}
 
     def tearDown(self):
         self.db.close()
         Base.metadata.drop_all(self.engine)
         self.engine.dispose()
+        settings.JWT_SECRET_KEY = self._orig_secret
 
     def test_receive_and_history(self):
         response = self.client.post(
@@ -106,7 +132,7 @@ class TestInventoryAPI(unittest.TestCase):
         response = self.client.put(
             f"/api/inventory/{self.variant.id}",
             json={"stock": 12, "reason": "Kiểm kho"},
-            headers={"X-Role": " vendor ", "X-Store-Id": "1"},
+            headers=self.headers,
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["stock"], 12)

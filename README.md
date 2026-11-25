@@ -1,6 +1,8 @@
 # T1 Shop EC
 
-Hệ thống cửa hàng thương mại điện tử gồm backend FastAPI và frontend HTML/CSS/JavaScript thuần. Backend sử dụng MySQL làm cơ sở dữ liệu và SQLAlchemy để ánh xạ dữ liệu thành các model Python.
+Hệ thống cửa hàng thương mại điện tử gồm backend FastAPI và frontend
+HTML/CSS/JavaScript thuần. Backend sử dụng MySQL và SQLAlchemy để ánh xạ dữ
+liệu thành các model Python.
 
 ## Kiến trúc
 
@@ -11,12 +13,12 @@ Frontend (Live Server)
 FastAPI backend (:8000)
         │ SQLAlchemy + PyMySQL
         ▼
-MySQL (:3306)
+MySQL (:3307 trên máy khi chạy Docker)
 ```
 
 ## Công nghệ
 
-- **Backend:** Python 3.10+, FastAPI, SQLAlchemy 2, PyMySQL
+- **Backend:** Python 3.10+, FastAPI, SQLAlchemy 2, Alembic, PyMySQL
 - **Database:** MySQL 8, UTF-8 (`utf8mb4`)
 - **Frontend:** HTML, CSS, JavaScript thuần, Axios CDN
 - **Tài liệu API:** Swagger UI tại `/docs`
@@ -26,15 +28,15 @@ MySQL (:3306)
 ```text
 .
 ├── backend/
+│   ├── alembic/versions/       # Lịch sử schema chuẩn
 │   ├── app/
-│   │   ├── core/              # Cấu hình môi trường
-│   │   ├── crud/              # Truy vấn và thao tác dữ liệu
-│   │   ├── db/                # SQLAlchemy engine và session
-│   │   ├── models/            # Item, Category, Product, ProductVariant,
-│   │   │                       # Vendor và Store
-│   │   ├── routers/            # Các endpoint FastAPI
-│   │   └── schemas/            # Pydantic request/response schemas
-│   ├── sql/init.sql            # Khởi tạo database và các bảng
+│   │   ├── core/               # Cấu hình môi trường
+│   │   ├── crud/               # Truy vấn và thao tác dữ liệu
+│   │   ├── db/                 # Kết nối, bootstrap và seed database
+│   │   ├── models/             # SQLAlchemy models
+│   │   ├── routers/            # Các endpoint
+│   │   └── schemas/            # Request/response schemas
+│   ├── docker-compose.yml      # MySQL local
 │   ├── requirements.txt
 │   └── .env.example
 ├── frontend/
@@ -51,44 +53,40 @@ MySQL (:3306)
 |---|---|
 | `Category` | Danh mục sản phẩm, hỗ trợ danh mục cha/con |
 | `Product` | Sản phẩm thuộc một danh mục |
-| `ProductVariant` | Biến thể sản phẩm với SKU duy nhất, màu, size và tồn kho |
+| `ProductVariant` | Biến thể sản phẩm với SKU, màu, size và tồn kho |
 | `Vendor` | Nhà cung cấp |
-| `Store` | Cửa hàng thuộc một Vendor; không trùng tên trong cùng Vendor |
+| `Store` | Cửa hàng thuộc một Vendor |
+| `Cart` / `CartItem` | Giỏ hàng theo người dùng và biến thể sản phẩm |
+| `Order` / `OrderItem` | Đơn hàng và dòng sản phẩm đã mua |
+| `Payment` | Thông tin giao dịch thanh toán |
 | `Item` | Bảng mẫu dùng để kiểm tra CRUD |
 
-Chi tiết quan hệ và ràng buộc được định nghĩa trong `backend/app/models/` và đồng bộ trong `backend/sql/init.sql`.
+Quan hệ và ràng buộc schema nằm trong `backend/app/models/`; Alembic migrations
+là nguồn duy nhất để tạo và nâng cấp database.
 
-## Chạy backend
+## Khởi tạo và chạy backend
 
-### 1. Khởi tạo cơ sở dữ liệu
-
-Mở MySQL Workbench và chạy toàn bộ file [`backend/sql/init.sql`](backend/sql/init.sql).
-
-### 2. Cấu hình môi trường
+Chạy trong PowerShell tại thư mục dự án:
 
 ```powershell
 cd backend
 copy .env.example .env
-```
-
-Mở `.env` và điền thông tin MySQL:
-
-```env
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=mat_khau_mysql
-DB_NAME=t1shop_db
-```
-
-### 3. Cài dependency và chạy server
-
-```powershell
+docker compose up -d mysql
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+python -m app.db.bootstrap
 uvicorn app.main:app --reload
 ```
+
+Database chuẩn là `t1shop_db`, Docker mở MySQL tại cổng host `3307`.
+`python -m app.db.bootstrap` chạy migrations và seed dữ liệu demo; có thể chạy
+lại mà không ghi đè dữ liệu đã có. Hướng dẫn nâng cấp database cũ và chuyển
+`cart_items.product_id` sang `variant_id` nằm trong
+[backend/README.md](backend/README.md).
+
+Trước khi đăng nhập, tạo `JWT_SECRET_KEY` riêng trong `backend/.env` bằng
+`python -c "import secrets; print(secrets.token_urlsafe(48))"`.
 
 Backend mặc định chạy tại `http://127.0.0.1:8000`.
 
@@ -97,28 +95,13 @@ Backend mặc định chạy tại `http://127.0.0.1:8000`.
 
 ## Chạy frontend
 
-Mở thư mục dự án bằng VS Code, cài extension **Live Server**, sau đó mở `frontend/index.html` bằng **Open with Live Server**. Frontend mặc định gọi backend tại `http://127.0.0.1:8000/api`.
+Mở thư mục dự án bằng VS Code, cài extension **Live Server**, sau đó mở
+`frontend/index.html` bằng **Open with Live Server**. Frontend mặc định gọi
+backend tại `http://127.0.0.1:8000/api`.
 
 ## Quy tắc phát triển
 
 1. Khi thêm model, đăng ký model trong `backend/app/models/__init__.py`.
-2. Khi thay đổi schema database, cập nhật `backend/sql/init.sql`.
+2. Khi thay đổi schema, tạo Alembic revision mới; không cập nhật SQL init riêng.
 3. Không commit file `.env`, mật khẩu hoặc thông tin kết nối thật.
-4. Chạy kiểm tra Python trước khi commit:
-
-   ```powershell
-   cd backend
-   python -m compileall -q app
-   ```
-
-5. Tạo branch theo task, ví dụ `feature/cn-04-store`.
-
-## Docker MySQL (tùy chọn)
-
-Nếu dùng Docker, chạy trong thư mục `backend`:
-
-```powershell
-docker compose up -d
-```
-
-Thiết lập `DB_PORT=3307` nếu MySQL container được expose qua cổng 3307 trên máy host.
+4. Tạo branch theo task, ví dụ `feature/cn-04-store`.

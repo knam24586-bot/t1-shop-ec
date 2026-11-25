@@ -8,6 +8,26 @@
     min-height: 100vh;
 }
 
+.auth-message {
+    min-height: 1.5em;
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.auth-message--error {
+    color: #b42318;
+}
+
+.auth-message--success {
+    color: #16794b;
+}
+
+.auth-form button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
 .auth-page * {
     box-sizing: border-box;
 }
