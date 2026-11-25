@@ -1,0 +1,162 @@
+/**
+ * T1Shop - Account Dropdown & User Avatar Popup Styles
+ * File CSS riêng cho tính năng User Logo & Account Popup Dropdown
+ * Được tách từ AccountDropdownWithAccount.html
+ */
+
+@import url('./style1.css');
+
+/* ========================================================
+   USER LOGO, CART BADGE & ACCOUNT POPUP DROPDOWN
+   (Chỉ dành riêng cho popup tài khoản tại AccountDropdownWithAccount.html)
+   ======================================================== */
+
+.cart-link {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -7px;
+    background-color: var(--primary-red, #db4444);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    min-width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ffffff;
+    pointer-events: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.user-account-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Trạng thái mặc định khi KHÔNG nhấn vào: Màu đen trắng chuẩn Figma, nền trong suốt, không có màu cam/đỏ */
+.user-avatar-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: none;
+    outline: none;
+}
+
+.user-avatar-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000000;
+}
+
+.user-avatar-btn svg {
+    width: 21px;
+    height: 21px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    transition: stroke 0.2s ease;
+}
+
+/* Trạng thái KHI NHẤN VÀO (Dropdown đang mở / Active): Nền đỏ cam #DB4444 và icon trắng nổi bật chuẩn Figma */
+.user-avatar-btn[aria-expanded="true"],
+.user-avatar-btn.user-avatar-btn--active,
+.user-account-dropdown:has(.account-popup-menu--open) .user-avatar-btn {
+    background-color: var(--primary-red, #db4444);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(219, 68, 68, 0.35);
+}
+
+.user-avatar-btn[aria-expanded="true"]:hover,
+.user-avatar-btn.user-avatar-btn--active:hover,
+.user-account-dropdown:has(.account-popup-menu--open) .user-avatar-btn:hover {
+    background-color: #c43838;
+    color: #ffffff;
+}
+
+.user-avatar-btn[aria-expanded="true"] svg,
+.user-avatar-btn.user-avatar-btn--active svg,
+.user-account-dropdown:has(.account-popup-menu--open) .user-avatar-btn svg {
+    stroke: #ffffff;
+}
+
+/* Menu Popup Tài khoản chuẩn hình ảnh Figma Exclusive */
+.account-popup-menu {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    min-width: 230px;
+    /* Gradient mờ ảo góc trên ánh tím khói sang đen sâu sang trọng chuẩn ảnh mẫu */
+    background: linear-gradient(135deg, rgba(82, 53, 76, 0.94) 0%, rgba(45, 42, 48, 0.96) 45%, rgba(25, 25, 28, 0.98) 100%);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 8px;
+    padding: 14px 12px;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1200;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+    pointer-events: none;
+}
+
+.account-popup-menu.account-popup-menu--open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.account-popup-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.account-popup-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 9px 12px;
+    color: #f5f5f5;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 400;
+    font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    border-radius: 6px;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    white-space: nowrap;
+}
+
+.account-popup-item:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    transform: translateX(2px);
+}
+
+.account-popup-icon {
+    width: 20px;
+    height: 20px;
+    stroke: #ffffff;
+    flex-shrink: 0;
+}

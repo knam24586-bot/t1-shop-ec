@@ -61,6 +61,31 @@
         <!-- Page content -->
     </main>
 
+  <script src="../js/navigation.js"></script>
+  <script>
+    (async function () {
+      "use strict";
+      if (!window.T1ShopAuth || typeof window.T1ShopAuth.requireAuth !== "function") return;
+      var session = await window.T1ShopAuth.requireAuth({ allowedRoles: ["ADMIN", "VENDOR"] });
+      if (!session) return;
+
+      var profileName = document.querySelector(".profile-info strong");
+      var profileEmail = document.querySelector(".profile-info small");
+      if (profileName && session.user.full_name) profileName.textContent = session.user.full_name;
+      if (profileEmail && session.user.email) profileEmail.textContent = session.user.email + " (" + session.user.role + ")";
+
+      if (!session.authorized) {
+        var main = document.querySelector(".page-content");
+        if (main) {
+          main.innerHTML = '<div style="padding:32px;max-width:560px;margin:40px auto;background:#fff;border-radius:8px;border:1px solid #e5e7eb;">'
+            + '<h2 style="margin-top:0;color:#b91c1c;">Không có quyền truy cập</h2>'
+            + '<p>Tài khoản của bạn không có vai trò Quản trị hoặc Nhà bán hàng để truy cập trang quản lý.</p>'
+            + '<a href="./E-CommerceHomePage.html" style="color:#db4444;font-weight:600;">Quay về trang chủ</a>'
+            + '</div>';
+        }
+      }
+    })();
+  </script>
 </body>
 <footer class="site-footer">
     <div class="footer-container">

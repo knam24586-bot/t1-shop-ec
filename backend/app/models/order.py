@@ -70,7 +70,7 @@ class Order(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     # Mã đơn: Chuỗi định danh duy nhất (VD: ORD-20261113-ABCD)
     order_code: Mapped[str] = mapped_column(
-        String(40), nullable=False, unique=True, index=True
+        String(40), nullable=False
     )
     # Khách hàng đặt hàng
     customer_id: Mapped[int] = mapped_column(

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - T1 Shop</title>
+  <link rel="stylesheet" href="../css/style1.css">
+  <style>
+    .cart-page { max-width: 1170px; margin: 40px auto 80px; padding: 0 24px; }
+    .cart-table { width: 100%; border-collapse: collapse; background: #fff; }
+    .cart-table th, .cart-table td { padding: 16px; border-bottom: 1px solid #e8e8e8; text-align: left; }
+    .cart-table input { width: 72px; padding: 8px; }
+    .cart-summary { max-width: 420px; margin-left: auto; margin-top: 32px; border: 1px solid #ddd; padding: 24px; }
+    .cart-summary-row { display: flex; justify-content: space-between; margin-bottom: 14px; }
+    .cart-actions { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; }
+    .empty-cart { text-align: center; padding: 80px 20px; }
+    .btn-primary-red, .btn-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 4px; padding: 0 20px; text-decoration: none; border: 1px solid #db4444; cursor: pointer; }
+    .btn-primary-red { background: #db4444; color: #fff; }
+    .btn-secondary { background: #fff; color: #111; border-color: #bbb; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="main-header">
+      <div class="main-header__inner">
+        <a class="brand" href="./E-CommerceHomePage.html"><img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="T1 Shop"></a>
+        <nav class="navigation">
+          <a class="navigation__link" href="./E-CommerceHomePage.html">Home</a>
+          <a class="navigation__link" href="./Shop.html">Shop</a>
+          <a class="navigation__link" href="./contact.html">Contact</a>
+          <a class="navigation__link" href="./About.html">About</a>
+        </nav>
+        <div class="header-actions">
+          <a class="icon-link" href="./WishList.html" aria-label="Wishlist">♥</a>
+          <a class="icon-link" href="./Cart.html" aria-label="Cart">Cart</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="cart-page">
+    <nav class="shop-breadcrumb"><a href="./E-CommerceHomePage.html">Home</a><span>/</span><span>Cart</span></nav>
+    <h1>Shopping Cart</h1>
+    <div id="cartContent"></div>
+  </main>
+  <script src="../js/navigation.js"></script>
+  <script>
+    const cartContent = document.getElementById("cartContent");
+    function getCart() {
+      try { return JSON.parse(localStorage.getItem("t1shop-cart") || "[]"); } catch (_) { return []; }
+    }
+    function renderCart() {
+      const cart = getCart();
+      if (!cart.length) {
+        cartContent.innerHTML = '<div class="empty-cart"><h2>Your cart is empty</h2><p>Add products before proceeding to checkout.</p><a class="btn-primary-red" href="./Shop.html">Return to Shop</a></div>';
+        return;
+      }
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      cartContent.innerHTML = `
+        <table class="cart-table"><thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
+        <tbody>${cart.map((item, index) => `<tr><td>${item.name}</td><td>$${item.price}</td><td><input type="number" min="1" value="${item.quantity}" data-cart-index="${index}"></td><td>$${item.price * item.quantity}</td><td><button type="button" data-remove="${index}">Remove</button></td></tr>`).join("")}</tbody></table>
+        <div class="cart-actions"><a class="btn-secondary" href="./Shop.html">Return to Shop</a></div>
+        <section class="cart-summary"><div class="cart-summary-row"><strong>Subtotal</strong><strong>$${subtotal}</strong></div><div class="cart-summary-row"><span>Shipping</span><span>Free</span></div><div class="cart-summary-row"><strong>Total</strong><strong>$${subtotal}</strong></div><a class="btn-primary-red" href="./Checkout.html" style="width:100%">Proceed to Checkout</a></section>`;
+      cartContent.querySelectorAll("[data-cart-index]").forEach(input => input.addEventListener("change", function () {
+        const cart = getCart();
+        cart[Number(this.dataset.cartIndex)].quantity = Math.max(1, Number(this.value) || 1);
+        localStorage.setItem("t1shop-cart", JSON.stringify(cart));
+        renderCart();
+      }));
+      cartContent.querySelectorAll("[data-remove]").forEach(button => button.addEventListener("click", function () {
+        const cart = getCart();
+        cart.splice(Number(this.dataset.remove), 1);
+        localStorage.setItem("t1shop-cart", JSON.stringify(cart));
+        renderCart();
+      }));
+    }
+    renderCart();
+  </script>
+</body>
+</html>

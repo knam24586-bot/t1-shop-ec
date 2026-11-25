@@ -28,6 +28,8 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, configure_mappers
 from sqlalchemy.pool import StaticPool
 
+from app.core.config import settings
+from app.core.tokens import create_access_token
 from app.db.session import Base, get_db
 from app.models.cart import Cart  # noqa: F401
 from app.models.cart_item import CartItem  # noqa: F401
@@ -52,6 +54,8 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         configure_mappers()
 
     def setUp(self):
+        self._orig_secret = settings.JWT_SECRET_KEY
+        settings.JWT_SECRET_KEY = "test-jwt-secret-key-at-least-32-characters-long"
         # Database SQLite in-memory dùng StaticPool
         self.engine = create_engine(
             "sqlite:///:memory:",
@@ -129,10 +133,15 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         self.app.dependency_overrides[get_db] = override_get_db
         self.client = TestClient(self.app)
 
+    def _auth_headers(self, user: User) -> dict[str, str]:
+        token, _ = create_access_token(user)
+        return {"Authorization": f"Bearer {token}"}
+
     def tearDown(self):
         self.db.close()
         Base.metadata.drop_all(self.engine)
         self.engine.dispose()
+        settings.JWT_SECRET_KEY = self._orig_secret
 
     def _create_order_with_stock_deduction(
         self,
@@ -206,7 +215,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res.status_code, 200)
         data = res.json()
@@ -239,7 +248,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.json()["current_status"], OrderStatus.CANCELLED.value)
@@ -257,7 +266,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json={"reason": "Hủy đơn hàng đang giao"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res.status_code, 400)
         self.assertIn("vận chuyển", res.json()["detail"].lower())
@@ -285,7 +294,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json={"reason": "Đã nhận hàng nhưng muốn hủy đơn"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res.status_code, 400)
         detail_msg = res.json()["detail"].lower()
@@ -329,7 +338,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res1 = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res1.status_code, 200)
 
@@ -342,7 +351,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res2 = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json={"reason": "Cố tình gọi hủy lần thứ hai để hack tồn kho"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res2.status_code, 400)
         self.assertIn("cancelled", res2.json()["detail"].lower())
@@ -379,7 +388,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json={"reason": "Hủy đơn hàng có nhiều mặt hàng"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.json()["restocked_items_count"], 5)
@@ -407,7 +416,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res_cancel = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json={"reason": cancellation_reason},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_cancel.status_code, 200)
         self.assertEqual(res_cancel.json()["reason"], cancellation_reason)
@@ -415,7 +424,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         # Tra cứu lại lý do hủy qua endpoint /cancellation
         res_info = self.client.get(
             f"/api/customer/orders/{order.order_code}/cancellation",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_info.status_code, 200)
         info_data = res_info.json()
@@ -437,7 +446,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res_empty = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json={"reason": "   "},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertIn(res_empty.status_code, [400, 422])
 
@@ -445,7 +454,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res_short = self.client.post(
             f"/api/customer/orders/{order.order_code}/cancel",
             json={"reason": "Ko"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertIn(res_short.status_code, [400, 422])
 
@@ -471,7 +480,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res = self.client.post(
             f"/api/customer/orders/{order_a.order_code}/cancel",
             json={"reason": "User B cố tình hủy đơn của User A"},
-            headers={"X-User-Id": str(self.user_b.id)},
+            headers=self._auth_headers(self.user_b),
         )
         self.assertEqual(res.status_code, 404)
 
@@ -501,7 +510,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
         res1 = self.client.post(
             f"/api/orders/{order1.order_code}/cancel",
             json={"reason": "Hủy qua alias endpoint"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res1.status_code, 200)
         self.assertEqual(res1.json()["current_status"], OrderStatus.CANCELLED.value)
@@ -513,7 +522,7 @@ class TestOrderCancellationAPIs(unittest.TestCase):
                 "order_code": order2.order_code,
                 "reason": "Hủy qua endpoint body",
             },
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res2.status_code, 200)
         self.assertEqual(res2.json()["current_status"], OrderStatus.CANCELLED.value)

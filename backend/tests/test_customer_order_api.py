@@ -27,6 +27,8 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, configure_mappers
 from sqlalchemy.pool import StaticPool
 
+from app.core.config import settings
+from app.core.tokens import create_access_token
 from app.db.session import Base, get_db
 from app.models.cart import Cart  # noqa: F401
 from app.models.cart_item import CartItem  # noqa: F401
@@ -48,6 +50,8 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         configure_mappers()
 
     def setUp(self):
+        self._orig_secret = settings.JWT_SECRET_KEY
+        settings.JWT_SECRET_KEY = "test-jwt-secret-key-at-least-32-characters-long"
         # Database SQLite in-memory dùng StaticPool
         self.engine = create_engine(
             "sqlite:///:memory:",
@@ -124,10 +128,15 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         self.app.dependency_overrides[get_db] = override_get_db
         self.client = TestClient(self.app)
 
+    def _auth_headers(self, user: User) -> dict[str, str]:
+        token, _ = create_access_token(user)
+        return {"Authorization": f"Bearer {token}"}
+
     def tearDown(self):
         self.db.close()
         Base.metadata.drop_all(self.engine)
         self.engine.dispose()
+        settings.JWT_SECRET_KEY = self._orig_secret
 
     def _create_sample_order(
         self,
@@ -197,7 +206,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # User A xem danh sách -> chỉ thấy đúng 3 đơn của A
         res_a = self.client.get(
             "/api/customer/orders",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_a.status_code, 200)
         data_a = res_a.json()
@@ -213,7 +222,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # User B xem danh sách -> chỉ thấy đúng 2 đơn của B
         res_b = self.client.get(
             "/api/customer/orders",
-            headers={"X-User-Id": str(self.user_b.id)},
+            headers=self._auth_headers(self.user_b),
         )
         self.assertEqual(res_b.status_code, 200)
         data_b = res_b.json()
@@ -231,7 +240,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # User A xem chi tiết đơn của chính mình -> Thành công 200 OK
         res_a = self.client.get(
             f"/api/customer/orders/{order_a.order_code}",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_a.status_code, 200)
         self.assertEqual(res_a.json()["order_code"], "ORD-A-SECRET")
@@ -239,7 +248,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # User B cố tình truy cập chi tiết đơn của User A -> 404 Not Found
         res_b = self.client.get(
             f"/api/customer/orders/{order_a.order_code}",
-            headers={"X-User-Id": str(self.user_b.id)},
+            headers=self._auth_headers(self.user_b),
         )
         self.assertEqual(res_b.status_code, 404)
         self.assertIn("không tìm thấy", res_b.json()["detail"].lower())
@@ -267,7 +276,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # 1. Trang 1 (limit=3): mong đợi 3 items, has_next=True, has_prev=False
         res_p1 = self.client.get(
             "/api/customer/orders?page=1&limit=3",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_p1.status_code, 200)
         d1 = res_p1.json()
@@ -282,7 +291,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # 2. Trang 2 (limit=3): mong đợi 3 items, has_next=True, has_prev=True
         res_p2 = self.client.get(
             "/api/customer/orders?page=2&limit=3",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_p2.status_code, 200)
         d2 = res_p2.json()
@@ -299,7 +308,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # 3. Trang 3 (limit=3): mong đợi 1 item cuối cùng, has_next=False, has_prev=True
         res_p3 = self.client.get(
             "/api/customer/orders?page=3&limit=3",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_p3.status_code, 200)
         d3 = res_p3.json()
@@ -311,7 +320,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # 4. Trang 4 (vượt quá total_pages): mong đợi 0 items, has_next=False, has_prev=True
         res_p4 = self.client.get(
             "/api/customer/orders?page=4&limit=3",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_p4.status_code, 200)
         d4 = res_p4.json()
@@ -326,7 +335,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
 
         res = self.client.get(
             "/api/customer/orders?page=1&page_size=2",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res.status_code, 200)
         data = res.json()
@@ -340,21 +349,21 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # page = 0
         r_page0 = self.client.get(
             "/api/customer/orders?page=0&limit=10",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(r_page0.status_code, 422)
 
         # limit = 0
         r_lim0 = self.client.get(
             "/api/customer/orders?page=1&limit=0",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(r_lim0.status_code, 422)
 
         # limit = 101 (> 100)
         r_lim101 = self.client.get(
             "/api/customer/orders?page=1&limit=101",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(r_lim101.status_code, 422)
 
@@ -367,7 +376,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # Lọc trạng thái PENDING
         res_pending = self.client.get(
             "/api/customer/orders?status=PENDING",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_pending.status_code, 200)
         d_pending = res_pending.json()
@@ -377,7 +386,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # Lọc trạng thái DELIVERED
         res_del = self.client.get(
             "/api/customer/orders?status=DELIVERED",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_del.status_code, 200)
         d_del = res_del.json()
@@ -398,7 +407,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
 
         res = self.client.get(
             f"/api/customer/orders/{order.order_code}",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res.status_code, 200)
         data = res.json()
@@ -433,7 +442,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
 
         res = self.client.get(
             f"/api/customer/orders/{order.id}",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.json()["order_code"], "ORD-NUM-999")
@@ -468,7 +477,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # 1. Kiểm tra API danh sách (List endpoint)
         res_list = self.client.get(
             "/api/customer/orders",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_list.status_code, 200)
         raw_list_text = res_list.text
@@ -476,7 +485,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # 2. Kiểm tra API chi tiết (Detail endpoint)
         res_detail = self.client.get(
             f"/api/customer/orders/{order.order_code}",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_detail.status_code, 200)
         raw_detail_text = res_detail.text
@@ -518,7 +527,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # Gọi qua /api/orders/my
         res_my = self.client.get(
             "/api/orders/my",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_my.status_code, 200)
         self.assertEqual(res_my.json()["total"], 1)
@@ -526,7 +535,7 @@ class TestCustomerOrderAPIs(unittest.TestCase):
         # Gọi chi tiết qua /api/orders/my/ORD-ALIAS-1
         res_my_detail = self.client.get(
             "/api/orders/my/ORD-ALIAS-1",
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res_my_detail.status_code, 200)
         self.assertEqual(res_my_detail.json()["order_code"], "ORD-ALIAS-1")

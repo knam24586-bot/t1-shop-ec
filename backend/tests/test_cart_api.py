@@ -17,7 +17,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, configure_mappers
 from sqlalchemy.pool import StaticPool
 
+from app.core.config import settings
 from app.core.deps import get_current_user
+from app.core.tokens import create_access_token
 from app.db.session import Base, get_db
 from app.models.category import Category
 from app.models.product import Product
@@ -38,6 +40,8 @@ class TestCartAPIs(unittest.TestCase):
         configure_mappers()
 
     def setUp(self):
+        self._orig_secret = settings.JWT_SECRET_KEY
+        settings.JWT_SECRET_KEY = "test-jwt-secret-key-at-least-32-characters-long"
         # Tạo DB SQLite in-memory với StaticPool để chia sẻ cùng connection giữa các thread
         self.engine = create_engine(
             "sqlite:///:memory:",
@@ -113,17 +117,22 @@ class TestCartAPIs(unittest.TestCase):
         self.app.dependency_overrides[get_db] = override_get_db
         self.client = TestClient(self.app)
 
+    def _auth_headers(self, user: User) -> dict[str, str]:
+        token, _ = create_access_token(user)
+        return {"Authorization": f"Bearer {token}"}
+
     def tearDown(self):
         self.db.close()
         Base.metadata.drop_all(self.engine)
         self.engine.dispose()
+        settings.JWT_SECRET_KEY = self._orig_secret
 
     # -------------------------------------------------------------
     # 1. TIÊU CHÍ: Xem giỏ hàng (GET /cart)
     # -------------------------------------------------------------
     def test_get_empty_cart(self):
         """User mới xem giỏ hàng -> Giỏ hàng trống với tổng tiền = 0."""
-        response = self.client.get("/cart", headers={"X-User-Id": str(self.user_a.id)})
+        response = self.client.get("/cart", headers=self._auth_headers(self.user_a))
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["user_id"], self.user_a.id)
@@ -137,7 +146,7 @@ class TestCartAPIs(unittest.TestCase):
     def test_add_to_cart_success(self):
         """Thêm sản phẩm thành công khi còn tồn kho."""
         payload = {"variant_id": self.variant_m.id, "quantity": 2}
-        response = self.client.post("/cart/items", json=payload, headers={"X-User-Id": str(self.user_a.id)})
+        response = self.client.post("/cart/items", json=payload, headers=self._auth_headers(self.user_a))
         self.assertEqual(response.status_code, 201)
         data = response.json()
         self.assertEqual(data["message"], "Thêm sản phẩm vào giỏ hàng thành công.")
@@ -151,14 +160,14 @@ class TestCartAPIs(unittest.TestCase):
     def test_add_to_cart_variant_not_found(self):
         """Thêm biến thể không tồn tại -> 404 Not Found."""
         payload = {"variant_id": 99999, "quantity": 1}
-        response = self.client.post("/cart/items", json=payload, headers={"X-User-Id": str(self.user_a.id)})
+        response = self.client.post("/cart/items", json=payload, headers=self._auth_headers(self.user_a))
         self.assertEqual(response.status_code, 404)
         self.assertIn("không tồn tại", response.json()["detail"])
 
     def test_add_to_cart_exceeds_stock(self):
         """Thêm số lượng vượt quá tồn kho (stock=10, yêu cầu=12) -> 400 Bad Request."""
         payload = {"variant_id": self.variant_m.id, "quantity": 12}
-        response = self.client.post("/cart/items", json=payload, headers={"X-User-Id": str(self.user_a.id)})
+        response = self.client.post("/cart/items", json=payload, headers=self._auth_headers(self.user_a))
         self.assertEqual(response.status_code, 400)
         self.assertIn("không đủ tồn kho", response.json()["detail"])
 
@@ -168,7 +177,7 @@ class TestCartAPIs(unittest.TestCase):
         - Lần 2: thêm tiếp 5 áo -> Tổng 11 > 10 -> 400 Bad Request
         - Lần 3: thêm tiếp 3 áo -> Tổng 9 <= 10 -> Thành công, gộp thành 9 áo
         """
-        headers = {"X-User-Id": str(self.user_a.id)}
+        headers = self._auth_headers(self.user_a)
 
         # Lần 1: thêm 6
         res1 = self.client.post("/cart/items", json={"variant_id": self.variant_m.id, "quantity": 6}, headers=headers)
@@ -195,7 +204,7 @@ class TestCartAPIs(unittest.TestCase):
         - Sửa trong phạm vi tồn kho -> Thành công
         - Sửa vượt quá tồn kho -> 400 Bad Request
         """
-        headers = {"X-User-Id": str(self.user_a.id)}
+        headers = self._auth_headers(self.user_a)
         res_add = self.client.post("/cart/items", json={"variant_id": self.variant_l.id, "quantity": 1}, headers=headers)
         item_id = res_add.json()["cart"]["items"][0]["id"]
 
@@ -218,7 +227,7 @@ class TestCartAPIs(unittest.TestCase):
         res_a = self.client.post(
             "/cart/items",
             json={"variant_id": self.variant_m.id, "quantity": 2},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         item_a_id = res_a.json()["cart"]["items"][0]["id"]
 
@@ -226,7 +235,7 @@ class TestCartAPIs(unittest.TestCase):
         res_b_update = self.client.put(
             f"/cart/items/{item_a_id}",
             json={"quantity": 5},
-            headers={"X-User-Id": str(self.user_b.id)},
+            headers=self._auth_headers(self.user_b),
         )
         self.assertEqual(res_b_update.status_code, 403)
         self.assertIn("không có quyền thao tác", res_b_update.json()["detail"])
@@ -234,17 +243,17 @@ class TestCartAPIs(unittest.TestCase):
         # User B cố tình XOÁ item của User A -> Bị chặn 403 Forbidden
         res_b_delete = self.client.delete(
             f"/cart/items/{item_a_id}",
-            headers={"X-User-Id": str(self.user_b.id)},
+            headers=self._auth_headers(self.user_b),
         )
         self.assertEqual(res_b_delete.status_code, 403)
         self.assertIn("không có quyền thao tác", res_b_delete.json()["detail"])
 
         # Giỏ của User B vẫn hoàn toàn trống
-        res_b_cart = self.client.get("/cart", headers={"X-User-Id": str(self.user_b.id)})
+        res_b_cart = self.client.get("/cart", headers=self._auth_headers(self.user_b))
         self.assertEqual(res_b_cart.json()["total_items"], 0)
 
         # Giỏ của User A vẫn nguyên vẹn
-        res_a_cart = self.client.get("/cart", headers={"X-User-Id": str(self.user_a.id)})
+        res_a_cart = self.client.get("/cart", headers=self._auth_headers(self.user_a))
         self.assertEqual(res_a_cart.json()["total_items"], 2)
 
     # -------------------------------------------------------------
@@ -252,7 +261,7 @@ class TestCartAPIs(unittest.TestCase):
     # -------------------------------------------------------------
     def test_delete_cart_item(self):
         """Xóa món khỏi giỏ hàng thành công."""
-        headers = {"X-User-Id": str(self.user_a.id)}
+        headers = self._auth_headers(self.user_a)
         res_add = self.client.post("/cart/items", json={"variant_id": self.variant_m.id, "quantity": 2}, headers=headers)
         item_id = res_add.json()["cart"]["items"][0]["id"]
 
@@ -264,7 +273,7 @@ class TestCartAPIs(unittest.TestCase):
 
     def test_clear_cart(self):
         """Làm trống toàn bộ giỏ hàng."""
-        headers = {"X-User-Id": str(self.user_a.id)}
+        headers = self._auth_headers(self.user_a)
         self.client.post("/cart/items", json={"variant_id": self.variant_m.id, "quantity": 1}, headers=headers)
         self.client.post("/cart/items", json={"variant_id": self.variant_l.id, "quantity": 2}, headers=headers)
 

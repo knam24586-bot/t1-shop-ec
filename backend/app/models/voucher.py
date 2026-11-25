@@ -53,7 +53,7 @@ class Voucher(Base):
 
     # Mã voucher duy nhất (VD: T1CHAMPION, SUMMER2026)
     code: Mapped[str] = mapped_column(
-        String(50), nullable=False, unique=True, index=True
+        String(50), nullable=False
     )
 
     # Tên và mô tả voucher
