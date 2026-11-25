@@ -26,8 +26,6 @@ class StoreOrder(Base):
     order_id: Mapped[int] = mapped_column(
         ForeignKey("orders.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False,
-        unique=True,
-        index=True,
     )
     store_id: Mapped[int] = mapped_column(
         ForeignKey("stores.id", ondelete="CASCADE", onupdate="CASCADE"),

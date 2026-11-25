@@ -30,8 +30,6 @@ class OrderCancellation(Base):
     order_id: Mapped[int] = mapped_column(
         ForeignKey("orders.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False,
-        unique=True,
-        index=True,
     )
     order_code: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
     user_id: Mapped[int] = mapped_column(

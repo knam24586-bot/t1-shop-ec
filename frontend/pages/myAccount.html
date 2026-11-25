@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account - T1 Shop</title>
+
+  <!-- Google Fonts: Inter & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/style1.css">
+  <link rel="stylesheet" href="../css/style1.css">
+  <link rel="stylesheet" href="/frontend/css/accontDropdown.css">
+  <link rel="stylesheet" href="../css/accontDropdown.css">
+  <link rel="stylesheet" href="/frontend/css/myAccount.css">
+  <link rel="stylesheet" href="../css/myAccount.css">
+</head>
+
+<body>
+  <!-- ========================================================
+       HEADER & NAVIGATION (Đồng bộ 100% từ E-CommerceHomePage.html)
+       ======================================================== -->
+  <header class="site-header">
+    <!-- Thanh khuyến mãi phía trên -->
+    <div class="announcement">
+      <div class="announcement__inner">
+        <p>
+          Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%!
+          <a href="./Shop.html">ShopNow</a>
+        </p>
+
+        <!-- Bộ chuyển đổi ngôn ngữ (English / Tiếng Việt) -->
+        <div class="language-picker" id="languagePicker">
+          <button class="language" id="languageBtn" type="button" aria-label="Select Language" aria-expanded="false"
+            aria-haspopup="true">
+            <span class="language-current-label" id="currentLangLabel">English</span>
+            <svg viewBox="0 0 12 8" aria-hidden="true">
+              <path d="m1 1.5 5 5 5-5" />
+            </svg>
+          </button>
+          <ul class="language-dropdown" id="languageDropdown" role="menu" aria-label="Language options">
+            <li role="none">
+              <button class="language-item language-item--active" type="button" role="menuitem" data-lang="en">
+                <span class="lang-text">English</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+            <li role="none">
+              <button class="language-item" type="button" role="menuitem" data-lang="vi">
+                <span class="lang-text">Tiếng Việt</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header chính -->
+    <div class="main-header">
+      <div class="main-header__inner">
+        <a class="brand" href="./E-CommerceHomePage.html" aria-label="Trang chủ T1 Shop">
+          <img src="/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png"
+            onerror="this.onerror=null; this.src='../assets/images/Worlds_2026_Simulator-removebg-preview.png'"
+            alt="Logo T1 Shop">
+        </a>
+
+        <button class="menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false"
+          aria-controls="primary-navigation">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
+          <a class="navigation__link" href="./E-CommerceHomePage.html">Home</a>
+          <a class="navigation__link" href="./contact.html">Contact</a>
+          <a class="navigation__link" href="./About.html">About</a>
+          <a class="navigation__link" href="./Sign-in.html">Sign Up</a>
+        </nav>
+
+        <div class="header-actions">
+          <form class="search" role="search" action="./Shop.html" method="get">
+            <input type="search" name="q" placeholder="What are you looking for?" aria-label="Tìm kiếm sản phẩm"
+              autocomplete="off">
+            <button class="search-clear-btn" type="button" aria-label="Xóa từ khóa" style="display: none;">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            <button type="submit" aria-label="Tìm kiếm">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                <path d="m16 16 5 5"></path>
+              </svg>
+            </button>
+          </form>
+
+          <a class="icon-link" href="./WishList.html" aria-label="Wishlist">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
+              </path>
+            </svg>
+          </a>
+
+          <a class="icon-link cart-link" href="./Shop.html" aria-label="Giỏ hàng">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
+              <circle cx="9" cy="20" r="1.2"></circle>
+              <circle cx="18" cy="20" r="1.2"></circle>
+            </svg>
+          </a>
+
+          <!-- User Account Icon & Dropdown Popup (Chuẩn Figma Exclusive) -->
+          <div class="user-account-dropdown" id="userAccountDropdown">
+            <button class="user-avatar-btn" id="userAvatarBtn" type="button" aria-label="Tài khoản người dùng"
+              aria-expanded="false" aria-haspopup="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            <nav class="account-popup-menu" id="accountPopupMenu" aria-label="Menu tài khoản">
+              <ul class="account-popup-list">
+                <li>
+                  <a class="account-popup-item" href="./myAccount.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <span>Manage My Account</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-order">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                      <path d="M3 6h18" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span>My Order</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-cancellations">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m15 9-6 6" />
+                      <path d="m9 9 6 6" />
+                    </svg>
+                    <span>My Cancellations</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="#my-reviews">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span>My Reviews</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="account-popup-item" href="./Login.html">
+                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Logout</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       MAIN ACCOUNT CONTENT
+       ======================================================== -->
+  <main class="account-page-main">
+    <!-- Breadcrumb & Welcome Greeting Row -->
+    <div class="account-topbar">
+      <nav class="account-breadcrumb" aria-label="Breadcrumb">
+        <a href="./E-CommerceHomePage.html" class="bc-home">Home</a>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="breadcrumb-current" aria-current="page">My Account</span>
+      </nav>
+      <div class="account-welcome">
+        Welcome! <span class="welcome-name" id="welcomeUserDisplay">Md Rimel</span>
+      </div>
+    </div>
+
+    <!-- Account Dashboard Layout (Sidebar + Profile Form) -->
+    <div class="account-layout">
+      <!-- Left Sidebar: Account Navigation -->
+      <aside class="account-sidebar" aria-label="Account Navigation">
+        <!-- Nhóm 1: Manage My Account -->
+        <div class="account-nav-group">
+          <h3 class="account-nav-title">Manage My Account</h3>
+          <ul class="account-nav-list">
+            <li class="account-nav-item">
+              <a href="./myAccount.html" class="active">My Profile</a>
+            </li>
+            <li class="account-nav-item">
+              <a href="#address-book">Address Book</a>
+            </li>
+            <li class="account-nav-item">
+              <a href="#payment-options">My Payment Options</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Nhóm 2: My Orders -->
+        <div class="account-nav-group">
+          <h3 class="account-nav-title">My Orders</h3>
+          <ul class="account-nav-list">
+            <li class="account-nav-item">
+              <a href="#my-returns">My Returns</a>
+            </li>
+            <li class="account-nav-item">
+              <a href="#my-cancellations">My Cancellations</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Nhóm 3: My WishList -->
+        <div class="account-nav-group">
+          <h3 class="account-nav-title">
+            <a href="./WishList.html">My WishList</a>
+          </h3>
+        </div>
+      </aside>
+
+      <!-- Right Card: Edit Your Profile -->
+      <section class="profile-card" aria-labelledby="profileCardTitle">
+        <h2 class="profile-card-title" id="profileCardTitle">Edit Your Profile</h2>
+
+        <form class="profile-form" id="profileForm" action="#save" method="post">
+          <!-- Row 1: First Name & Last Name -->
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" value="Md" placeholder="Md" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" value="Rimel" placeholder="Rimel" required>
+            </div>
+          </div>
+
+          <!-- Row 2: Email & Address -->
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" value="rimel1111@gmail.com"
+                placeholder="rimel1111@gmail.com" required>
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" id="address" name="address" value="Kingston, 5236, United State"
+                placeholder="Kingston, 5236, United State" required>
+            </div>
+          </div>
+
+          <!-- Password Changes -->
+          <div class="password-section">
+            <label class="password-section-title">Password Changes</label>
+            <div class="password-inputs">
+              <input type="password" id="currentPassword" name="currentPassword" placeholder="Current Passwod"
+                autocomplete="current-password">
+              <input type="password" id="newPassword" name="newPassword" placeholder="New Passwod"
+                autocomplete="new-password">
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm New Passwod"
+                autocomplete="new-password">
+            </div>
+          </div>
+
+          <!-- Form Actions: Cancel & Save Changes -->
+          <div class="profile-actions">
+            <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+            <button type="submit" class="btn-save" id="saveBtn">Save Changes</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- ========================================================
+       FOOTER (Đồng bộ 100% từ E-CommerceHomePage.html)
+       ======================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <!-- Cột 1: T1 Shop & Subscribe -->
+      <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
+        <h2 id="newsletter-title">T1 Shop</h2>
+        <p class="column-subtitle">Subscribe</p>
+        <p class="newsletter-copy">Get 10% off your first order</p>
+        <form class="subscribe-form" action="#subscribe" method="post"
+          onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+          <label class="visually-hidden" for="subscriber-email">Enter your email</label>
+          <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+          <button type="submit" aria-label="Gửi đăng ký">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- Cột 2: Support -->
+      <nav class="footer-column" aria-label="Support">
+        <h2>Support</h2>
+        <ul>
+          <li><a href="#">PTIT</a></li>
+          <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
+          <li><a href="tel:+88015888889999">+88015-88888-9999</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 3: Account -->
+      <nav class="footer-column" aria-label="Account">
+        <h2>Account</h2>
+        <ul>
+          <li><a href="./myAccount.html">My Account</a></li>
+          <li><a href="./Login.html">Login / Register</a></li>
+          <li><a href="./Shop.html">Cart</a></li>
+          <li><a href="./WishList.html">Wishlist</a></li>
+          <li><a href="./Shop.html">Shop</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 4: Quick Link -->
+      <nav class="footer-column" aria-label="Quick links">
+        <h2>Quick Link</h2>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="./E-CommerceHomePage.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Dòng bản quyền phía dưới -->
+    <div class="footer-bottom">
+      <p>© Copyright Rimel 2022. All right reserved</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notice -->
+  <div class="toast-notice" id="toastNotice" role="alert" aria-live="polite">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+    <span id="toastMsg">Changes saved successfully!</span>
+  </div>
+
+  <!-- ========================================================
+       JAVASCRIPTS (Đồng bộ Header, Language Switcher, User Dropdown & Profile Actions)
+       ======================================================== -->
+  <script>
+    (function () {
+      "use strict";
+
+      /* 1. Mobile Menu Toggle */
+      var menuButton = document.querySelector(".menu-toggle");
+      var navigation = document.querySelector(".navigation");
+      if (menuButton && navigation) {
+        menuButton.addEventListener("click", function () {
+          var isOpen = navigation.classList.toggle("navigation--open");
+          menuButton.setAttribute("aria-expanded", String(isOpen));
+          menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+        });
+      }
+
+      /* 2. Language Switcher (English <-> Tiếng Việt) */
+      var langBtn = document.getElementById("languageBtn");
+      var langDropdown = document.getElementById("languageDropdown");
+      var langOptions = document.querySelectorAll(".language-item");
+      var currentLangLabel = document.getElementById("currentLangLabel");
+
+      function applyLanguage(lang) {
+        var isVi = lang === "vi";
+
+        if (currentLangLabel) {
+          currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
+        }
+
+        langOptions.forEach(function (item) {
+          var itemLang = item.getAttribute("data-lang");
+          item.classList.toggle("language-item--active", itemLang === lang);
+        });
+
+        // Cập nhật banner thông báo
+        var announceText = document.querySelector(".announcement__inner p");
+        if (announceText) {
+          var shopLink = announceText.querySelector("a");
+          var linkHref = shopLink ? shopLink.getAttribute("href") : "./Shop.html";
+          if (isVi) {
+            announceText.innerHTML = 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>';
+          } else {
+            announceText.innerHTML = 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
+          }
+        }
+
+        // Cập nhật Menu điều hướng
+        var navLinks = document.querySelectorAll(".navigation .navigation__link");
+        if (navLinks.length >= 4) {
+          navLinks[0].textContent = isVi ? "Trang Chủ" : "Home";
+          navLinks[1].textContent = isVi ? "Liên Hệ" : "Contact";
+          navLinks[2].textContent = isVi ? "Giới Thiệu" : "About";
+          navLinks[3].textContent = isVi ? "Đăng Ký" : "Sign Up";
+        }
+
+        // Cập nhật Search Placeholder
+        var searchInput = document.querySelector(".search input");
+        if (searchInput) {
+          searchInput.placeholder = isVi ? "Bạn đang tìm kiếm gì?" : "What are you looking for?";
+        }
+
+        try {
+          localStorage.setItem("t1shop_lang", lang);
+        } catch (e) { }
+      }
+
+      if (langBtn && langDropdown) {
+        langBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var isOpen = langDropdown.classList.toggle("language-dropdown--open");
+          langBtn.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        langOptions.forEach(function (item) {
+          item.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var targetLang = item.getAttribute("data-lang") || "en";
+            applyLanguage(targetLang);
+            langDropdown.classList.remove("language-dropdown--open");
+            langBtn.setAttribute("aria-expanded", "false");
+          });
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+            langDropdown.classList.remove("language-dropdown--open");
+            langBtn.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      /* 3. User Avatar Button & Account Dropdown Popup */
+      var userAvatarBtn = document.getElementById("userAvatarBtn");
+      var accountPopupMenu = document.getElementById("accountPopupMenu");
+
+      if (userAvatarBtn && accountPopupMenu) {
+        function toggleAccountPopup(show) {
+          var isOpen = typeof show === "boolean" ? show : !accountPopupMenu.classList.contains("account-popup-menu--open");
+          accountPopupMenu.classList.toggle("account-popup-menu--open", isOpen);
+          userAvatarBtn.setAttribute("aria-expanded", String(isOpen));
+          userAvatarBtn.classList.toggle("user-avatar-btn--active", isOpen);
+        }
+
+        userAvatarBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleAccountPopup();
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!userAvatarBtn.contains(e.target) && !accountPopupMenu.contains(e.target)) {
+            toggleAccountPopup(false);
+          }
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            toggleAccountPopup(false);
+          }
+        });
+      }
+
+      /* 4. Profile Form Handling & Toast Notifications */
+      var profileForm = document.getElementById("profileForm");
+      var cancelBtn = document.getElementById("cancelBtn");
+      var welcomeUserDisplay = document.getElementById("welcomeUserDisplay");
+      var toastNotice = document.getElementById("toastNotice");
+      var toastMsg = document.getElementById("toastMsg");
+
+      function showToast(message) {
+        if (!toastNotice) return;
+        if (toastMsg) toastMsg.textContent = message;
+        toastNotice.classList.add("show");
+        setTimeout(function () {
+          toastNotice.classList.remove("show");
+        }, 3000);
+      }
+
+      if (profileForm) {
+        profileForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var fn = document.getElementById("firstName").value.trim();
+          var ln = document.getElementById("lastName").value.trim();
+          var newPass = document.getElementById("newPassword").value;
+          var confirmPass = document.getElementById("confirmPassword").value;
+
+          if (newPass && newPass !== confirmPass) {
+            alert("Mật khẩu mới và mật khẩu xác nhận không trùng khớp!");
+            return;
+          }
+
+          if (fn || ln) {
+            var fullName = (fn + " " + ln).trim();
+            if (welcomeUserDisplay) welcomeUserDisplay.textContent = fullName;
+          }
+
+          showToast("Profile changes saved successfully!");
+        });
+      }
+
+      if (cancelBtn && profileForm) {
+        cancelBtn.addEventListener("click", function () {
+          profileForm.reset();
+          showToast("Form has been reset.");
+        });
+      }
+
+      // Khôi phục ngôn ngữ lưu trữ
+      try {
+        var savedLang = localStorage.getItem("t1shop_lang") || "en";
+        if (savedLang === "vi") {
+          applyLanguage("vi");
+        }
+      } catch (e) { }
+    })();
+  </script>
+
+  <!-- Global Search Bar & Live Autocomplete -->
+  <script src="../js/search-bar.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script>
+    (async function () {
+      "use strict";
+      if (!window.T1ShopAuth || typeof window.T1ShopAuth.requireAuth !== "function") return;
+      var session = await window.T1ShopAuth.requireAuth();
+      if (!session || !session.user) return;
+
+      var user = session.user;
+      var fullName = String(user.full_name || "").trim();
+      var parts = fullName ? fullName.split(/\s+/) : [];
+      var firstName = parts.length > 1 ? parts.slice(0, -1).join(" ") : (parts[0] || "");
+      var lastName = parts.length > 1 ? parts[parts.length - 1] : "";
+
+      var welcomeEl = document.getElementById("welcomeUserDisplay");
+      var firstEl = document.getElementById("firstName");
+      var lastEl = document.getElementById("lastName");
+      var emailEl = document.getElementById("email");
+
+      if (welcomeEl && fullName) welcomeEl.textContent = fullName + " (" + (user.role || "CUSTOMER") + ")";
+      if (firstEl) firstEl.value = firstName;
+      if (lastEl) lastEl.value = lastName;
+      if (emailEl && user.email) emailEl.value = user.email;
+
+      var cancelBtn = document.getElementById("cancelBtn");
+      if (cancelBtn) {
+        cancelBtn.addEventListener("click", function () {
+          if (firstEl) firstEl.value = firstName;
+          if (lastEl) lastEl.value = lastName;
+          if (emailEl && user.email) emailEl.value = user.email;
+          if (welcomeEl && fullName) welcomeEl.textContent = fullName + " (" + (user.role || "CUSTOMER") + ")";
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

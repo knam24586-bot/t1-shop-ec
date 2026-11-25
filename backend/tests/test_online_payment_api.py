@@ -21,6 +21,8 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, configure_mappers
 from sqlalchemy.pool import StaticPool
 
+from app.core.config import settings
+from app.core.tokens import create_access_token
 from app.db.session import Base, get_db
 from app.models.category import Category  # noqa: F401
 from app.models.product import Product  # noqa: F401
@@ -43,6 +45,8 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         configure_mappers()
 
     def setUp(self):
+        self._orig_secret = settings.JWT_SECRET_KEY
+        settings.JWT_SECRET_KEY = "test-jwt-secret-key-at-least-32-characters-long"
         # Database SQLite in-memory dùng StaticPool
         self.engine = create_engine(
             "sqlite:///:memory:",
@@ -97,10 +101,15 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         self.app.dependency_overrides[get_db] = override_get_db
         self.client = TestClient(self.app)
 
+    def _auth_headers(self, user: User) -> dict[str, str]:
+        token, _ = create_access_token(user)
+        return {"Authorization": f"Bearer {token}"}
+
     def tearDown(self):
         self.db.close()
         Base.metadata.drop_all(self.engine)
         self.engine.dispose()
+        settings.JWT_SECRET_KEY = self._orig_secret
 
     # -------------------------------------------------------------
     # 1. TIÊU CHÍ: Online checkout tạo giao dịch và URL/token theo gateway cấu hình
@@ -115,7 +124,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 201)
         data = response.json()
@@ -159,7 +168,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 201)
         data = response.json()
@@ -179,7 +188,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 201)
         data = response.json()
@@ -202,7 +211,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         res_init = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         txn_ref = res_init.json()["transaction_reference"]
 
@@ -221,7 +230,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         res_init = self.client.post(
             "/api/payments/checkout",
             json={"order_code": self.order_a.order_code, "method": "VNPAY"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         txn_ref = res_init.json()["transaction_reference"]
 
@@ -252,7 +261,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         res_init = self.client.post(
             "/api/payments/checkout",
             json={"order_code": self.order_a.order_code, "method": "VNPAY"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         txn_ref = res_init.json()["transaction_reference"]
 
@@ -286,7 +295,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 404)
         self.assertIn("không tìm thấy đơn hàng", response.json()["detail"].lower())
@@ -297,7 +306,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_b.id)},  # User B
+            headers=self._auth_headers(self.user_b),  # User B
         )
         self.assertEqual(response.status_code, 403)
         self.assertIn("không có quyền", response.json()["detail"].lower())
@@ -312,7 +321,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 400)
         self.assertIn("đã được thanh toán", response.json()["detail"].lower())
@@ -326,7 +335,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 400)
         self.assertIn("đã bị huỷ", response.json()["detail"].lower())
@@ -337,7 +346,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         response = self.client.post(
             "/api/payments/checkout",
             json=payload,
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(response.status_code, 400)
         self.assertIn("không được hỗ trợ", response.json()["detail"].lower())
@@ -351,7 +360,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         res1 = self.client.post(
             "/api/payments/checkout",
             json={"order_code": self.order_a.order_code, "method": "VNPAY"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res1.status_code, 201)
         self.assertEqual(res1.json()["attempt_number"], 1)
@@ -360,7 +369,7 @@ class TestOnlinePaymentAPIs(unittest.TestCase):
         res2 = self.client.post(
             "/api/payments/checkout",
             json={"order_code": self.order_a.order_code, "method": "MOMO"},
-            headers={"X-User-Id": str(self.user_a.id)},
+            headers=self._auth_headers(self.user_a),
         )
         self.assertEqual(res2.status_code, 201)
         self.assertEqual(res2.json()["attempt_number"], 2)

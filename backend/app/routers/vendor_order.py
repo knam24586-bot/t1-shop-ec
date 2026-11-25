@@ -10,8 +10,7 @@ Cung cấp các endpoint:
 from __future__ import annotations
 
 import math
-from typing import Annotated
-from fastapi import APIRouter, Depends, Header, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.crud.vendor_order import (
@@ -23,7 +22,9 @@ from app.crud.vendor_order import (
     reject_vendor_order,
     update_vendor_order_status,
 )
+from app.core.deps import get_current_user
 from app.db.session import get_db
+from app.models.user import User
 from app.schemas.vendor_order import (
     OrderStatusHistoryResponse,
     VendorOrderActionResponse,
@@ -38,46 +39,28 @@ store_orders_router = APIRouter(prefix="/stores", tags=["Store Vendor Orders"])
 
 
 def _vendor_context(
-    x_role: Annotated[str | None, Header(alias="X-Role")] = None,
-    x_store_id: Annotated[int | None, Header(alias="X-Store-Id")] = None,
-    x_user_id: Annotated[int | None, Header(alias="X-User-Id")] = 1,
+    current_user: User = Depends(get_current_user),
 ) -> tuple[str, int, int]:
-    """Xác thực vai trò và Store được gán cho Vendor.
-    - Role phải là VENDOR hoặc ADMIN.
-    - Bắt buộc có X-Store-Id để biết Store quản lý.
-    """
-    normalized_role = x_role.upper() if x_role else ""
-    if not normalized_role:
-        # Nếu có store_id thì mặc định role là VENDOR
-        if x_store_id is not None:
-            normalized_role = "VENDOR"
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="X-Role must be ADMIN or VENDOR",
-            )
-
+    """Use the role and assigned store loaded from the authenticated account."""
+    normalized_role = current_user.role.strip().upper()
     if normalized_role not in {"ADMIN", "VENDOR"}:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="X-Role must be ADMIN or VENDOR",
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Chỉ quản trị viên hoặc vendor mới được quản lý đơn của cửa hàng.",
         )
-
-    if x_store_id is None:
+    if current_user.store_id is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Vendor requests require X-Store-Id",
+            detail="Tài khoản chưa được gán cửa hàng.",
         )
-
-    user_id = x_user_id if x_user_id is not None else 1
-    return normalized_role, x_store_id, user_id
+    return normalized_role, current_user.store_id, current_user.id
 
 
 @router.get(
     "",
     response_model=VendorOrderListResponse,
     summary="Vendor xem danh sách đơn hàng thuộc Store của mình",
-    description="Chỉ hiển thị các đơn hàng thuộc Store của Vendor (X-Store-Id). Hỗ trợ lọc trạng thái và phân trang.",
+    description="Chỉ hiển thị đơn hàng thuộc cửa hàng được gán cho tài khoản hiện tại. Hỗ trợ lọc trạng thái và phân trang.",
 )
 def list_orders_for_vendor(
     status: str | None = Query(None, description="Lọc theo trạng thái đơn hàng (PENDING, CONFIRMED, ...)"),
@@ -110,7 +93,7 @@ def list_orders_for_vendor(
     "/{order_code}",
     response_model=VendorOrderResponse,
     summary="Vendor xem chi tiết một đơn hàng thuộc Store của mình",
-    description="Chỉ cho phép xem nếu đơn hàng thuộc đúng Store của Vendor (X-Store-Id).",
+    description="Chỉ cho phép xem nếu đơn hàng thuộc cửa hàng được gán cho tài khoản hiện tại.",
 )
 def get_order_detail_for_vendor(
     order_code: str,

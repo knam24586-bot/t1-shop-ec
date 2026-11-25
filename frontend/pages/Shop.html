@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - T1 Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/style1.css">
+  <link rel="stylesheet" href="../css/wishlist.css">
+  <link rel="stylesheet" href="../css/shop.css">
+</head>
+
+<body>
+  <!-- Header chính của T1 Shop (Lấy chuẩn từ test.html & wishlist.css) -->
+  <header class="site-header">
+    <!-- Thanh khuyến mãi phía trên -->
+    <div class="announcement">
+      <div class="announcement__inner">
+        <p>
+          Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%!
+          <a href="#shop">ShopNow</a>
+        </p>
+
+        <!-- Bộ chuyển đổi ngôn ngữ (English / Tiếng Việt) -->
+        <div class="language-picker" id="languagePicker">
+          <button class="language" id="languageBtn" type="button" aria-label="Chọn ngôn ngữ" aria-expanded="false"
+            aria-haspopup="true">
+            <span class="language-current-label" id="currentLangLabel">English</span>
+            <svg viewBox="0 0 12 8" aria-hidden="true">
+              <path d="m1 1.5 5 5 5-5" />
+            </svg>
+          </button>
+          <ul class="language-dropdown" id="languageDropdown" role="menu" aria-label="Lựa chọn ngôn ngữ">
+            <li role="none">
+              <button class="language-item language-item--active" type="button" role="menuitem" data-lang="en">
+                <span class="lang-text">English</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+            <li role="none">
+              <button class="language-item" type="button" role="menuitem" data-lang="vi">
+                <span class="lang-text">Tiếng Việt</span>
+                <span class="lang-check" aria-hidden="true">✓</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header chính -->
+    <div class="main-header">
+      <div class="main-header__inner">
+        <a class="brand" href="./E-CommerceHomePage.html" aria-label="Trang chủ">
+          <img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png"
+            onerror="this.onerror=null; this.src='/frontend/assets/images/Worlds_2026_Simulator-removebg-preview.png';"
+            alt="Logo thương hiệu">
+        </a>
+
+        <button class="menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false"
+          aria-controls="primary-navigation">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="navigation" id="primary-navigation" aria-label="Điều hướng chính">
+          <a class="navigation__link navigation__link--active" href="./E-CommerceHomePage.html">Home</a>
+          <a class="navigation__link" href="#contact">Contact</a>
+          <a class="navigation__link" href="#about">About</a>
+          <a class="navigation__link" href="./Sign-in.html">Sign Up</a>
+        </nav>
+
+        <div class="header-actions">
+          <form class="search" role="search" action="./Shop.html" method="get">
+            <input type="search" name="q" placeholder="What are you looking for?" aria-label="Tìm kiếm sản phẩm" autocomplete="off">
+            <button class="search-clear-btn" type="button" aria-label="Xóa từ khóa" style="display: none;"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <button type="submit" aria-label="Tìm kiếm">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                <path d="m16 16 5 5"></path>
+              </svg>
+            </button>
+          </form>
+
+          <a class="icon-link" href="./WishList.html" aria-label="Wishlist">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z">
+              </path>
+            </svg>
+          </a>
+
+          <a class="icon-link" href="#cart" aria-label="Giỏ hàng">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
+              <circle cx="9" cy="20" r="1.2"></circle>
+              <circle cx="18" cy="20" r="1.2"></circle>
+            </svg>
+          </a>
+
+          <a class="icon-link account-link" href="./AccountDropdownWithAccount.html" aria-label="Tài khoản">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Nội dung trang Shop -->
+  <main>
+    <!-- Breadcrumb -->
+    <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+      <a href="./E-CommerceHomePage.html">Home</a>
+      <span>/</span>
+      <span class="current" id="breadcrumbCurrent">All Products</span>
+    </nav>
+
+    <!-- Tiêu đề trang & Bộ công cụ Test nhanh -->
+    <section class="shop-header">
+      <div class="shop-header__top">
+        <div class="shop-title-wrap">
+          <div class="shop-title-bar"></div>
+          <h1 class="shop-title" id="shopPageTitle">Explore Our Products</h1>
+          <span class="shop-product-count" id="shopProductCount">(Loading...)</span>
+        </div>
+      </div>
+
+      <!-- Toolbar: Danh mục, Tìm kiếm & Sắp xếp -->
+      <div class="shop-toolbar">
+        <div class="shop-categories" role="tablist" aria-label="Danh mục sản phẩm">
+          <button class="shop-cat-btn is-active" type="button" data-category="all">All Products</button>
+          <button class="shop-cat-btn" type="button" data-category="electronics">Electronics</button>
+          <button class="shop-cat-btn" type="button" data-category="computers">Computers</button>
+          <button class="shop-cat-btn" type="button" data-category="gaming">Gaming</button>
+          <button class="shop-cat-btn" type="button" data-category="fashion">Fashion</button>
+          <button class="shop-cat-btn" type="button" data-category="home-lifestyle">Home &amp; Lifestyle</button>
+          <button class="shop-cat-btn" type="button" data-category="sports">Sports</button>
+          <button class="shop-cat-btn" type="button" data-category="health-beauty">Health &amp; Beauty</button>
+          <button class="shop-cat-btn" type="button" data-category="baby-toys">Baby &amp; Toys</button>
+        </div>
+
+        <div class="shop-filter-actions">
+          <!-- Ô tìm kiếm kèm nút Xóa nhanh -->
+          <div class="shop-search-box">
+            <input class="shop-search-input" id="shopSearchInput" type="text" placeholder="Search products..."
+              aria-label="Tìm kiếm nhanh">
+            <button class="shop-search-clear" id="shopSearchClear" type="button" aria-label="Xóa từ khóa" style="display: none;"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <svg class="shop-search-icon" viewBox="0 0 24 24">
+              <circle cx="10.8" cy="10.8" r="6.8"></circle>
+              <path d="m16 16 5 5"></path>
+            </svg>
+          </div>
+
+          <!-- Bộ lọc khoảng giá (Price Range Filter) -->
+          <div class="shop-price-filter-wrap">
+            <select class="shop-filter-select" id="shopPriceFilter" aria-label="Lọc theo khoảng giá">
+              <option value="all">All Prices</option>
+              <option value="0-100">Under $100</option>
+              <option value="100-500">$100 – $500</option>
+              <option value="500-1000">$500 – $1,000</option>
+              <option value="1000-plus">Over $1,000</option>
+              <option value="custom">Custom Range...</option>
+            </select>
+
+            <div class="shop-price-custom" id="shopPriceCustom" style="display: none;">
+              <input type="number" id="shopPriceMin" class="shop-price-num" placeholder="Min $" min="0" aria-label="Giá tối thiểu">
+              <span class="shop-price-dash">–</span>
+              <input type="number" id="shopPriceMax" class="shop-price-num" placeholder="Max $" min="0" aria-label="Giá tối đa">
+              <button type="button" id="shopPriceApply" class="shop-price-apply-btn" aria-label="Áp dụng giá">Apply</button>
+            </div>
+          </div>
+
+          <!-- Sắp xếp -->
+          <select class="shop-sort-select" id="shopSortSelect" aria-label="Sắp xếp sản phẩm">
+            <option value="featured">Featured</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Thanh hiển thị tiêu chí lọc đang kích hoạt (Active Filters Bar) -->
+      <div class="shop-active-filters" id="shopActiveFilters" style="display: none;">
+        <span class="active-filters-label" id="activeFiltersLabel">Active Filters:</span>
+        <div class="active-filters-chips" id="activeFiltersChips"></div>
+        <button class="active-filters-clear-all" id="clearAllFiltersBtn" type="button">Clear All</button>
+      </div>
+    </section>
+
+    <!-- Khu vực Lưới sản phẩm, Skeleton & Trạng thái rỗng -->
+    <div class="shop-container">
+      <div class="shop-grid" id="shopGrid">
+
+        <!-- Skeleton Loaders (Hiển thị khi đang tải dữ liệu) -->
+        <div class="shop-skeleton" id="shopSkeleton">
+          <div class="skeleton-card">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+            <div class="skeleton-line skeleton-line--price"></div>
+            <div class="skeleton-line skeleton-line--rating"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+            <div class="skeleton-line skeleton-line--price"></div>
+            <div class="skeleton-line skeleton-line--rating"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+            <div class="skeleton-line skeleton-line--price"></div>
+            <div class="skeleton-line skeleton-line--rating"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+            <div class="skeleton-line skeleton-line--price"></div>
+            <div class="skeleton-line skeleton-line--rating"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+            <div class="skeleton-line skeleton-line--price"></div>
+            <div class="skeleton-line skeleton-line--rating"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+            <div class="skeleton-line skeleton-line--price"></div>
+            <div class="skeleton-line skeleton-line--rating"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+            <div class="skeleton-line skeleton-line--price"></div>
+            <div class="skeleton-line skeleton-line--rating"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-line skeleton-line--title"></div>
+            <div class="skeleton-line skeleton-line--price"></div>
+            <div class="skeleton-line skeleton-line--rating"></div>
+          </div>
+        </div>
+
+        <!-- Lưới sản phẩm thật (Render bằng JavaScript) -->
+        <div class="shop-grid-items" id="shopGridItems" style="display: contents;"></div>
+
+        <!-- Trạng thái Rỗng (Empty State - Tiêu chí 1) -->
+        <div class="shop-empty-state" id="shopEmptyState">
+          <div class="shop-empty-icon">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+          </div>
+          <h2 class="shop-empty-title" id="shopEmptyTitle">No products found</h2>
+          <p class="shop-empty-desc" id="shopEmptyDesc">Try adjusting your search or filter to find what you are looking
+            for.</p>
+          <button class="shop-empty-reset-btn" id="shopEmptyResetBtn" type="button">View All Products</button>
+        </div>
+
+      </div>
+
+      <!-- Phân trang (Pagination: Trang 1, 2, 3...) & Tải thêm (Load More) - Tiêu chí 2 -->
+      <div class="shop-pagination-wrap">
+        <nav class="shop-pagination" id="shopPagination" aria-label="Phân trang sản phẩm"></nav>
+
+        <div class="shop-load-more" id="shopLoadMore">
+          <button class="load-more-btn" id="loadMoreBtn" type="button">
+            <span class="load-more-spinner"></span>
+            <span class="load-more-text">Load More Products</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Detail Modal (Mở đúng chi tiết sản phẩm - Tiêu chí 3) -->
+    <div class="product-modal" id="shopProductDetailModal" role="dialog" aria-modal="true" aria-hidden="true"
+      aria-labelledby="modalProductTitle">
+      <div class="product-modal__overlay" data-action="close-modal"></div>
+      <div class="product-modal__content">
+        <button class="product-modal__close-btn" type="button" aria-label="Đóng" data-action="close-modal">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="product-modal__body">
+          <!-- Cột trái: Ảnh sản phẩm lớn kèm fallback -->
+          <div class="product-modal__gallery">
+            <div class="product-modal__img-wrap">
+              <span class="product-modal__badge" id="modalBadge" style="display: none;"></span>
+              <img id="modalProductImg" src="" alt="Chi tiết sản phẩm">
+            </div>
+          </div>
+
+          <!-- Cột phải: Thông tin chi tiết -->
+          <div class="product-modal__details">
+            <h2 class="product-modal__title" id="modalProductTitle">Product Name</h2>
+
+            <div class="product-modal__meta">
+              <span class="product-modal__stars" id="modalProductStars">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              </span>
+              <span class="product-modal__reviews" id="modalProductReviews">(65 Reviews)</span>
+              <span class="product-modal__divider">|</span>
+              <span class="product-modal__stock product-modal__stock--in" id="modalProductStock">In Stock</span>
+            </div>
+
+            <div class="product-modal__price-row">
+              <span class="product-modal__price" id="modalProductPrice">$0</span>
+              <span class="product-modal__old-price" id="modalProductOldPrice" style="display: none;">$0</span>
+            </div>
+
+            <p class="product-modal__desc" id="modalProductDesc">
+              Premium quality product crafted with precision, designed to deliver exceptional performance and lasting
+              durability. Backed by 100% genuine warranty from T1 Shop.
+            </p>
+
+            <div class="product-modal__divider-line"></div>
+
+            <!-- Tùy chọn số lượng & Nút hành động -->
+            <div class="product-modal__actions">
+              <div class="product-modal__qty">
+                <button type="button" class="qty-btn" id="modalQtyMinus" aria-label="Giảm số lượng">-</button>
+                <input type="number" id="modalQtyInput" class="product-modal__qty-input" value="1" min="1" max="99"
+                  aria-label="Số lượng">
+                <button type="button" class="qty-btn" id="modalQtyPlus" aria-label="Tăng số lượng">+</button>
+              </div>
+
+              <button class="btn-primary-red product-modal__buy-btn product-modal__add-btn" id="modalAddCartBtn" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1" />
+                  <circle cx="9" cy="20" r="1.2" />
+                  <circle cx="18" cy="20" r="1.2" />
+                </svg>
+                <span id="modalAddCartText">Add To Cart</span>
+              </button>
+
+              <button class="product-modal__fav-btn" id="modalFavBtn" type="button" aria-label="Lưu vào yêu thích">
+                <svg viewBox="0 0 24 24">
+                  <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="wishlist-toast" id="shopToast" role="status" aria-live="polite">
+      <span class="shop-toast-msg">Đã thêm vào giỏ hàng!</span>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+
+      <!-- Cột 1: Exclusive & Subscribe -->
+      <section class="footer-column footer-newsletter" aria-labelledby="newsletter-title">
+        <h2 id="newsletter-title">T1shop</h2>
+        <p class="column-subtitle">Subscribe</p>
+        <p class="newsletter-copy">Get 10% off your first order</p>
+        <form class="subscribe-form" action="#subscribe" method="post"
+          onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+          <label class="visually-hidden" for="subscriber-email">Enter your email</label>
+          <input id="subscriber-email" type="email" name="email" placeholder="Enter your email" required>
+          <button type="submit" aria-label="Gửi đăng ký">
+            <!-- Icon máy bay giấy / Gửi (chuẩn outline SVG như hình gốc) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- Cột 2: Support -->
+      <nav class="footer-column" aria-label="Support">
+        <h2>Support</h2>
+        <ul>
+          <li><a href="#">PTIT</a></li>
+          <li><a href="mailto:t1shop@gmail.com">t1shop@gmail.com</a></li>
+          <li><a href="tel:+84015888889999">+84015-88888-9999</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 3: Account -->
+      <nav class="footer-column" aria-label="Account">
+        <h2>Account</h2>
+        <ul>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">Login / Register</a></li>
+          <li><a href="#">Cart</a></li>
+          <li><a href="/frontend/pages/WishList.html">Wishlist</a></li>
+          <li><a href="#">Shop</a></li>
+        </ul>
+      </nav>
+
+      <!-- Cột 4: Quick Link -->
+      <nav class="footer-column" aria-label="Quick links">
+        <h2>Quick Link</h2>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Dòng bản quyền phía dưới -->
+    <div class="footer-bottom">
+      <p>© Copyright Rimel 2022. All right reserved</p>
+    </div>
+  </footer>
+
+  <!-- Header scripts: Menu toggle & Language switcher (Đồng bộ 100% test.html) -->
+  <script>
+    (function () {
+      const menuButton = document.querySelector(".menu-toggle");
+      const navigation = document.querySelector(".navigation");
+
+      if (menuButton && navigation) {
+        menuButton.addEventListener("click", function () {
+          const isOpen = navigation.classList.toggle("navigation--open");
+          menuButton.setAttribute("aria-expanded", String(isOpen));
+          menuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+        });
+      }
+
+      var langBtn = document.getElementById("languageBtn");
+      var langDropdown = document.getElementById("languageDropdown");
+      var langOptions = document.querySelectorAll(".language-item");
+      var currentLangLabel = document.getElementById("currentLangLabel");
+
+      function applyLanguage(lang) {
+        var isVi = lang === "vi";
+        if (currentLangLabel) {
+          currentLangLabel.textContent = isVi ? "Tiếng Việt" : "English";
+        }
+        langOptions.forEach(function (item) {
+          item.classList.toggle("language-item--active", item.getAttribute("data-lang") === lang);
+        });
+        var announceText = document.querySelector(".announcement__inner p");
+        if (announceText) {
+          var shopLink = announceText.querySelector("a");
+          var linkHref = shopLink ? shopLink.getAttribute("href") : "./Shop.html";
+          announceText.innerHTML = isVi
+            ? 'Siêu Sale Mùa Hè Cho Tất Cả Đồ Bơi & Miễn Phí Giao Hàng Siêu Tốc – GIẢM 50%! <a href="' + linkHref + '">Mua Ngay</a>'
+            : 'Summer Sale For All Swim Suits And Free Express Delivery – OFF 50%! <a href="' + linkHref + '">ShopNow</a>';
+        }
+        var navLinks = document.querySelectorAll(".navigation .navigation__link");
+        if (navLinks.length >= 4) {
+          navLinks[0].textContent = isVi ? "Trang Chủ" : "Home";
+          navLinks[1].textContent = isVi ? "Liên Hệ" : "Contact";
+          navLinks[2].textContent = isVi ? "Giới Thiệu" : "About";
+          navLinks[3].textContent = isVi ? "Đăng Ký" : "Sign Up";
+        }
+        var searchInput = document.querySelector(".search input");
+        if (searchInput) {
+          searchInput.placeholder = isVi ? "Bạn đang tìm kiếm gì?" : "What are you looking for?";
+        }
+        document.documentElement.lang = lang;
+      }
+
+      if (langBtn && langDropdown) {
+        function toggleDropdown(show) {
+          var isOpen = typeof show === "boolean" ? show : !langDropdown.classList.contains("language-dropdown--open");
+          langDropdown.classList.toggle("language-dropdown--open", isOpen);
+          langBtn.setAttribute("aria-expanded", String(isOpen));
+        }
+
+        langBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          toggleDropdown();
+        });
+
+        langOptions.forEach(function (opt) {
+          opt.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var selectedLang = opt.getAttribute("data-lang");
+            if (selectedLang) {
+              applyLanguage(selectedLang);
+              try { localStorage.setItem("t1_selected_lang", selectedLang); } catch (err) { }
+            }
+            toggleDropdown(false);
+          });
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) toggleDropdown(false);
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") toggleDropdown(false);
+        });
+
+        var savedLang = "en";
+        try { savedLang = localStorage.getItem("t1_selected_lang") || "en"; } catch (err) { }
+        applyLanguage(savedLang);
+      }
+    })();
+  </script>
+
+  <!-- Global Search Bar & Live Autocomplete -->
+  <script src="../js/search-bar.js"></script>
+  <!-- Script quản lý sản phẩm, phân trang, lọc, tìm kiếm, modal chi tiết -->
+  <script src="../js/shop.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+
+</html>

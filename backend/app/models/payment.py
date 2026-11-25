@@ -85,7 +85,7 @@ class Payment(Base):
 
     # Mã tham chiếu giao dịch từ cổng thanh toán (hoặc mã đối soát nội bộ)
     transaction_reference: Mapped[str | None] = mapped_column(
-        String(100), nullable=True, unique=True, index=True
+        String(100), nullable=True
     )
 
     # Số thứ tự của lần thử thanh toán (Attempt 1, 2, 3...)
