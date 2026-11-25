@@ -1,56 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - T1 Shop</title>
-  <link rel="stylesheet" href="../css/style1.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh toán - T1 Shop</title><link rel="stylesheet" href="../css/style1.css">
   <style>
-    .checkout-page { max-width: 1170px; margin: 40px auto 80px; padding: 0 24px; display: grid; grid-template-columns: 1.25fr .75fr; gap: 48px; }
-    .checkout-form { display: grid; gap: 14px; }.checkout-form label { display: grid; gap: 7px; font-weight: 500; }.checkout-form input { height: 42px; border: 1px solid #ddd; background: #f5f5f5; padding: 0 12px; }
-    .order-summary { border: 1px solid #eee; padding: 24px; height: fit-content; }.summary-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; }
-    .place-order { width: 100%; height: 44px; border: 0; border-radius: 4px; background:#db4444; color:#fff; cursor:pointer; margin-top:20px; }
-    @media (max-width: 760px) {.checkout-page { grid-template-columns:1fr; }}
+    .checkout-page{max-width:1170px;margin:40px auto 80px;padding:0 24px;display:grid;grid-template-columns:1.25fr .75fr;gap:48px}.checkout-form{display:grid;gap:14px}.checkout-form label{display:grid;gap:7px;font-weight:500}.checkout-form input{height:42px;border:1px solid #ddd;background:#f5f5f5;padding:0 12px}.order-summary{border:1px solid #eee;padding:24px;height:fit-content}.summary-row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid #eee}.place-order{width:100%;min-height:46px;border:0;border-radius:4px;background:#db4444;color:#fff;cursor:pointer;margin-top:20px}.place-order:disabled{opacity:.65;cursor:wait}.checkout-message{padding:12px 14px;margin:14px 0;border-radius:4px}.checkout-error{background:#fff0f0;color:#a12525}.checkout-success{background:#eefaf2;color:#17633a}.cod-label{display:flex;gap:8px;align-items:center;margin-top:18px}.cod-label input{height:auto}.success-panel{padding:28px;border:1px solid #cce8d5;border-radius:8px;background:#f5fff8}.success-panel h2{color:#17633a}
+    @media(max-width:760px){.checkout-page{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="main-header"><div class="main-header__inner">
-      <a class="brand" href="./E-CommerceHomePage.html"><img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="T1 Shop"></a>
-      <nav class="navigation"><a class="navigation__link" href="./E-CommerceHomePage.html">Home</a><a class="navigation__link" href="./Shop.html">Shop</a><a class="navigation__link" href="./contact.html">Contact</a><a class="navigation__link" href="./About.html">About</a></nav>
-    </div></div>
-  </header>
+  <header class="site-header"><div class="main-header"><div class="main-header__inner"><a class="brand" href="./E-CommerceHomePage.html"><img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="T1 Shop"></a><nav class="navigation"><a class="navigation__link" href="./E-CommerceHomePage.html">Trang chủ</a><a class="navigation__link" href="./Shop.html">Cửa hàng</a><a class="navigation__link" href="./Cart.html">Giỏ hàng</a></nav></div></div></header>
   <main class="checkout-page">
-    <section><nav class="shop-breadcrumb"><a href="./E-CommerceHomePage.html">Home</a><span>/</span><a href="./Cart.html">Cart</a><span>/</span><span>Checkout</span></nav><h1>Billing Details</h1>
+    <section><nav class="shop-breadcrumb"><a href="./E-CommerceHomePage.html">Trang chủ</a><span>/</span><a href="./Cart.html">Giỏ hàng</a><span>/</span><span>Thanh toán</span></nav><h1>Thông tin giao hàng</h1><div id="checkoutMessage" role="status" aria-live="polite"></div>
       <form class="checkout-form" id="checkoutForm">
-        <label>First Name *<input name="firstName" required></label>
-        <label>Company Name<input name="company"></label>
-        <label>Street Address *<input name="street" required></label>
-        <label>Apartment, floor, etc. (optional)<input name="apartment"></label>
-        <label>Town/City *<input name="city" required></label>
-        <label>Phone Number *<input name="phone" required></label>
-        <label>Email Address *<input type="email" name="email" required></label>
-        <label><input type="checkbox" name="save" style="height:auto"> Save this information for next time</label>
+        <label>Họ và tên *<input name="full_name" id="fullName" required minlength="2" maxlength="150" autocomplete="name"></label>
+        <label>Địa chỉ nhận hàng *<input name="shipping_address" id="shippingAddress" required minlength="5" maxlength="255" autocomplete="street-address"></label>
+        <label>Số điện thoại<input name="phone" id="phone" readonly></label>
+        <label>Email<input type="email" name="email" id="email" readonly></label>
+        <label>Ghi chú<input name="note" id="note" maxlength="500"></label>
+        <div class="cod-label"><input type="radio" checked disabled><span>Thanh toán tiền mặt khi nhận hàng (COD)</span></div>
       </form>
     </section>
-    <aside class="order-summary"><h2>Order Summary</h2><div id="checkoutItems"></div><button class="place-order" id="placeOrder" type="button">Place Order</button></aside>
+    <aside class="order-summary"><h2>Đơn hàng</h2><div id="checkoutItems"><p>Đang tải giỏ hàng…</p></div><button class="place-order" id="placeOrder" type="submit" form="checkoutForm">Đặt hàng COD</button></aside>
   </main>
   <script src="../js/navigation.js"></script>
   <script>
-    const items = (() => { try { return JSON.parse(localStorage.getItem("t1shop-cart") || "[]"); } catch (_) { return []; } })();
-    const checkoutItems = document.getElementById("checkoutItems");
-    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    checkoutItems.innerHTML = (items.map(item => `<div class="summary-row"><span>${item.name} × ${item.quantity}</span><strong>$${item.price * item.quantity}</strong></div>`).join("") || '<div class="summary-row"><span>Cart is empty</span></div>') +
-      `<div class="summary-row"><span>Shipping</span><strong>Free</strong></div><div class="summary-row"><strong>Total</strong><strong>$${subtotal}</strong></div>` +
-      '<label style="display:flex;gap:8px;margin-top:16px"><input type="radio" name="payment" checked> COD</label><label style="display:flex;gap:8px;margin-top:8px"><input type="radio" name="payment"> Bank</label>';
-    document.getElementById("placeOrder").addEventListener("click", () => {
+    (async function () {
+      const auth = window.T1ShopAuth;
       const form = document.getElementById("checkoutForm");
-      if (!form.reportValidity()) return;
-      if (!items.length) { alert("Your cart is empty."); window.location.href="./Cart.html"; return; }
-      alert("Order placed successfully!");
-      localStorage.removeItem("t1shop-cart");
-      window.location.href="./myAccount.html#my-order";
-    });
+      const summary = document.getElementById("checkoutItems");
+      const message = document.getElementById("checkoutMessage");
+      const button = document.getElementById("placeOrder");
+      const money = (value) => new Intl.NumberFormat("vi-VN", {style:"currency",currency:"VND"}).format(Number(value)||0);
+      const esc = (value) => String(value ?? "").replace(/[&<>"']/g,(char)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+      let currentCart = null;
+      let submitting = false;
+
+      function showMessage(text, type) { message.className = "checkout-message checkout-" + type; message.textContent = text; }
+      function showErrorResponse(body) { const error=body?.error; if(Array.isArray(error?.details)) return error.details.map((item)=>item.message).join(" "); return error?.message || body?.detail || "Không thể hoàn tất đặt hàng."; }
+
+      async function initialize() {
+        if (!auth?.getAccessToken()) { window.location.assign("./Login.html?auth=required"); return; }
+        try {
+          const [userResponse, cartResponse] = await Promise.all([auth.fetch("/auth/me"), auth.fetch("/cart")]);
+          if (userResponse.status === 401 || cartResponse.status === 401) { window.location.assign("./Login.html?expired=1"); return; }
+          const user=await userResponse.json(); currentCart=await cartResponse.json();
+          if(!userResponse.ok) throw new Error(showErrorResponse(user));
+          if(!cartResponse.ok) throw new Error(showErrorResponse(currentCart));
+          document.getElementById("fullName").value=user.full_name || "";
+          document.getElementById("phone").value=user.phone || "";
+          document.getElementById("email").value=user.email || "";
+          if(!currentCart.items?.length){ summary.innerHTML='<p>Giỏ hàng đang trống.</p><a href="./Shop.html">Quay lại cửa hàng</a>'; button.disabled=true; return; }
+          summary.innerHTML=currentCart.items.map((item)=>`<div class="summary-row"><span>${esc(item.product_name)} × ${Number(item.quantity)}</span><strong>${money(item.line_total)}</strong></div>`).join("")+`<div class="summary-row"><span>Thanh toán</span><strong>COD</strong></div><div class="summary-row"><strong>Tổng cộng</strong><strong>${money(currentCart.total_amount)}</strong></div>`;
+        } catch(error) { showMessage(error.message || "Không kết nối được tới backend.","error"); button.disabled=true; }
+      }
+
+      form.addEventListener("submit", async function(event){
+        event.preventDefault();
+        if(submitting || !form.reportValidity()) return;
+        if(!currentCart?.items?.length){ showMessage("Giỏ hàng đang trống.","error"); return; }
+        submitting=true; button.disabled=true; button.textContent="Đang tạo đơn…";
+        const shippingAddress=document.getElementById("shippingAddress").value.trim();
+        try {
+          const response=await auth.fetch("/orders/cod",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shipping_address:shippingAddress})});
+          const result=await response.json();
+          if(!response.ok) throw new Error(showErrorResponse(result));
+          const order=result.order;
+          document.querySelector(".checkout-page").innerHTML=`<section class="success-panel"><h1>Đặt hàng thành công!</h1><h2>Mã đơn: ${esc(order.order_code)}</h2><p>Chúng tôi đã tiếp nhận đơn hàng COD. Bạn sẽ thanh toán khi nhận hàng.</p><p>Tổng tiền: <strong>${money(order.total_price)}</strong></p><p>Trạng thái: ${esc(order.status)}</p><a class="place-order" style="display:inline-flex;align-items:center;justify-content:center;padding:0 20px;text-decoration:none" href="./myAccount.html#my-order">Xem đơn hàng</a> <a href="./Shop.html">Tiếp tục mua sắm</a></section>`;
+        } catch(error) {
+          showMessage(error.message || "Đặt hàng chưa thành công. Hãy thử lại.","error");
+          submitting=false; button.disabled=false; button.textContent="Đặt hàng COD";
+        }
+      });
+      await initialize();
+    })();
   </script>
 </body>
 </html>
