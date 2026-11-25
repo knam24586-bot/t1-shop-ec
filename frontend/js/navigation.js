@@ -162,49 +162,21 @@
     });
   });
 
-  function getCart() {
-    try {
-      return JSON.parse(localStorage.getItem("t1shop-cart") || "[]");
-    } catch (_) {
-      return [];
-    }
-  }
-
-  function saveCart(cart) {
-    localStorage.setItem("t1shop-cart", JSON.stringify(cart));
-  }
-
-  function updateCartBadges() {
-    const count = getCart().reduce(function (sum, item) { return sum + (Number(item.quantity) || 0); }, 0);
+  function setCartBadges(count) {
     document.querySelectorAll(".cart-badge").forEach(function (badge) {
       badge.textContent = count;
       badge.style.display = count > 0 ? "inline-flex" : "none";
     });
   }
 
-  document.addEventListener("click", function (event) {
-    const target = event.target;
-    if (!target.closest) return;
-
-    const addButton = target.closest('[data-action="add-to-cart"], [data-action="add-cart"], .wishlist-add-cart-btn, .card-add-cart-bar');
-    if (addButton) {
-      const card = addButton.closest(".wishlist-card, .shop-card, .product-card");
-      const name = card
-        ? (card.getAttribute("data-product-name") || card.querySelector("h3")?.textContent || "T1 Shop Product")
-        : "T1 Shop Product";
-      const cart = getCart();
-      const existing = cart.find(function (item) { return item.name === name.trim(); });
-      if (existing) existing.quantity += 1;
-      else cart.push({ id: String(Date.now()), name: name.trim(), price: 960, quantity: 1 });
-      saveCart(cart);
-      updateCartBadges();
-    }
-
-    const buyButton = target.closest("#btnBuyNow, .promo-btn, [data-action='buy-now']");
-    if (buyButton) {
-      window.location.href = pages.checkout;
-    }
-  });
-
-  updateCartBadges();
+  window.T1ShopAuth.refreshCartBadge = async function () {
+    if (!getAccessToken()) { setCartBadges(0); return; }
+    try {
+      const response = await apiFetch("/cart");
+      if (!response.ok) { setCartBadges(0); return; }
+      const cart = await response.json();
+      setCartBadges(Number(cart.total_items) || 0);
+    } catch (_) { setCartBadges(0); }
+  };
+  window.T1ShopAuth.refreshCartBadge();
 })();
