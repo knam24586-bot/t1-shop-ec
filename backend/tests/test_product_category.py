@@ -8,10 +8,15 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, configure_mappers
 from sqlalchemy.pool import StaticPool
 
+from app.core.config import settings
+from app.core.tokens import create_access_token
 from app.db.session import Base, get_db
 from app.models.category import Category
 from app.models.product import Product
+from app.models.store import Store
+from app.models.user import User
 from app.models.variant import ProductVariant
+from app.models.vendor import Vendor
 from app.routers.categories import router as categories_router
 from app.routers.products import router as products_router
 from app.schemas.category import CategoryCreate, CategoryUpdate
@@ -24,6 +29,8 @@ class TestProductCategory(unittest.TestCase):
         configure_mappers()
 
     def setUp(self):
+        self._orig_secret = settings.JWT_SECRET_KEY
+        settings.JWT_SECRET_KEY = "test-jwt-secret-key-at-least-32-characters-long"
         self.engine = create_engine(
             "sqlite:///:memory:",
             connect_args={"check_same_thread": False},
@@ -31,6 +38,37 @@ class TestProductCategory(unittest.TestCase):
         )
         Base.metadata.create_all(self.engine)
         self.db = Session(self.engine)
+
+        vendor = Vendor(name="Test Vendor", email="cat-vendor@example.com")
+        self.db.add(vendor)
+        self.db.flush()
+        self.store = Store(vendor_id=vendor.id, name="Test Store", email="cat-store@example.com", status="Active")
+        self.db.add(self.store)
+        self.db.flush()
+
+        self.admin_user = User(
+            full_name="Admin",
+            email="admin-cat@example.com",
+            password_hash="hash",
+            role="ADMIN",
+            status="Active",
+        )
+        self.vendor_user = User(
+            full_name="Vendor",
+            email="vendor-cat@example.com",
+            password_hash="hash",
+            role="VENDOR",
+            status="Active",
+            store_id=self.store.id,
+        )
+        self.customer_user = User(
+            full_name="Customer",
+            email="customer-cat@example.com",
+            password_hash="hash",
+            role="CUSTOMER",
+            status="Active",
+        )
+        self.db.add_all([self.admin_user, self.vendor_user, self.customer_user])
 
         self.active_category = Category(
             name="Fashion", slug="fashion", status="Active"
@@ -50,7 +88,7 @@ class TestProductCategory(unittest.TestCase):
             rating=Decimal("4.5"),
             stock=10,
             status="Published",
-            store_id=1,
+            store_id=self.store.id,
         )
         self.draft = Product(
             category_id=self.active_category.id,
@@ -86,10 +124,15 @@ class TestProductCategory(unittest.TestCase):
         app.dependency_overrides[get_db] = override_get_db
         self.client = TestClient(app)
 
+    def _auth_headers(self, user: User) -> dict[str, str]:
+        token, _ = create_access_token(user)
+        return {"Authorization": f"Bearer {token}"}
+
     def tearDown(self):
         self.db.close()
         Base.metadata.drop_all(self.engine)
         self.engine.dispose()
+        settings.JWT_SECRET_KEY = self._orig_secret
 
     def test_category_model_and_slug_are_persisted(self):
         category = self.db.get(Category, self.active_category.id)
@@ -119,23 +162,30 @@ class TestProductCategory(unittest.TestCase):
         self.assertEqual(public_response.status_code, 200)
         self.assertEqual(len(public_response.json()), 2)
 
+        unauthenticated = self.client.post(
+            "/api/categories",
+            json={"name": "Accessories", "slug": "accessories"},
+        )
+        self.assertEqual(unauthenticated.status_code, 401)
+
         denied = self.client.post(
             "/api/categories",
             json={"name": "Accessories", "slug": "accessories"},
+            headers=self._auth_headers(self.customer_user),
         )
         self.assertEqual(denied.status_code, 403)
 
         created = self.client.post(
             "/api/categories",
             json={"name": "Accessories", "slug": "accessories"},
-            headers={"X-Admin-Role": "admin"},
+            headers=self._auth_headers(self.admin_user),
         )
         self.assertEqual(created.status_code, 201)
         self.assertEqual(created.json()["slug"], "accessories")
 
     def test_category_update_and_disable(self):
         category_id = self.active_category.id
-        headers = {"X-Admin-Role": "admin"}
+        headers = self._auth_headers(self.admin_user)
 
         updated = self.client.put(
             f"/api/categories/{category_id}",
@@ -156,7 +206,7 @@ class TestProductCategory(unittest.TestCase):
         response = self.client.put(
             f"/api/categories/{self.active_category.id}",
             json={"parent_id": self.active_category.id},
-            headers={"X-Admin-Role": "admin"},
+            headers=self._auth_headers(self.admin_user),
         )
         self.assertEqual(response.status_code, 400)
 
@@ -242,7 +292,7 @@ class TestProductCategory(unittest.TestCase):
         self.assertEqual(valid.json()["total"], 1)
 
     def test_vendor_can_create_and_update_only_own_store_product(self):
-        headers = {"X-Role": "VENDOR", "X-Store-Id": "1"}
+        headers = self._auth_headers(self.vendor_user)
         created = self.client.post(
             "/api/products",
             json={
@@ -250,16 +300,16 @@ class TestProductCategory(unittest.TestCase):
                 "name": "Vendor Jacket",
                 "slug": "vendor-jacket",
                 "price": "150.00",
-                "store_id": 1,
+                "store_id": self.store.id,
             },
             headers=headers,
         )
         self.assertEqual(created.status_code, 201)
-        self.assertEqual(created.json()["store_id"], 1)
+        self.assertEqual(created.json()["store_id"], self.store.id)
 
         denied = self.client.patch(
             f"/api/products/{self.published.id}",
-            json={"store_id": 2},
+            json={"store_id": self.store.id + 1},
             headers=headers,
         )
         self.assertEqual(denied.status_code, 403)

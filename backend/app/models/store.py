@@ -1,42 +1,22 @@
-
-"""Model cho cửa hàng (Store) của nhà cung cấp/Vendor."""
-
-"""Model cho cửa hàng của nhà cung cấp."""
-
+"""Model cho cửa hàng của một nhà cung cấp."""
 from __future__ import annotations
 
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-
-from sqlalchemy import DateTime, ForeignKey, Integer, String, func
-
 from sqlalchemy import DateTime, ForeignKey, String, UniqueConstraint, func
-
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.session import Base
 
 if TYPE_CHECKING:
-
-    from app.models.user import User
-
     from app.models.vendor import Vendor
-
 
 
 class Store(Base):
     __tablename__ = "stores"
-
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(150), nullable=False)
-    vendor_id: Mapped[int | None] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE", onupdate="CASCADE"),
-        nullable=True,
-        index=True,
-    )    __table_args__ = (
-        UniqueConstraint("vendor_id", "name", name="uq_stores_vendor_name"),
+    __table_args__ = (
+        UniqueConstraint("vendor_id", "name", name="uk_stores_vendor_name"),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -46,19 +26,14 @@ class Store(Base):
         index=True,
     )
     name: Mapped[str] = mapped_column(String(150), nullable=False)
-
     email: Mapped[str | None] = mapped_column(String(255), nullable=True)
     phone: Mapped[str | None] = mapped_column(String(30), nullable=True)
     address: Mapped[str | None] = mapped_column(String(255), nullable=True)
     status: Mapped[str] = mapped_column(
         String(30), nullable=False, default="Active", server_default="Active"
-)
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )
 
-
-    vendor: Mapped[User | None] = relationship("User")
-
-    vendor: Mapped[Vendor] = relationship(back_populates="stores")
-
+    vendor: Mapped[Vendor] = relationship("Vendor", back_populates="stores")

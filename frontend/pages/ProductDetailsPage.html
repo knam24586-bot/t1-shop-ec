@@ -774,7 +774,7 @@
             var qtyMinus = document.getElementById("qtyMinus");
             var qtyPlus = document.getElementById("qtyPlus");
             var qtyValue = document.getElementById("qtyValue");
-            var currentQty = 2;
+            var currentQty = 1;
 
             if (qtyMinus && qtyPlus && qtyValue) {
                 qtyMinus.addEventListener("click", function () {
@@ -808,6 +808,7 @@
             /* 7. Buy Now Button Click */
             var btnBuy = document.getElementById("btnBuyNow");
             if (btnBuy) {
+<<<<<<< HEAD
                 btnBuy.addEventListener("click", function (e) {
                     e.preventDefault();
                     var isVi = document.documentElement.lang === "vi";
@@ -844,6 +845,10 @@
                     });
 
                     window.location.href = "./Cart.html";
+=======
+                btnBuy.addEventListener("click", function () {
+                    if (window.addCurrentDetailsProductToCart) window.addCurrentDetailsProductToCart(currentQty);
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
                 });
             }
 
@@ -1060,6 +1065,7 @@
     <!-- Global Search Bar & Live Autocomplete -->
     <script src="../js/search-bar.js"></script>
     <script src="../js/navigation.js"></script>
+    <script src="../js/product-details.js"></script>
 </body>
 
 </html>

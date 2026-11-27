@@ -274,8 +274,8 @@
   // Khởi tạo trang Shop
   function initShopPage() {
     // State quản lý trang Shop
-    let allProducts = [...MOCK_PRODUCTS];
-    let filteredProducts = [...MOCK_PRODUCTS];
+    let allProducts = [];
+    let filteredProducts = [];
     let currentPage = 1;
     const pageSize = 8; // 8 sản phẩm / trang -> Tạo ra 3 trang để demo phân trang rõ ràng
     let currentCategory = "all";
@@ -347,6 +347,35 @@
       }, 2500);
     }
 
+    async function addProductToCart(product, quantity) {
+      const isVi = document.documentElement.lang === "vi";
+      if (!product.variantId) {
+        showToast(isVi ? "Sản phẩm chưa có biến thể để bán." : "This product has no purchasable variant.");
+        return;
+      }
+      if (!window.T1ShopAuth || !window.T1ShopAuth.getAccessToken()) {
+        window.location.assign("./Login.html?auth=required");
+        return;
+      }
+      try {
+        const response = await window.T1ShopAuth.fetch("/cart/items", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ variant_id: Number(product.variantId), quantity: Number(quantity) || 1 })
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error?.message || result.detail || "Không thể thêm vào giỏ hàng.");
+        document.querySelectorAll(".cart-badge").forEach((badge) => {
+          badge.textContent = result.cart.total_items;
+          badge.style.display = result.cart.total_items > 0 ? "inline-flex" : "none";
+        });
+        showToast(isVi ? `Đã thêm ${product.name} vào giỏ hàng.` : `Added ${product.name} to your cart.`);
+        closeProductDetails();
+      } catch (error) {
+        showToast(error.message || (isVi ? "Không thể kết nối tới giỏ hàng." : "Could not connect to the cart."));
+      }
+    }
+
     // Xử lý fallback cho ảnh lỗi
     function setupImageFallback(img) {
       if (!img) return;
@@ -379,30 +408,38 @@
     // Thử kết nối API backend nếu server đang chạy (không chặn UI nếu offline)
     async function tryFetchBackendProducts() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/products", { method: "GET" });
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            allProducts = data.map((item, idx) => ({
+        const api = window.T1ShopAuth;
+        const res = await (api ? api.fetch("/products") : fetch("http://127.0.0.1:8000/api/products"));
+        if (!res.ok) throw new Error("Không thể tải sản phẩm từ máy chủ.");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          allProducts = data.map((item, idx) => {
+            const variants = Array.isArray(item.variants) ? item.variants : [];
+            const variant = variants.find((entry) => Number(entry.stock) > 0) || variants[0] || null;
+            return {
               id: item.id || idx + 1,
+              variantId: variant ? variant.id : null,
               name: item.name || "Sản phẩm",
-              category: "electronics",
+              category: item.category?.slug || "all",
               price: Number(item.price) || 100,
               oldPrice: item.old_price ? Number(item.old_price) : null,
               discount: item.discount || null,
-              badge: item.status || null,
+              badge: null,
               badgeType: "sale",
-              rating: item.rating ? Number(item.rating) : 5.0,
+              rating: item.rating ? Number(item.rating) : 0,
               reviewsCount: 45,
               image: item.image_url || `../assets/images/products/Frame 60${(idx % 6) + 5}.png`,
-              stock: "In Stock",
+              stock: variant ? Number(variant.stock) : Number(item.stock) || 0,
               description: item.description || "Sản phẩm chất lượng cao chính hãng từ T1 Shop."
-            }));
-            applyFilterAndSort();
-          }
+            };
+          });
+          applyFilterAndSort();
         }
-      } catch (e) {
-        // Backend không mở -> tự động dùng MOCK_PRODUCTS mượt mà
+      } catch (error) {
+        allProducts = [];
+        filteredProducts = [];
+        render();
+        showToast("Không kết nối được API sản phẩm. Hãy kiểm tra backend.");
       }
     }
 
@@ -723,7 +760,13 @@
         modalBadge.style.display = "none";
       }
 
-      modalStock.textContent = isVi ? "Còn hàng" : "In Stock";
+      modalStock.textContent = Number(product.stock) > 0
+        ? (isVi ? `Còn ${product.stock} sản phẩm` : `${product.stock} in stock`)
+        : (isVi ? "Hết hàng" : "Out of stock");
+      if (modalAddCartBtn) {
+        modalAddCartBtn.dataset.variantId = product.variantId || "";
+        modalAddCartBtn.disabled = !product.variantId || Number(product.stock) < 1;
+      }
       modalDesc.textContent = isVi
         ? `Sản phẩm ${product.name} chính hãng chất lượng cao, thiết kế đón đầu xu hướng với độ bền vượt trội. Được bảo hành chính hãng 12 tháng tại hệ thống T1 Shop.`
         : `Authentic ${product.name} designed with premium quality and performance. Backed by 100% genuine warranty from T1 Shop.`;
@@ -819,6 +862,7 @@
         if (addCartBtn) {
           e.preventDefault();
           e.stopPropagation();
+<<<<<<< HEAD
           if (window.T1Shop) {
             window.T1Shop.addToCart({
               id: product.id,
@@ -831,6 +875,9 @@
             const isVi = document.documentElement.lang === "vi";
             showToast(isVi ? `Đã thêm "${product.name}" vào giỏ hàng!` : `Added "${product.name}" to cart!`);
           }
+=======
+          addProductToCart(product, 1);
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
           return;
         }
 
@@ -1097,6 +1144,7 @@
 
     if (modalAddCartBtn) {
       modalAddCartBtn.addEventListener("click", () => {
+<<<<<<< HEAD
         const title = modalTitle.textContent.trim();
         const qty = modalQtyInput ? Math.max(1, parseInt(modalQtyInput.value, 10) || 1) : 1;
         const price = modalPrice ? parseFloat(modalPrice.textContent.replace(/[^0-9.]/g, "")) : 120;
@@ -1116,6 +1164,11 @@
           showToast(isVi ? `Đã thêm ${qty}x "${title}" vào giỏ hàng!` : `Added ${qty}x "${title}" to cart!`);
           closeProductDetails();
         }
+=======
+        const product = allProducts.find((item) => String(item.variantId) === modalAddCartBtn.dataset.variantId);
+        const quantity = Math.max(1, Number(modalQtyInput?.value) || 1);
+        if (product) addProductToCart(product, quantity);
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
       });
     }
 

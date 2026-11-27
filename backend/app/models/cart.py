@@ -24,8 +24,6 @@ class Cart(Base):
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False,
-        unique=True,
-        index=True,
     )
     status: Mapped[str] = mapped_column(
         String(30), nullable=False, default="Active", server_default="Active"

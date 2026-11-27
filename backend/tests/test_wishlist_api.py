@@ -20,7 +20,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, configure_mappers
 from sqlalchemy.pool import StaticPool
 
+from app.core.config import settings
 from app.core.deps import get_current_user
+from app.core.tokens import create_access_token
 from app.db.session import Base, get_db
 from app.models.category import Category
 from app.models.product import Product
@@ -42,6 +44,8 @@ class TestWishlistAPIs(unittest.TestCase):
         configure_mappers()
 
     def setUp(self):
+        self._orig_secret = settings.JWT_SECRET_KEY
+        settings.JWT_SECRET_KEY = "test-jwt-secret-key-at-least-32-characters-long"
         # Tạo DB SQLite in-memory với StaticPool để chia sẻ session
         self.engine = create_engine(
             "sqlite:///:memory:",
@@ -117,24 +121,29 @@ class TestWishlistAPIs(unittest.TestCase):
         self.app.dependency_overrides[get_db] = override_get_db
         self.client = TestClient(self.app)
 
+    def _auth_headers(self, user: User) -> dict[str, str]:
+        token, _ = create_access_token(user)
+        return {"Authorization": f"Bearer {token}"}
+
     def tearDown(self):
         self.db.close()
         Base.metadata.drop_all(self.engine)
         self.engine.dispose()
+        settings.JWT_SECRET_KEY = self._orig_secret
 
     # -------------------------------------------------------------
     # 1. TIÊU CHÍ: Xem danh sách yêu thích (List Wishlist)
     # -------------------------------------------------------------
     def test_get_empty_wishlist(self):
         """User mới chưa thêm sản phẩm -> Wishlist trống."""
-        response = self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_a.id)})
+        response = self.client.get("/api/wishlist", headers=self._auth_headers(self.user_a))
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertIsInstance(data, list)
         self.assertEqual(len(data), 0)
 
         # Định dạng summary
-        resp_sum = self.client.get("/api/wishlist/summary", headers={"X-User-Id": str(self.user_a.id)})
+        resp_sum = self.client.get("/api/wishlist/summary", headers=self._auth_headers(self.user_a))
         self.assertEqual(resp_sum.status_code, 200)
         sum_data = resp_sum.json()
         self.assertEqual(sum_data["total_items"], 0)
@@ -146,7 +155,7 @@ class TestWishlistAPIs(unittest.TestCase):
     def test_add_to_wishlist_success(self):
         """Thêm sản phẩm hợp lệ vào wishlist thành công."""
         payload = {"product_id": self.product_1.id}
-        response = self.client.post("/api/wishlist", json=payload, headers={"X-User-Id": str(self.user_a.id)})
+        response = self.client.post("/api/wishlist", json=payload, headers=self._auth_headers(self.user_a))
         self.assertEqual(response.status_code, 201)
         data = response.json()
         self.assertEqual(data["message"], "Thêm sản phẩm vào danh sách yêu thích thành công.")
@@ -159,14 +168,14 @@ class TestWishlistAPIs(unittest.TestCase):
     def test_add_to_wishlist_alias_endpoint(self):
         """Thêm sản phẩm qua endpoint alias /wishlist/items hoạt động tương tự."""
         payload = {"product_id": self.product_2.id}
-        response = self.client.post("/api/wishlist/items", json=payload, headers={"X-User-Id": str(self.user_a.id)})
+        response = self.client.post("/api/wishlist/items", json=payload, headers=self._auth_headers(self.user_a))
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json()["item"]["product_id"], self.product_2.id)
 
     def test_add_nonexistent_product(self):
         """Thêm sản phẩm không tồn tại -> 404 Not Found."""
         payload = {"product_id": 99999}
-        response = self.client.post("/api/wishlist", json=payload, headers={"X-User-Id": str(self.user_a.id)})
+        response = self.client.post("/api/wishlist", json=payload, headers=self._auth_headers(self.user_a))
         self.assertEqual(response.status_code, 404)
         self.assertIn("không tồn tại", response.json()["detail"])
 
@@ -177,16 +186,16 @@ class TestWishlistAPIs(unittest.TestCase):
         """Thêm sản phẩm đã có trong wishlist -> 400 Bad Request."""
         payload = {"product_id": self.product_1.id}
         # Lần 1: Thành công
-        res1 = self.client.post("/api/wishlist", json=payload, headers={"X-User-Id": str(self.user_a.id)})
+        res1 = self.client.post("/api/wishlist", json=payload, headers=self._auth_headers(self.user_a))
         self.assertEqual(res1.status_code, 201)
 
         # Lần 2: Trùng -> Báo lỗi 400
-        res2 = self.client.post("/api/wishlist", json=payload, headers={"X-User-Id": str(self.user_a.id)})
+        res2 = self.client.post("/api/wishlist", json=payload, headers=self._auth_headers(self.user_a))
         self.assertEqual(res2.status_code, 400)
         self.assertIn("đã có trong danh sách yêu thích", res2.json()["detail"])
 
         # Danh sách chỉ có duy nhất 1 mục
-        res_list = self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_a.id)})
+        res_list = self.client.get("/api/wishlist", headers=self._auth_headers(self.user_a))
         self.assertEqual(len(res_list.json()), 1)
 
     def test_db_unique_constraint(self):
@@ -208,15 +217,15 @@ class TestWishlistAPIs(unittest.TestCase):
     def test_user_can_only_view_own_wishlist(self):
         """User A và User B chỉ nhìn thấy sản phẩm trong wishlist của chính mình."""
         # User A thêm Product 1 và Product 2
-        self.client.post("/api/wishlist", json={"product_id": self.product_1.id}, headers={"X-User-Id": str(self.user_a.id)})
-        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers={"X-User-Id": str(self.user_a.id)})
+        self.client.post("/api/wishlist", json={"product_id": self.product_1.id}, headers=self._auth_headers(self.user_a))
+        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers=self._auth_headers(self.user_a))
 
         # User B thêm Product 2 và Product 3
-        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers={"X-User-Id": str(self.user_b.id)})
-        self.client.post("/api/wishlist", json={"product_id": self.product_3.id}, headers={"X-User-Id": str(self.user_b.id)})
+        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers=self._auth_headers(self.user_b))
+        self.client.post("/api/wishlist", json={"product_id": self.product_3.id}, headers=self._auth_headers(self.user_b))
 
         # User A xem wishlist -> chỉ có 2 sản phẩm (1 và 2)
-        res_a = self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_a.id)})
+        res_a = self.client.get("/api/wishlist", headers=self._auth_headers(self.user_a))
         self.assertEqual(res_a.status_code, 200)
         items_a = res_a.json()
         self.assertEqual(len(items_a), 2)
@@ -226,7 +235,7 @@ class TestWishlistAPIs(unittest.TestCase):
             self.assertEqual(it["user_id"], self.user_a.id)
 
         # User B xem wishlist -> chỉ có 2 sản phẩm (2 và 3)
-        res_b = self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_b.id)})
+        res_b = self.client.get("/api/wishlist", headers=self._auth_headers(self.user_b))
         self.assertEqual(res_b.status_code, 200)
         items_b = res_b.json()
         self.assertEqual(len(items_b), 2)
@@ -239,23 +248,23 @@ class TestWishlistAPIs(unittest.TestCase):
         """User A không thể xóa sản phẩm trong wishlist của User B."""
         # User B thêm Product 3
         res_add_b = self.client.post(
-            "/api/wishlist", json={"product_id": self.product_3.id}, headers={"X-User-Id": str(self.user_b.id)}
+            "/api/wishlist", json={"product_id": self.product_3.id}, headers=self._auth_headers(self.user_b)
         )
         item_b_id = res_add_b.json()["item"]["id"]
 
         # User A cố tình gửi request xóa Product 3 (hoặc item_b_id) với tư cách User A
         res_del_by_prod = self.client.delete(
-            f"/api/wishlist/{self.product_3.id}", headers={"X-User-Id": str(self.user_a.id)}
+            f"/api/wishlist/{self.product_3.id}", headers=self._auth_headers(self.user_a)
         )
         self.assertIn(res_del_by_prod.status_code, [403, 404])
 
         res_del_by_id = self.client.delete(
-            f"/api/wishlist/items/{item_b_id}", headers={"X-User-Id": str(self.user_a.id)}
+            f"/api/wishlist/items/{item_b_id}", headers=self._auth_headers(self.user_a)
         )
         self.assertIn(res_del_by_id.status_code, [403, 404])
 
         # Kiểm tra wishlist của User B vẫn còn nguyên vẹn Product 3
-        res_b = self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_b.id)})
+        res_b = self.client.get("/api/wishlist", headers=self._auth_headers(self.user_b))
         self.assertEqual(len(res_b.json()), 1)
         self.assertEqual(res_b.json()[0]["product_id"], self.product_3.id)
 
@@ -265,62 +274,62 @@ class TestWishlistAPIs(unittest.TestCase):
     def test_delete_own_wishlist_item_success(self):
         """User A xóa sản phẩm trong wishlist của chính mình thành công."""
         # User A thêm Product 1 và Product 2
-        self.client.post("/api/wishlist", json={"product_id": self.product_1.id}, headers={"X-User-Id": str(self.user_a.id)})
-        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers={"X-User-Id": str(self.user_a.id)})
+        self.client.post("/api/wishlist", json={"product_id": self.product_1.id}, headers=self._auth_headers(self.user_a))
+        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers=self._auth_headers(self.user_a))
 
         # User A xóa Product 1
-        res_del = self.client.delete(f"/api/wishlist/{self.product_1.id}", headers={"X-User-Id": str(self.user_a.id)})
+        res_del = self.client.delete(f"/api/wishlist/{self.product_1.id}", headers=self._auth_headers(self.user_a))
         self.assertEqual(res_del.status_code, 200)
 
         # Danh sách của User A chỉ còn lại Product 2
-        res_list = self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_a.id)})
+        res_list = self.client.get("/api/wishlist", headers=self._auth_headers(self.user_a))
         self.assertEqual(len(res_list.json()), 1)
         self.assertEqual(res_list.json()[0]["product_id"], self.product_2.id)
 
     def test_delete_by_product_route_and_item_route(self):
         """Kiểm tra các đường dẫn xóa chuyên biệt (/products/{id} và /items/{id})."""
         # User A thêm Product 1 và Product 2
-        res1 = self.client.post("/api/wishlist", json={"product_id": self.product_1.id}, headers={"X-User-Id": str(self.user_a.id)})
-        res2 = self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers={"X-User-Id": str(self.user_a.id)})
+        res1 = self.client.post("/api/wishlist", json={"product_id": self.product_1.id}, headers=self._auth_headers(self.user_a))
+        res2 = self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers=self._auth_headers(self.user_a))
         item_2_id = res2.json()["item"]["id"]
 
         # Xóa Product 1 qua /products/{product_id}
-        del1 = self.client.delete(f"/api/wishlist/products/{self.product_1.id}", headers={"X-User-Id": str(self.user_a.id)})
+        del1 = self.client.delete(f"/api/wishlist/products/{self.product_1.id}", headers=self._auth_headers(self.user_a))
         self.assertEqual(del1.status_code, 200)
 
         # Xóa Product 2 qua /items/{item_id}
-        del2 = self.client.delete(f"/api/wishlist/items/{item_2_id}", headers={"X-User-Id": str(self.user_a.id)})
+        del2 = self.client.delete(f"/api/wishlist/items/{item_2_id}", headers=self._auth_headers(self.user_a))
         self.assertEqual(del2.status_code, 200)
 
         # Wishlist giờ trống
-        res_empty = self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_a.id)})
+        res_empty = self.client.get("/api/wishlist", headers=self._auth_headers(self.user_a))
         self.assertEqual(len(res_empty.json()), 0)
 
     def test_clear_wishlist(self):
         """Xóa toàn bộ wishlist của user."""
-        self.client.post("/api/wishlist", json={"product_id": self.product_1.id}, headers={"X-User-Id": str(self.user_a.id)})
-        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers={"X-User-Id": str(self.user_a.id)})
+        self.client.post("/api/wishlist", json={"product_id": self.product_1.id}, headers=self._auth_headers(self.user_a))
+        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers=self._auth_headers(self.user_a))
 
         # User B cũng có sản phẩm
-        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers={"X-User-Id": str(self.user_b.id)})
+        self.client.post("/api/wishlist", json={"product_id": self.product_2.id}, headers=self._auth_headers(self.user_b))
 
         # User A xóa toàn bộ
-        res_clear = self.client.delete("/api/wishlist/clear", headers={"X-User-Id": str(self.user_a.id)})
+        res_clear = self.client.delete("/api/wishlist/clear", headers=self._auth_headers(self.user_a))
         self.assertEqual(res_clear.status_code, 200)
         self.assertEqual(res_clear.json()["deleted_count"], 2)
 
         # Wishlist của User A trống, của User B vẫn còn
-        self.assertEqual(len(self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_a.id)}).json()), 0)
-        self.assertEqual(len(self.client.get("/api/wishlist", headers={"X-User-Id": str(self.user_b.id)}).json()), 1)
+        self.assertEqual(len(self.client.get("/api/wishlist", headers=self._auth_headers(self.user_a)).json()), 0)
+        self.assertEqual(len(self.client.get("/api/wishlist", headers=self._auth_headers(self.user_b)).json()), 1)
 
     # -------------------------------------------------------------
     # 6. TIÊU CHÍ: Xác thực User (Authentication Header)
     # -------------------------------------------------------------
     def test_unauthorized_user(self):
-        """User không tồn tại trong hệ thống -> 401 Unauthorized."""
+        """Thiếu JWT hoặc token không hợp lệ -> 401 Unauthorized."""
         response = self.client.get("/api/wishlist", headers={"X-User-Id": "99999"})
         self.assertEqual(response.status_code, 401)
-        self.assertIn("Không tìm thấy người dùng", response.json()["detail"])
+        self.assertIn("đăng nhập", response.json()["detail"].lower())
 
 
 if __name__ == "__main__":

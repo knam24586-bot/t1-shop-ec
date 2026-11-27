@@ -123,7 +123,12 @@
         <h1 class="auth-title">Log in to T1 Shop</h1>
         <p class="auth-subtitle">Enter your details below</p>
 
+<<<<<<< HEAD
         <form id="loginForm" onsubmit="event.preventDefault(); (function(){ var emailInput = document.getElementById('loginEmail'); var email = emailInput ? emailInput.value.trim() : 'user@example.com'; if (window.T1Shop) { window.T1Shop.setLogin({ email: email, name: email.split('@')[0] }); } else { localStorage.setItem('t1shop-logged-in', 'true'); localStorage.setItem('t1shop-user', JSON.stringify({ email: email, name: email.split('@')[0] })); } alert('Đăng nhập thành công!'); var returnUrl = sessionStorage.getItem('t1shop-return-url'); if (returnUrl) { sessionStorage.removeItem('t1shop-return-url'); window.location.href = returnUrl; } else { window.location.href = './AccountDropdownWithAccount.html'; } })();">
+=======
+        <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+        <form id="loginForm">
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
           <input
             class="auth-input input-email"
             type="text"
@@ -139,6 +144,7 @@
             id="loginPassword"
             placeholder="Password"
             required
+            maxlength="128"
             autocomplete="current-password"
           />
 
@@ -393,6 +399,7 @@
   <!-- Global Search Bar & Live Autocomplete -->
   <script src="../js/search-bar.js"></script>
   <script src="../js/navigation.js"></script>
+  <script src="../js/auth.js"></script>
 </body>
 
 </html>

@@ -240,47 +240,7 @@
     });
   }
 
-  // --- 5. GUEST VS LOGGED-IN DISPLAY & ROUTE PROTECTION ---
-  function checkProtectedPages() {
-    const isUserLoggedIn = isLoggedIn();
-    const currentPath = window.location.pathname.toLowerCase();
-    const isVi = document.documentElement.lang === "vi";
-
-    // Danh sách trang bắt buộc phải đăng nhập
-    const isWishlistPage = currentPath.endsWith("wishlist.html");
-    const isCartPage = currentPath.endsWith("cart.html");
-    const isCheckoutPage = currentPath.endsWith("checkout.html");
-    const isAccountPage = currentPath.endsWith("myaccount.html");
-    const isAccountDropdownPage = currentPath.endsWith("accountdropdownwithaccount.html");
-
-    if (!isUserLoggedIn) {
-      if (isWishlistPage) {
-        alert(isVi ? "Vui lòng đăng nhập để truy cập danh sách yêu thích!" : "Please log in to access your wishlist!");
-        try { sessionStorage.setItem("t1shop-return-url", pages.wishlist); } catch (_) {}
-        window.location.replace(pages.login);
-        return;
-      }
-      if (isCartPage) {
-        alert(isVi ? "Vui lòng đăng nhập để xem giỏ hàng của bạn!" : "Please log in to view your shopping cart!");
-        try { sessionStorage.setItem("t1shop-return-url", pages.cart); } catch (_) {}
-        window.location.replace(pages.login);
-        return;
-      }
-      if (isCheckoutPage) {
-        alert(isVi ? "Vui lòng đăng nhập để tiến hành thanh toán!" : "Please log in to proceed to checkout!");
-        try { sessionStorage.setItem("t1shop-return-url", pages.checkout); } catch (_) {}
-        window.location.replace(pages.login);
-        return;
-      }
-      if (isAccountPage || isAccountDropdownPage) {
-        alert(isVi ? "Vui lòng đăng nhập để quản lý tài khoản!" : "Please log in to manage your account!");
-        try { sessionStorage.setItem("t1shop-return-url", pages.account); } catch (_) {}
-        window.location.replace(pages.login);
-        return;
-      }
-    }
-  }
-
+  // --- 5. GUEST VS LOGGED-IN DISPLAY ---
   function adjustUserAccountHeader() {
     const isUserLoggedIn = isLoggedIn();
     const currentPath = window.location.pathname.toLowerCase();
@@ -297,160 +257,104 @@
     }
   }
 
-  // --- 6. GLOBAL CLICK DISPATCHER (CAPTURE PHASE: CHẶN KHÁCH VÃNG LAI) ---
-  document.addEventListener(
-    "click",
-    function (event) {
-      const target = event.target;
-      if (!target.closest) return;
-      const isVi = document.documentElement.lang === "vi";
+  // --- 6. GLOBAL CLICK DISPATCHER ---
+  document.addEventListener("click", function (event) {
+    const target = event.target;
+    if (!target.closest) return;
 
-      // 1. Chặn bấm thả tim / Wishlist nếu chưa đăng nhập
-      const heartBtn = target.closest(
-        '[data-action="wishlist"], [data-action="toggle-wishlist"], .card-action-btn[aria-label="Yêu thích"], .product-action-btn[aria-label="Yêu thích"], #btnDetailsWishlist, #modalFavBtn, .product-modal__fav-btn'
-      );
-      if (heartBtn) {
-        if (!isLoggedIn()) {
-          event.preventDefault();
-          event.stopPropagation();
-          event.stopImmediatePropagation();
-          alert(isVi ? "Vui lòng đăng nhập để lưu sản phẩm vào danh sách yêu thích!" : "Please log in to save items to your wishlist!");
-          try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
-          window.location.href = pages.login;
-          return;
-        }
-      }
+    // A. Nút Thêm vào giỏ hàng
+    const addButton = target.closest(
+      '[data-action="add-to-cart"], [data-action="add-cart"], .product-card__add-cart, .shop-card__add-cart, .card-add-cart-bar, .wishlist-add-cart-btn'
+    );
+    if (addButton) {
+      event.preventDefault();
+      event.stopPropagation();
 
-      // 2. Chặn bấm vào icon hoặc link Wishlist trên Header/Footer/Trang nếu chưa đăng nhập
-      const wishlistLink = target.closest(
-        'a[href*="WishList.html"], a[href="#wishlist"], a.icon-link[aria-label="Wishlist"], a[aria-label="Wishlist"]'
-      );
-      if (wishlistLink) {
-        if (!isLoggedIn()) {
-          event.preventDefault();
-          event.stopPropagation();
-          event.stopImmediatePropagation();
-          alert(isVi ? "Vui lòng đăng nhập để truy cập danh sách yêu thích!" : "Please log in to access your wishlist!");
-          try { sessionStorage.setItem("t1shop-return-url", pages.wishlist); } catch (_) {}
-          window.location.href = pages.login;
-          return;
-        }
-      }
+      if (!requireLogin()) return;
 
-      // 3. Chặn bấm vào icon hoặc link Giỏ hàng trên Header/Footer nếu chưa đăng nhập
-      const cartLink = target.closest(
-        'a[href*="Cart.html"], a.cart-link, a.icon-link[aria-label="Giỏ hàng"], a.icon-link[aria-label="Cart"]'
-      );
-      if (cartLink) {
-        if (!isLoggedIn()) {
-          event.preventDefault();
-          event.stopPropagation();
-          event.stopImmediatePropagation();
-          alert(isVi ? "Vui lòng đăng nhập để xem giỏ hàng của bạn!" : "Please log in to view your shopping cart!");
-          try { sessionStorage.setItem("t1shop-return-url", pages.cart); } catch (_) {}
-          window.location.href = pages.login;
-          return;
-        }
-      }
+      const card = addButton.closest(".wishlist-card, .shop-card, .product-card, .product-card-wrap");
+      let name = "T1 Shop Product";
+      let price = 120;
+      let image = "../assets/images/products/Frame 611.png";
+      let id = String(Date.now());
 
-      // 4. Nút Thêm vào giỏ hàng
-      const addButton = target.closest(
-        '[data-action="add-to-cart"], [data-action="add-cart"], .product-card__add-cart, .shop-card__add-cart, .card-add-cart-bar, .wishlist-add-cart-btn'
-      );
-      if (addButton) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-
-        if (!requireLogin()) return;
-
-        const card = addButton.closest(".wishlist-card, .shop-card, .product-card, .product-card-wrap");
-        let name = "T1 Shop Product";
-        let price = 120;
-        let image = "../assets/images/products/Frame 611.png";
-        let id = String(Date.now());
-
-        if (card) {
-          const titleEl = card.querySelector("h3, .product-card__name, .shop-card__name");
-          if (titleEl) name = titleEl.textContent.trim();
-          const priceEl = card.querySelector(".product-card__price, .shop-card__price, .price");
-          if (priceEl) {
-            const num = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ""));
-            if (!isNaN(num) && num > 0) price = num;
-          }
-          const imgEl = card.querySelector("img");
-          if (imgEl && imgEl.src) image = imgEl.src;
-          if (card.getAttribute("data-id")) id = card.getAttribute("data-id");
-        }
-
-        addToCart({ id: id, name: name, price: price, image: image, quantity: 1 });
-        return;
-      }
-
-      // 5. Nút Mua ngay (Buy Now)
-      const buyButton = target.closest("#btnBuyNow, [data-action='buy-now']");
-      if (buyButton) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-
-        if (!requireLogin()) return;
-
-        const titleEl = document.getElementById("productTitle") || document.querySelector(".details-info__title");
-        const priceEl = document.getElementById("productPrice") || document.querySelector(".details-info__price");
-        const qtyInput = document.getElementById("qtyInput") || document.querySelector(".details-qty__input");
-        const imgEl = document.getElementById("mainProductImg") || document.querySelector(".details-gallery__main img");
-
-        const name = titleEl ? titleEl.textContent.trim() : "Havic HV G-92 Gamepad";
-        let price = 192;
+      if (card) {
+        const titleEl = card.querySelector("h3, .product-card__name, .shop-card__name");
+        if (titleEl) name = titleEl.textContent.trim();
+        const priceEl = card.querySelector(".product-card__price, .shop-card__price, .price");
         if (priceEl) {
           const num = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ""));
           if (!isNaN(num) && num > 0) price = num;
         }
-        const qty = qtyInput ? Math.max(1, parseInt(qtyInput.value, 10) || 1) : 1;
-        const image = imgEl ? imgEl.src : "../assets/images/products/Frame 611.png";
+        const imgEl = card.querySelector("img");
+        if (imgEl && imgEl.src) image = imgEl.src;
+        if (card.getAttribute("data-id")) id = card.getAttribute("data-id");
+      }
 
-        addToCart({
-          id: "gamepad-hv-g92",
-          name: name,
-          price: price,
-          image: image,
-          quantity: qty
-        });
+      addToCart({ id: id, name: name, price: price, image: image, quantity: 1 });
+      return;
+    }
 
-        window.location.href = pages.cart;
+    // B. Nút Mua ngay (Buy Now)
+    const buyButton = target.closest("#btnBuyNow, [data-action='buy-now']");
+    if (buyButton) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!requireLogin()) return;
+
+      // Đọc thông tin trên trang Product Details nếu có
+      const titleEl = document.getElementById("productTitle") || document.querySelector(".details-info__title");
+      const priceEl = document.getElementById("productPrice") || document.querySelector(".details-info__price");
+      const qtyInput = document.getElementById("qtyInput") || document.querySelector(".details-qty__input");
+      const imgEl = document.getElementById("mainProductImg") || document.querySelector(".details-gallery__main img");
+
+      const name = titleEl ? titleEl.textContent.trim() : "Havic HV G-92 Gamepad";
+      let price = 192;
+      if (priceEl) {
+        const num = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ""));
+        if (!isNaN(num) && num > 0) price = num;
+      }
+      const qty = qtyInput ? Math.max(1, parseInt(qtyInput.value, 10) || 1) : 1;
+      const image = imgEl ? imgEl.src : "../assets/images/products/Frame 611.png";
+
+      addToCart({
+        id: "gamepad-hv-g92",
+        name: name,
+        price: price,
+        image: image,
+        quantity: qty
+      });
+
+      // Chuyển hướng sang giỏ hàng / checkout
+      window.location.href = pages.cart;
+      return;
+    }
+
+    // C. Click Card Title / Thumbnail / Quickview -> Xem chi tiết sản phẩm
+    const qvBtn = target.closest('[data-action="quickview"]');
+    const cardTitle = target.closest(".product-card__name, .product-card h3");
+    const cardThumb = target.closest(".product-card__thumb");
+
+    if (qvBtn || cardTitle || (cardThumb && !target.closest("button"))) {
+      const card = (qvBtn || cardTitle || cardThumb).closest(".product-card");
+      if (card && !window.location.pathname.toLowerCase().endsWith("productdetailspage.html")) {
+        event.preventDefault();
+        const nameEl = card.querySelector("h3, .product-card__name");
+        const priceEl = card.querySelector(".product-card__price, .price");
+        const imgEl = card.querySelector("img");
+        const name = nameEl ? nameEl.textContent.trim() : "T1 Shop Product";
+        let price = "";
+        if (priceEl) {
+          const num = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ""));
+          if (!isNaN(num)) price = num;
+        }
+        const img = imgEl ? (imgEl.getAttribute("src") || imgEl.src) : "";
+        window.location.href = `${pages.details}?name=${encodeURIComponent(name)}&price=${price}&img=${encodeURIComponent(img)}`;
         return;
       }
-
-      // 6. Click Card Title / Thumbnail / Quickview -> Xem chi tiết sản phẩm
-      const qvBtn = target.closest('[data-action="quickview"]');
-      const cardTitle = target.closest(".product-card__name, .product-card h3");
-      const cardThumb = target.closest(".product-card__thumb");
-
-      if (qvBtn || cardTitle || (cardThumb && !target.closest("button"))) {
-        const card = (qvBtn || cardTitle || cardThumb).closest(".product-card");
-        if (card && !window.location.pathname.toLowerCase().endsWith("productdetailspage.html")) {
-          event.preventDefault();
-          const nameEl = card.querySelector("h3, .product-card__name");
-          const priceEl = card.querySelector(".product-card__price, .price");
-          const imgEl = card.querySelector("img");
-          const name = nameEl ? nameEl.textContent.trim() : "T1 Shop Product";
-          let price = "";
-          if (priceEl) {
-            const num = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ""));
-            if (!isNaN(num)) price = num;
-          }
-          const img = imgEl ? (imgEl.getAttribute("src") || imgEl.src) : "";
-          window.location.href = `${pages.details}?name=${encodeURIComponent(name)}&price=${price}&img=${encodeURIComponent(img)}`;
-          return;
-        }
-      }
-    },
-    true
-  );
-
-  // Khởi chạy kiểm tra bảo vệ trang ngay khi script tải
-  checkProtectedPages();
+    }
+  });
 
   // Khởi chạy khi DOM sẵn sàng
   function init() {

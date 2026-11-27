@@ -9,7 +9,7 @@ Cung cấp các API:
 from __future__ import annotations
 
 from typing import Any
-from fastapi import APIRouter, Depends, Query, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy.orm import Session
 
 from app.core.deps import get_current_user
@@ -155,8 +155,22 @@ def handle_payment_callback_get(
 )
 def get_transaction_webhook_logs(
     transaction_ref: str,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> list[PaymentWebhookLogResponse]:
+    payment = get_payment_by_transaction_ref(db, transaction_ref)
+    is_admin = current_user.role.strip().upper() == "ADMIN"
+    if not is_admin:
+        if payment is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Giao dịch không tồn tại.",
+            )
+        if payment.order is None or payment.order.customer_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Bạn không có quyền xem log giao dịch này.",
+            )
     logs = get_webhook_logs(db=db, transaction_ref=transaction_ref)
     return [PaymentWebhookLogResponse.model_validate(log) for log in logs]
 
@@ -177,11 +191,21 @@ def list_supported_gateways() -> dict[str, list[str]]:
 )
 def get_transaction_status(
     transaction_ref: str,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> dict[str, str]:
     payment = get_payment_by_transaction_ref(db, transaction_ref)
     if not payment:
-        return {"error": "Giao dịch không tồn tại"}
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Giao dịch không tồn tại.",
+        )
+    is_admin = current_user.role.strip().upper() == "ADMIN"
+    if not is_admin and (payment.order is None or payment.order.customer_id != current_user.id):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bạn không có quyền xem giao dịch này.",
+        )
     return {
         "transaction_reference": payment.transaction_reference or "",
         "method": payment.method,

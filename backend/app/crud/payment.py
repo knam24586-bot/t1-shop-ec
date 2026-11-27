@@ -42,7 +42,7 @@ def initiate_online_checkout(
     ip_address: str = "127.0.0.1",
 ) -> OnlineCheckoutResponse:
     """Khởi tạo yêu cầu thanh toán online cho đơn hàng:
-    - Kiểm tra đơn hàng hợp lệ, thuộc quyền sở hữu của user (X-User-Id).
+    - Kiểm tra đơn hàng hợp lệ, thuộc quyền sở hữu của user hiện tại.
     - Kiểm tra đơn chưa bị huỷ và chưa từng thanh toán thành công.
     - Kiểm tra cổng thanh toán online có hỗ trợ hay không.
     - Quản lý số lần thử (attempt_number tự tăng).

@@ -2,7 +2,7 @@
 from decimal import Decimal
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, File, Header, HTTPException, Query, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -25,8 +25,10 @@ from app.crud.product_image import (
     save_product_image,
 )
 from app.core.config import settings
+from app.core.deps import get_current_user
 from app.db.session import get_db
 from app.models.category import Category
+from app.models.user import User
 from app.schemas.product import (
     ProductCreate,
     ProductImageResponse,
@@ -41,21 +43,20 @@ IMAGE_CHUNK_SIZE = 64 * 1024
 
 
 def _role_context(
-    role: Annotated[str | None, Header(alias="X-Role")] = None,
-    store_id: Annotated[int | None, Header(alias="X-Store-Id")] = None,
+    current_user: User = Depends(get_current_user),
 ) -> tuple[str, int | None]:
-    normalized_role = role.upper() if role else ""
+    normalized_role = current_user.role.strip().upper()
     if normalized_role not in {"ADMIN", "VENDOR"}:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="X-Role must be ADMIN or VENDOR",
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Chỉ quản trị viên hoặc vendor mới được quản lý sản phẩm.",
         )
-    if normalized_role == "VENDOR" and store_id is None:
+    if normalized_role == "VENDOR" and current_user.store_id is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Vendor requests require X-Store-Id",
+            detail="Tài khoản vendor chưa được gán cửa hàng.",
         )
-    return normalized_role, store_id
+    return normalized_role, current_user.store_id if normalized_role == "VENDOR" else None
 
 
 def _check_store_access(product_store_id: int | None, role: str, store_id: int | None) -> None:

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <script>
     if (localStorage.getItem("t1shop-logged-in") !== "true") {
@@ -10,57 +10,50 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart - T1 Shop</title>
+  <title>Giỏ hàng - T1 Shop</title>
   <link rel="stylesheet" href="../css/style1.css">
   <style>
-    .cart-page { max-width: 1170px; margin: 40px auto 80px; padding: 0 24px; }
-    .cart-table { width: 100%; border-collapse: collapse; background: #fff; }
-    .cart-table th, .cart-table td { padding: 16px; border-bottom: 1px solid #e8e8e8; text-align: left; }
-    .cart-table input { width: 72px; padding: 8px; }
-    .cart-summary { max-width: 420px; margin-left: auto; margin-top: 32px; border: 1px solid #ddd; padding: 24px; }
-    .cart-summary-row { display: flex; justify-content: space-between; margin-bottom: 14px; }
-    .cart-actions { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; }
-    .empty-cart { text-align: center; padding: 80px 20px; }
-    .btn-primary-red, .btn-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 4px; padding: 0 20px; text-decoration: none; border: 1px solid #db4444; cursor: pointer; }
-    .btn-primary-red { background: #db4444; color: #fff; }
-    .btn-secondary { background: #fff; color: #111; border-color: #bbb; }
+    .cart-page{max-width:1170px;margin:40px auto 80px;padding:0 24px}.cart-table{width:100%;border-collapse:collapse;background:#fff}.cart-table th,.cart-table td{padding:16px;border-bottom:1px solid #e8e8e8;text-align:left}.cart-table input{width:72px;padding:8px}.cart-summary{max-width:420px;margin:32px 0 0 auto;border:1px solid #ddd;padding:24px}.cart-summary-row{display:flex;justify-content:space-between;margin-bottom:14px}.cart-actions{display:flex;justify-content:space-between;gap:16px;margin-top:24px}.empty-cart,.cart-message{text-align:center;padding:56px 20px}.btn-primary-red,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:4px;padding:0 20px;text-decoration:none;border:1px solid #db4444;cursor:pointer}.btn-primary-red{background:#db4444;color:#fff}.btn-secondary{background:#fff;color:#111;border-color:#bbb}.cart-error{color:#b42318}
+    @media(max-width:640px){.cart-table th:nth-child(2),.cart-table td:nth-child(2){display:none}.cart-table th,.cart-table td{padding:10px 5px}}
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="main-header">
-      <div class="main-header__inner">
-        <a class="brand" href="./E-CommerceHomePage.html"><img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="T1 Shop"></a>
-        <nav class="navigation">
-          <a class="navigation__link" href="./E-CommerceHomePage.html">Home</a>
-          <a class="navigation__link" href="./Shop.html">Shop</a>
-          <a class="navigation__link" href="./contact.html">Contact</a>
-          <a class="navigation__link" href="./About.html">About</a>
-        </nav>
-        <div class="header-actions">
-          <a class="icon-link" href="./WishList.html" aria-label="Wishlist">♥</a>
-          <a class="icon-link" href="./Cart.html" aria-label="Cart">Cart</a>
-        </div>
-      </div>
-    </div>
-  </header>
+  <header class="site-header"><div class="main-header"><div class="main-header__inner">
+    <a class="brand" href="./E-CommerceHomePage.html"><img src="../assets/images/Worlds_2026_Simulator-removebg-preview.png" alt="T1 Shop"></a>
+    <nav class="navigation"><a class="navigation__link" href="./E-CommerceHomePage.html">Trang chủ</a><a class="navigation__link" href="./Shop.html">Cửa hàng</a><a class="navigation__link" href="./contact.html">Liên hệ</a></nav>
+    <div class="header-actions"><a class="icon-link" href="./Cart.html" aria-label="Giỏ hàng">Giỏ hàng</a></div>
+  </div></div></header>
   <main class="cart-page">
-    <nav class="shop-breadcrumb"><a href="./E-CommerceHomePage.html">Home</a><span>/</span><span>Cart</span></nav>
-    <h1>Shopping Cart</h1>
-    <div id="cartContent"></div>
+    <nav class="shop-breadcrumb"><a href="./E-CommerceHomePage.html">Trang chủ</a><span>/</span><span>Giỏ hàng</span></nav>
+    <h1>Giỏ hàng của bạn</h1>
+    <div id="cartContent" aria-live="polite"><p class="cart-message">Đang tải giỏ hàng…</p></div>
   </main>
   <script src="../js/navigation.js"></script>
   <script>
-    const cartContent = document.getElementById("cartContent");
-    function getCart() {
-      try { return JSON.parse(localStorage.getItem("t1shop-cart") || "[]"); } catch (_) { return []; }
-    }
-    function renderCart() {
-      const cart = getCart();
-      if (!cart.length) {
-        cartContent.innerHTML = '<div class="empty-cart"><h2>Your cart is empty</h2><p>Add products before proceeding to checkout.</p><a class="btn-primary-red" href="./Shop.html">Return to Shop</a></div>';
-        return;
+    (async function () {
+      const content = document.getElementById("cartContent");
+      const money = (value) => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(Number(value) || 0);
+      const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+      const auth = window.T1ShopAuth;
+
+      function render(cart) {
+        if (!cart.items.length) {
+          content.innerHTML = '<div class="empty-cart"><h2>Giỏ hàng đang trống</h2><p>Hãy chọn sản phẩm để bắt đầu mua sắm.</p><a class="btn-primary-red" href="./Shop.html">Tiếp tục mua sắm</a></div>';
+          return;
+        }
+        const rows = cart.items.map((item) => `<tr><td><strong>${esc(item.product_name || "Sản phẩm")}</strong><br><small>${esc(item.sku || "")}${item.color ? " · " + esc(item.color) : ""}${item.size ? " · " + esc(item.size) : ""}</small></td><td>${money(item.price)}</td><td><input type="number" min="1" max="${Number(item.stock)}" value="${Number(item.quantity)}" data-quantity="${Number(item.id)}" aria-label="Số lượng ${esc(item.product_name)}"></td><td>${money(item.line_total)}</td><td><button type="button" data-remove="${Number(item.id)}">Xóa</button></td></tr>`).join("");
+        content.innerHTML = `<table class="cart-table"><thead><tr><th>Sản phẩm</th><th>Đơn giá</th><th>Số lượng</th><th>Thành tiền</th><th></th></tr></thead><tbody>${rows}</tbody></table><div class="cart-actions"><a class="btn-secondary" href="./Shop.html">Tiếp tục mua sắm</a></div><section class="cart-summary"><div class="cart-summary-row"><strong>Số sản phẩm</strong><span>${Number(cart.total_items)}</span></div><div class="cart-summary-row"><strong>Tạm tính</strong><strong>${money(cart.total_amount)}</strong></div><div class="cart-summary-row"><span>Thanh toán</span><span>COD khi nhận hàng</span></div><a class="btn-primary-red" href="./Checkout.html" style="width:100%">Tiến hành đặt hàng</a></section>`;
+        content.querySelectorAll("[data-quantity]").forEach((input) => input.addEventListener("change", async function () {
+          const quantity = Math.max(1, Number(this.value) || 1);
+          try { const response = await auth.fetch(`/cart/items/${this.dataset.quantity}`, {method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({quantity})}); const data=await response.json(); if(!response.ok) throw new Error(data.error?.message || data.detail || "Không thể cập nhật giỏ hàng."); render(data.cart); }
+          catch (error) { showError(error.message); }
+        }));
+        content.querySelectorAll("[data-remove]").forEach((button) => button.addEventListener("click", async function () {
+          try { const response = await auth.fetch(`/cart/items/${this.dataset.remove}`, {method:"DELETE"}); const data=await response.json(); if(!response.ok) throw new Error(data.error?.message || data.detail || "Không thể xóa sản phẩm."); render(data.cart); }
+          catch (error) { showError(error.message); }
+        }));
       }
+<<<<<<< HEAD
       const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
       cartContent.innerHTML = `
         <table class="cart-table"><thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
@@ -81,6 +74,16 @@
       }));
     }
     renderCart();
+=======
+      function showError(text) { content.innerHTML = `<div class="cart-message cart-error"><p>${esc(text)}</p><button type="button" id="retryCart">Thử lại</button></div>`; document.getElementById("retryCart")?.addEventListener("click", load); }
+      async function load() {
+        if (!auth?.getAccessToken()) { window.location.assign("./Login.html?auth=required"); return; }
+        try { const response = await auth.fetch("/cart"); const data=await response.json(); if(!response.ok) throw new Error(data.error?.message || data.detail || "Không thể tải giỏ hàng."); render(data); }
+        catch (error) { showError(error.message || "Không kết nối được với máy chủ."); }
+      }
+      await load();
+    })();
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
   </script>
 </body>
 </html>

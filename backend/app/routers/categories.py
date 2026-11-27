@@ -1,5 +1,5 @@
 """Endpoint quản trị danh mục sản phẩm."""
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -11,18 +11,20 @@ from app.crud.category import (
     get_category_by_slug,
     update_category,
 )
+from app.core.deps import get_current_user
 from app.db.session import get_db
 from app.models.category import Category
+from app.models.user import User
 from app.schemas.category import CategoryCreate, CategoryRead, CategoryUpdate
 
 router = APIRouter(prefix="/categories", tags=["Categories"])
 
 
-def require_admin(x_admin_role: str | None = Header(default=None)) -> None:
-    if x_admin_role != "admin":
+def require_admin(current_user: User = Depends(get_current_user)) -> None:
+    if current_user.role.strip().upper() != "ADMIN":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Admin role is required",
+            detail="Chỉ quản trị viên mới được quản lý danh mục.",
         )
 
 
