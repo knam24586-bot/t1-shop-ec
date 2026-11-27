@@ -110,13 +110,13 @@
                         </svg>
                     </a>
 
-                    <a class="icon-link cart-link" href="./WishList.html#cart" aria-label="Giỏ hàng">
+                    <a class="icon-link cart-link" href="./Cart.html" aria-label="Giỏ hàng">
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
                             <circle cx="9" cy="20" r="1.2"></circle>
                             <circle cx="18" cy="20" r="1.2"></circle>
                         </svg>
-                        <span class="cart-badge">2</span>
+                        <span class="cart-badge" style="display: none;"></span>
                     </a>
 
                     <!-- User Avatar & Dropdown Popup -->
@@ -794,6 +794,13 @@
             var btnWishlist = document.getElementById("btnDetailsWishlist");
             if (btnWishlist) {
                 btnWishlist.addEventListener("click", function () {
+                    var isVi = document.documentElement.lang === "vi";
+                    if (window.T1Shop && !window.T1Shop.isLoggedIn()) {
+                        alert(isVi ? "Vui lòng đăng nhập để lưu sản phẩm vào danh sách yêu thích!" : "Please log in to save items to your wishlist!");
+                        try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+                        window.location.href = "./Login.html";
+                        return;
+                    }
                     btnWishlist.classList.toggle("is-active");
                 });
             }
@@ -801,10 +808,105 @@
             /* 7. Buy Now Button Click */
             var btnBuy = document.getElementById("btnBuyNow");
             if (btnBuy) {
+<<<<<<< HEAD
+                btnBuy.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    var isVi = document.documentElement.lang === "vi";
+
+                    if (!window.T1Shop || !window.T1Shop.isLoggedIn()) {
+                        alert(isVi ? "Vui lòng đăng nhập để tiến hành mua hàng!" : "Please log in to purchase!");
+                        try {
+                            sessionStorage.setItem("t1shop-return-url", window.location.href);
+                        } catch (_) {}
+                        window.location.href = "./Login.html";
+                        return;
+                    }
+
+                    var titleEl = document.querySelector(".details-info__title");
+                    var priceEl = document.querySelector(".details-info__price");
+                    var qtyInput = document.getElementById("qtyInput");
+                    var imgEl = document.getElementById("mainProductImg");
+
+                    var nameVal = titleEl ? titleEl.textContent.trim() : "Havic HV G-92 Gamepad";
+                    var priceVal = 192;
+                    if (priceEl) {
+                        var parsed = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ""));
+                        if (!isNaN(parsed) && parsed > 0) priceVal = parsed;
+                    }
+                    var qtyVal = qtyInput ? Math.max(1, parseInt(qtyInput.value, 10) || 1) : 1;
+                    var imgVal = imgEl ? imgEl.src : "../assets/images/products/Frame 611.png";
+
+                    window.T1Shop.addToCart({
+                        id: "prod-" + Date.now(),
+                        name: nameVal,
+                        price: priceVal,
+                        image: imgVal,
+                        quantity: qtyVal
+                    });
+
+                    window.location.href = "./Cart.html";
+=======
                 btnBuy.addEventListener("click", function () {
                     if (window.addCurrentDetailsProductToCart) window.addCurrentDetailsProductToCart(currentQty);
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
                 });
             }
+
+            /* 7b. Dynamic Product Details Loading from URL */
+            (function loadProductFromUrl() {
+                var urlParams = new URLSearchParams(window.location.search);
+                var pName = urlParams.get("name") || urlParams.get("q");
+                var pPrice = urlParams.get("price");
+                var pImg = urlParams.get("img") || urlParams.get("image");
+
+                if (pName) {
+                    var titleEl = document.querySelector(".details-info__title");
+                    if (titleEl) titleEl.textContent = pName;
+                    var breadcrumbItem = document.querySelector(".shop-breadcrumb span:last-child");
+                    if (breadcrumbItem) breadcrumbItem.textContent = pName;
+                    document.title = pName + " - T1 Shop";
+                }
+                if (pPrice) {
+                    var priceEl = document.querySelector(".details-info__price");
+                    if (priceEl) priceEl.textContent = "$" + parseFloat(pPrice).toFixed(2);
+                }
+                if (pImg) {
+                    var mainImg = document.getElementById("mainProductImg");
+                    if (mainImg) {
+                        mainImg.src = pImg;
+                        mainImg.alt = pName || "Product";
+                    }
+                    var thumbs = document.querySelectorAll(".details-gallery__thumb img");
+                    if (thumbs.length > 0) {
+                        thumbs[0].src = pImg;
+                    }
+                }
+            })();
+
+            /* 7c. Related Items Navigation */
+            document.querySelectorAll(".related-items__grid .product-card").forEach(function(card) {
+                var nameEl = card.querySelector(".product-card__name");
+                var priceEl = card.querySelector(".product-card__current-price");
+                var imgEl = card.querySelector(".product-card__thumb img");
+                var name = nameEl ? nameEl.textContent.trim() : "";
+                var price = priceEl ? priceEl.textContent.replace(/[^0-9.]/g, "") : "";
+                var img = imgEl ? imgEl.getAttribute("src") : "";
+
+                if (nameEl) {
+                    nameEl.style.cursor = "pointer";
+                    nameEl.addEventListener("click", function() {
+                        window.location.href = "./ProductDetailsPage.html?name=" + encodeURIComponent(name) + "&price=" + price + "&img=" + encodeURIComponent(img);
+                    });
+                }
+                var thumb = card.querySelector(".product-card__thumb");
+                if (thumb) {
+                    thumb.style.cursor = "pointer";
+                    thumb.addEventListener("click", function(e) {
+                        if (e.target.closest("button")) return;
+                        window.location.href = "./ProductDetailsPage.html?name=" + encodeURIComponent(name) + "&price=" + price + "&img=" + encodeURIComponent(img);
+                    });
+                }
+            });
 
             /* 8. User Avatar & Account Popup Dropdown */
             var userAvatarBtn = document.getElementById("userAvatarBtn");

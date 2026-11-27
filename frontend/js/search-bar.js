@@ -199,6 +199,15 @@
     return "/frontend/pages/Shop.html";
   }
 
+  // Hàm chuyển đổi đường dẫn ProductDetailsPage.html chuẩn xác theo ngữ cảnh thư mục
+  function resolveProductDetailsUrl() {
+    const path = window.location.pathname;
+    if (path.includes("/pages/") || path.endsWith("/pages")) {
+      return "./ProductDetailsPage.html";
+    }
+    return "/frontend/pages/ProductDetailsPage.html";
+  }
+
   // Khử dấu tiếng Việt để tìm kiếm không phân biệt dấu
   function removeAccents(str) {
     if (!str) return "";
@@ -246,6 +255,7 @@
 
     // 1. Cấu hình form đích đến trang Shop.html
     const shopUrl = resolveShopUrl();
+    const detailsUrl = resolveProductDetailsUrl();
     searchForm.setAttribute("action", shopUrl);
     searchForm.setAttribute("method", "get");
     searchForm.setAttribute("role", "search");
@@ -420,8 +430,9 @@
             ? `<span class="search-item__wl-badge">❤️ ${isVi ? "Trong Wishlist" : "In Wishlist"}</span>`
             : "";
 
+          const itemUrl = `${detailsUrl}?id=${prod.id}&name=${encodeURIComponent(prod.name)}&price=${prod.price}&img=${encodeURIComponent(prod.image)}`;
           html += `
-            <a href="${shopUrl}?q=${encodeURIComponent(prod.name)}" class="search-dropdown__item" data-id="${prod.id}">
+            <a href="${itemUrl}" class="search-dropdown__item" data-id="${prod.id}">
               <img src="${prod.image}" alt="${escapeHtml(prod.name)}" class="search-item__thumb" onerror="this.src='${FALLBACK_IMAGE}'">
               <div class="search-item__info">
                 <div class="search-item__name">${highlightedName}</div>

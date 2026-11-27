@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+  <script>
+    if (localStorage.getItem("t1shop-logged-in") !== "true") {
+      alert("Vui lòng đăng nhập để xem giỏ hàng của bạn!");
+      try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+      window.location.replace("./Login.html");
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giỏ hàng - T1 Shop</title>
@@ -46,6 +53,28 @@
           catch (error) { showError(error.message); }
         }));
       }
+<<<<<<< HEAD
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      cartContent.innerHTML = `
+        <table class="cart-table"><thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
+        <tbody>${cart.map((item, index) => `<tr><td>${item.name}</td><td>$${item.price}</td><td><input type="number" min="1" value="${item.quantity}" data-cart-index="${index}"></td><td>$${item.price * item.quantity}</td><td><button type="button" data-remove="${index}">Remove</button></td></tr>`).join("")}</tbody></table>
+        <div class="cart-actions"><a class="btn-secondary" href="./Shop.html">Return to Shop</a></div>
+        <section class="cart-summary"><div class="cart-summary-row"><strong>Subtotal</strong><strong>$${subtotal}</strong></div><div class="cart-summary-row"><span>Shipping</span><span>Free</span></div><div class="cart-summary-row"><strong>Total</strong><strong>$${subtotal}</strong></div><a class="btn-primary-red" href="./Checkout.html" style="width:100%">Proceed to Checkout</a></section>`;
+      cartContent.querySelectorAll("[data-cart-index]").forEach(input => input.addEventListener("change", function () {
+        const cart = getCart();
+        cart[Number(this.dataset.cartIndex)].quantity = Math.max(1, Number(this.value) || 1);
+        if (window.T1Shop) { window.T1Shop.saveCart(cart); } else { localStorage.setItem("t1shop-cart", JSON.stringify(cart)); }
+        renderCart();
+      }));
+      cartContent.querySelectorAll("[data-remove]").forEach(button => button.addEventListener("click", function () {
+        const cart = getCart();
+        cart.splice(Number(this.dataset.remove), 1);
+        if (window.T1Shop) { window.T1Shop.saveCart(cart); } else { localStorage.setItem("t1shop-cart", JSON.stringify(cart)); }
+        renderCart();
+      }));
+    }
+    renderCart();
+=======
       function showError(text) { content.innerHTML = `<div class="cart-message cart-error"><p>${esc(text)}</p><button type="button" id="retryCart">Thử lại</button></div>`; document.getElementById("retryCart")?.addEventListener("click", load); }
       async function load() {
         if (!auth?.getAccessToken()) { window.location.assign("./Login.html?auth=required"); return; }
@@ -54,6 +83,7 @@
       }
       await load();
     })();
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
   </script>
 </body>
 </html>

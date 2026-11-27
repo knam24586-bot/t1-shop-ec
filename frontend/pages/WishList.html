@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    if (localStorage.getItem("t1shop-logged-in") !== "true") {
+      alert("Vui lòng đăng nhập để truy cập danh sách yêu thích!");
+      try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+      window.location.replace("./Login.html");
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wishlist - T1 Shop</title>

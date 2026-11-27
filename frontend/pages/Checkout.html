@@ -1,8 +1,22 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<<<<<<< HEAD
+  <script>
+    if (localStorage.getItem("t1shop-logged-in") !== "true") {
+      alert("Vui lòng đăng nhập để tiến hành thanh toán!");
+      try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+      window.location.replace("./Login.html");
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - T1 Shop</title>
+  <link rel="stylesheet" href="../css/style1.css">
+=======
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thanh toán - T1 Shop</title><link rel="stylesheet" href="../css/style1.css">
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
   <style>
     .checkout-page{max-width:1170px;margin:40px auto 80px;padding:0 24px;display:grid;grid-template-columns:1.25fr .75fr;gap:48px}.checkout-form{display:grid;gap:14px}.checkout-form label{display:grid;gap:7px;font-weight:500}.checkout-form input{height:42px;border:1px solid #ddd;background:#f5f5f5;padding:0 12px}.order-summary{border:1px solid #eee;padding:24px;height:fit-content}.summary-row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid #eee}.place-order{width:100%;min-height:46px;border:0;border-radius:4px;background:#db4444;color:#fff;cursor:pointer;margin-top:20px}.place-order:disabled{opacity:.65;cursor:wait}.checkout-message{padding:12px 14px;margin:14px 0;border-radius:4px}.checkout-error{background:#fff0f0;color:#a12525}.checkout-success{background:#eefaf2;color:#17633a}.cod-label{display:flex;gap:8px;align-items:center;margin-top:18px}.cod-label input{height:auto}.success-panel{padding:28px;border:1px solid #cce8d5;border-radius:8px;background:#f5fff8}.success-panel h2{color:#17633a}
     @media(max-width:760px){.checkout-page{grid-template-columns:1fr}}

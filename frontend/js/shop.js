@@ -778,6 +778,12 @@
 
       if (modalQtyInput) modalQtyInput.value = 1;
 
+      const viewDetailsLink = document.getElementById("modalViewDetailsLink");
+      if (viewDetailsLink) {
+        viewDetailsLink.href = `./ProductDetailsPage.html?id=${product.id}&name=${encodeURIComponent(product.name)}&price=${product.price}&img=${encodeURIComponent(product.image)}`;
+        viewDetailsLink.textContent = isVi ? "Xem chi tiết đầy đủ" : "View Full Details";
+      }
+
       detailModal.classList.add("is-open");
       detailModal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -837,8 +843,14 @@
         if (wishBtn) {
           e.preventDefault();
           e.stopPropagation();
-          const active = wishBtn.classList.toggle("is-active");
           const isVi = document.documentElement.lang === "vi";
+          if (window.T1Shop && !window.T1Shop.isLoggedIn()) {
+            alert(isVi ? "Vui lòng đăng nhập để lưu sản phẩm vào danh sách yêu thích!" : "Please log in to save items to your wishlist!");
+            try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+            window.location.href = "./Login.html";
+            return;
+          }
+          const active = wishBtn.classList.toggle("is-active");
           showToast(active
             ? (isVi ? `Đã thêm "${product.name}" vào danh sách yêu thích!` : `Added "${product.name}" to wishlist!`)
             : (isVi ? `Đã bỏ lưu "${product.name}"!` : `Removed "${product.name}" from wishlist!`));
@@ -850,7 +862,22 @@
         if (addCartBtn) {
           e.preventDefault();
           e.stopPropagation();
+<<<<<<< HEAD
+          if (window.T1Shop) {
+            window.T1Shop.addToCart({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.image,
+              quantity: 1
+            });
+          } else {
+            const isVi = document.documentElement.lang === "vi";
+            showToast(isVi ? `Đã thêm "${product.name}" vào giỏ hàng!` : `Added "${product.name}" to cart!`);
+          }
+=======
           addProductToCart(product, 1);
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
           return;
         }
 
@@ -1101,8 +1128,14 @@
 
     if (modalFavBtn) {
       modalFavBtn.addEventListener("click", function () {
-        const active = this.classList.toggle("is-active");
         const isVi = document.documentElement.lang === "vi";
+        if (window.T1Shop && !window.T1Shop.isLoggedIn()) {
+          alert(isVi ? "Vui lòng đăng nhập để lưu sản phẩm vào danh sách yêu thích!" : "Please log in to save items to your wishlist!");
+          try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+          window.location.href = "./Login.html";
+          return;
+        }
+        const active = this.classList.toggle("is-active");
         showToast(active
           ? (isVi ? "Đã lưu vào mục yêu thích!" : "Added to wishlist favorites!")
           : (isVi ? "Đã bỏ lưu khỏi mục yêu thích!" : "Removed from wishlist favorites!"));
@@ -1111,9 +1144,31 @@
 
     if (modalAddCartBtn) {
       modalAddCartBtn.addEventListener("click", () => {
+<<<<<<< HEAD
+        const title = modalTitle.textContent.trim();
+        const qty = modalQtyInput ? Math.max(1, parseInt(modalQtyInput.value, 10) || 1) : 1;
+        const price = modalPrice ? parseFloat(modalPrice.textContent.replace(/[^0-9.]/g, "")) : 120;
+        const img = modalImg ? modalImg.src : "";
+
+        if (window.T1Shop) {
+          const added = window.T1Shop.addToCart({
+            id: "modal-" + Date.now(),
+            name: title,
+            price: price,
+            image: img,
+            quantity: qty
+          });
+          if (added) closeProductDetails();
+        } else {
+          const isVi = document.documentElement.lang === "vi";
+          showToast(isVi ? `Đã thêm ${qty}x "${title}" vào giỏ hàng!` : `Added ${qty}x "${title}" to cart!`);
+          closeProductDetails();
+        }
+=======
         const product = allProducts.find((item) => String(item.variantId) === modalAddCartBtn.dataset.variantId);
         const quantity = Math.max(1, Number(modalQtyInput?.value) || 1);
         if (product) addProductToCart(product, quantity);
+>>>>>>> 03cc1e40872621bec95c1744c43a05c674a321e4
       });
     }
 
