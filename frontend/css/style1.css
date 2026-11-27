@@ -1911,6 +1911,12 @@ main,
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.product-card__name:hover {
+  color: #db4444;
 }
 
 .product-card__pricing {

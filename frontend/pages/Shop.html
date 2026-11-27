@@ -93,12 +93,13 @@
             </svg>
           </a>
 
-          <a class="icon-link" href="#cart" aria-label="Giỏ hàng">
+          <a class="icon-link cart-link" href="./Cart.html" aria-label="Giỏ hàng">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
               <circle cx="9" cy="20" r="1.2"></circle>
               <circle cx="18" cy="20" r="1.2"></circle>
             </svg>
+            <span class="cart-badge" style="display: none;"></span>
           </a>
 
           <a class="icon-link account-link" href="./AccountDropdownWithAccount.html" aria-label="Tài khoản">
@@ -367,6 +368,8 @@
                 <span id="modalAddCartText">Add To Cart</span>
               </button>
 
+              <a class="btn-secondary product-modal__view-details" id="modalViewDetailsLink" href="./ProductDetailsPage.html" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; padding: 10px 16px; border: 1px solid #111; border-radius: 4px; font-weight: 500; font-size: 14px; color: #111; background: #fff; margin-left: 8px;">View Details</a>
+
               <button class="product-modal__fav-btn" id="modalFavBtn" type="button" aria-label="Lưu vào yêu thích">
                 <svg viewBox="0 0 24 24">
                   <path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" />
@@ -421,11 +424,11 @@
       <nav class="footer-column" aria-label="Account">
         <h2>Account</h2>
         <ul>
-          <li><a href="#">My Account</a></li>
-          <li><a href="#">Login / Register</a></li>
-          <li><a href="#">Cart</a></li>
-          <li><a href="/frontend/pages/WishList.html">Wishlist</a></li>
-          <li><a href="#">Shop</a></li>
+          <li><a href="./myAccount.html">My Account</a></li>
+          <li><a href="./Login.html">Login / Register</a></li>
+          <li><a href="./Cart.html">Cart</a></li>
+          <li><a href="./WishList.html">Wishlist</a></li>
+          <li><a href="./Shop.html">Shop</a></li>
         </ul>
       </nav>
 
@@ -436,7 +439,7 @@
           <li><a href="#">Privacy Policy</a></li>
           <li><a href="#">Terms Of Use</a></li>
           <li><a href="#">FAQ</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="./contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>

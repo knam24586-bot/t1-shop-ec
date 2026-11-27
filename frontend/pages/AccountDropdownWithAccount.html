@@ -2,6 +2,11 @@
 <html lang="vi">
 
 <head>
+    <script>
+        if (localStorage.getItem("t1shop-logged-in") !== "true") {
+            window.location.replace("./E-CommerceHomePage.html");
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Stylesheet giao diện chính của website -->
@@ -102,13 +107,13 @@
                         </svg>
                     </a>
 
-                    <a class="icon-link cart-link" href="#cart" aria-label="Giỏ hàng">
+                    <a class="icon-link cart-link" href="./Cart.html" aria-label="Giỏ hàng">
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
                             <circle cx="9" cy="20" r="1.2"></circle>
                             <circle cx="18" cy="20" r="1.2"></circle>
                         </svg>
-                        <span class="cart-badge">2</span>
+                        <span class="cart-badge" style="display: none;"></span>
                     </a>
 
                     <!-- User Account Icon & Dropdown Popup -->
@@ -3017,6 +3022,13 @@
                 document.querySelectorAll(".product-action-btn[data-action='wishlist']").forEach(function (btn) {
                     btn.addEventListener("click", function (e) {
                         e.preventDefault();
+                        var isVi = document.documentElement.lang === "vi";
+                        if (window.T1Shop && !window.T1Shop.isLoggedIn()) {
+                            alert(isVi ? "Vui lòng đăng nhập để lưu sản phẩm vào danh sách yêu thích!" : "Please log in to save items to your wishlist!");
+                            try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+                            window.location.href = "./Login.html";
+                            return;
+                        }
                         btn.classList.toggle("product-action-btn--active");
                     });
                 });
@@ -3278,7 +3290,7 @@
                 <ul>
                     <li><a href="./myAccount.html">My Account</a></li>
                     <li><a href="./Login.html">Login / Register</a></li>
-                    <li><a href="./Shop.html">Cart</a></li>
+                    <li><a href="./Cart.html">Cart</a></li>
                     <li><a href="./WishList.html">Wishlist</a></li>
                     <li><a href="./Shop.html">Shop</a></li>
                 </ul>

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    if (localStorage.getItem("t1shop-logged-in") !== "true") {
+      alert("Vui lòng đăng nhập để xem giỏ hàng của bạn!");
+      try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+      window.location.replace("./Login.html");
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cart - T1 Shop</title>
@@ -63,13 +70,13 @@
       cartContent.querySelectorAll("[data-cart-index]").forEach(input => input.addEventListener("change", function () {
         const cart = getCart();
         cart[Number(this.dataset.cartIndex)].quantity = Math.max(1, Number(this.value) || 1);
-        localStorage.setItem("t1shop-cart", JSON.stringify(cart));
+        if (window.T1Shop) { window.T1Shop.saveCart(cart); } else { localStorage.setItem("t1shop-cart", JSON.stringify(cart)); }
         renderCart();
       }));
       cartContent.querySelectorAll("[data-remove]").forEach(button => button.addEventListener("click", function () {
         const cart = getCart();
         cart.splice(Number(this.dataset.remove), 1);
-        localStorage.setItem("t1shop-cart", JSON.stringify(cart));
+        if (window.T1Shop) { window.T1Shop.saveCart(cart); } else { localStorage.setItem("t1shop-cart", JSON.stringify(cart)); }
         renderCart();
       }));
     }

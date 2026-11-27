@@ -91,82 +91,14 @@
             </svg>
           </a>
 
-          <a class="icon-link" href="./Shop.html" aria-label="Giỏ hàng">
+          <a class="icon-link cart-link" href="./Cart.html" aria-label="Giỏ hàng">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M2.5 3h2.3l2.1 12.1a2 2 0 0 0 2 1.7h9.8a2 2 0 0 0 1.9-1.5L22 7H5.1"></path>
               <circle cx="9" cy="20" r="1.2"></circle>
               <circle cx="18" cy="20" r="1.2"></circle>
             </svg>
+            <span class="cart-badge" style="display: none;"></span>
           </a>
-
-          <!-- User Account Icon & Dropdown Popup -->
-          <div class="user-account-dropdown" id="userAccountDropdown">
-            <button class="user-avatar-btn" id="userAvatarBtn" type="button" aria-label="Tài khoản người dùng"
-              aria-expanded="false" aria-haspopup="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" aria-hidden="true">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </button>
-            <nav class="account-popup-menu" id="accountPopupMenu" aria-label="Menu tài khoản">
-              <ul class="account-popup-list">
-                <li>
-                  <a class="account-popup-item" href="./myAccount.html">
-                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                      <circle cx="12" cy="7" r="4" />
-                    </svg>
-                    <span>Manage My Account</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="account-popup-item" href="./myAccount.html#my-order">
-                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                      <path d="M3 6h18" />
-                      <path d="M16 10a4 4 0 0 1-8 0" />
-                    </svg>
-                    <span>My Order</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="account-popup-item" href="./myAccount.html#my-cancellations">
-                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="m15 9-6 6" />
-                      <path d="m9 9 6 6" />
-                    </svg>
-                    <span>My Cancellations</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="account-popup-item" href="./myAccount.html#my-reviews">
-                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <polygon
-                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
-                    <span>My Reviews</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="account-popup-item" href="./Login.html">
-                    <svg class="account-popup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                      <polyline points="16 17 21 12 16 7" />
-                      <line x1="21" y1="12" x2="9" y2="12" />
-                    </svg>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
         </div>
       </div>
     </div>
@@ -2795,6 +2727,13 @@
         document.querySelectorAll(".product-action-btn[data-action='wishlist']").forEach(function (btn) {
           btn.addEventListener("click", function (e) {
             e.preventDefault();
+            var isVi = document.documentElement.lang === "vi";
+            if (window.T1Shop && !window.T1Shop.isLoggedIn()) {
+              alert(isVi ? "Vui lòng đăng nhập để lưu sản phẩm vào danh sách yêu thích!" : "Please log in to save items to your wishlist!");
+              try { sessionStorage.setItem("t1shop-return-url", window.location.href); } catch (_) {}
+              window.location.href = "./Login.html";
+              return;
+            }
             btn.classList.toggle("product-action-btn--active");
           });
         });
@@ -3055,7 +2994,7 @@
         <ul>
           <li><a href="./myAccount.html">My Account</a></li>
           <li><a href="./Login.html">Login / Register</a></li>
-          <li><a href="./Shop.html">Cart</a></li>
+          <li><a href="./Cart.html">Cart</a></li>
           <li><a href="./WishList.html">Wishlist</a></li>
           <li><a href="./Shop.html">Shop</a></li>
         </ul>
